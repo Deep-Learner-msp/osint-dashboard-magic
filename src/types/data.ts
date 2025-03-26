@@ -16,6 +16,7 @@ export interface OsintData {
     twitter: string[];
     linkedin: string[];
     address: string[];
+    email: string[];
   };
   websiteInsights: string[];
   dataLeaksCompliance: DataLeak[];
@@ -26,15 +27,43 @@ export interface OsintData {
     PPt: string[];
   };
   shodanData?: import("./shodan").ShodanData;
+  domains?: string[];
+  ipRanges?: string[];
+  mailServers?: string[];
+  sslCertificates?: {
+    domain: string;
+    issuer: string;
+    expiration: string;
+    daysTillExpiry: number;
+  }[];
+  subdirectories?: string[];
+  vulnerabilities?: {
+    severity: number;
+    description: string;
+    remediation: string;
+    affected: string;
+  }[];
+  sensitiveFiles?: {
+    filename: string;
+    path: string;
+    discovery_date: string;
+    sensitivity: string;
+  }[];
+  employeeList?: {
+    name: string;
+    position: string;
+    social_profiles: string[];
+    email: string;
+  }[];
 }
 
 export interface DataLeak {
   id: string;
   email: string;
   ip_address: string;
-  username: string;
-  password: string;
-  hashed_password: string;
+  username: string | null;
+  password: string | null;
+  hashed_password: string | null;
   name: string;
   vin: string;
   address: string;

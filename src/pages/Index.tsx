@@ -43,18 +43,19 @@ const sampleData: OsintData = {
     { severity: 3, description: "Missing HTTP Strict Transport Security Header", remediation: "Add HSTS header to all responses", affected: "api.sclowy.com" },
     { severity: 4, description: "Outdated jQuery Version", remediation: "Update jQuery to latest version", affected: "sclowy.com" }
   ],
-  qualysData: {
+  qualysScan: {
     severity_1: 2,
     severity_2: 8,
     severity_3: 15,
     severity_4: 13
   },
+  openPorts: [22, 80, 443, 8080, 3306],
   dataLeaksCompliance: [
-    { id: 1, email: "john.doe@sclowy.com", database_name: "LinkedIn 2021", password: null, hashed_password: "5f4dcc3b5aa765d61d8327deb882cf99", name: "John Doe", username: null },
-    { id: 2, email: "jane.smith@sclowy.com", database_name: "Adobe 2020", password: null, hashed_password: "e99a18c428cb38d5f260853678922e03", name: "Jane Smith", username: null },
-    { id: 3, email: "michael.johnson@sclowy.com", database_name: "Dropbox 2019", password: "finance2019", hashed_password: null, name: "Michael Johnson", username: null },
-    { id: 4, email: "susan.williams@sclowy.com", database_name: "MyFitnessPal 2018", password: null, hashed_password: "d8578edf8458ce06fbc5bb76a58c5ca4", name: "Susan Williams", username: null },
-    { id: 5, email: "robert.brown@sclowy.com", database_name: "LinkedIn 2021", password: null, hashed_password: "5f4dcc3b5aa765d61d8327deb882cf99", name: "Robert Brown", username: null }
+    { id: "1", email: "john.doe@sclowy.com", database_name: "LinkedIn 2021", password: null, hashed_password: "5f4dcc3b5aa765d61d8327deb882cf99", name: "John Doe", username: null, ip_address: "", vin: "", address: "", phone: "" },
+    { id: "2", email: "jane.smith@sclowy.com", database_name: "Adobe 2020", password: null, hashed_password: "e99a18c428cb38d5f260853678922e03", name: "Jane Smith", username: null, ip_address: "", vin: "", address: "", phone: "" },
+    { id: "3", email: "michael.johnson@sclowy.com", database_name: "Dropbox 2019", password: "finance2019", hashed_password: null, name: "Michael Johnson", username: null, ip_address: "", vin: "", address: "", phone: "" },
+    { id: "4", email: "susan.williams@sclowy.com", database_name: "MyFitnessPal 2018", password: null, hashed_password: "d8578edf8458ce06fbc5bb76a58c5ca4", name: "Susan Williams", username: null, ip_address: "", vin: "", address: "", phone: "" },
+    { id: "5", email: "robert.brown@sclowy.com", database_name: "LinkedIn 2021", password: null, hashed_password: "5f4dcc3b5aa765d61d8327deb882cf99", name: "Robert Brown", username: null, ip_address: "", vin: "", address: "", phone: "" }
   ],
   sensitiveFiles: [
     { filename: "annual_report_2023.pdf", path: "/investors/reports/", discovery_date: "2023-11-15", sensitivity: "Medium" },
@@ -74,58 +75,95 @@ const sampleData: OsintData = {
     twitter: ["https://twitter.com/sclowy"],
     linkedin: ["https://linkedin.com/company/sclowy"]
   },
-  shodanData: [
-    {
-      ip: "159.65.201.6",
-      hostname: "sclowy.com",
-      org: "DigitalOcean, LLC",
-      country: "Netherlands",
-      city: "Amsterdam",
-      ports: [22, 80, 443],
-      services: [
-        {
-          port: 22,
-          name: "SSH",
-          version: "OpenSSH 8.2p1 Ubuntu 4ubuntu0.12",
-          transport: "tcp",
-          banner: "SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.12"
+  fileSearch: {
+    PDF: ["annual_report_2023.pdf", "security_policy.pdf"],
+    XLS: ["financial_data_2023.xlsx", "employee_list.xlsx"],
+    DOC: ["meeting_notes.docx", "internal_memo.docx"],
+    PPt: ["company_presentation.pptx", "investor_deck.pptx"]
+  },
+  shodanData: {
+    city: "Amsterdam",
+    region_code: "NH",
+    os: null,
+    tags: ["cloud"],
+    ip: 123456789,
+    isp: "DigitalOcean, LLC",
+    area_code: null,
+    longitude: 4.9392,
+    last_update: "2023-12-15T08:30:12.000Z",
+    ports: [22, 80, 443],
+    latitude: 52.3824,
+    hostnames: ["sclowy.com", "api.sclowy.com"],
+    country_code: "NL",
+    country_name: "Netherlands",
+    domains: ["sclowy.com"],
+    org: "DigitalOcean, LLC",
+    data: [
+      {
+        ip: 123456789,
+        hash: 12345,
+        port: 22,
+        transport: "tcp",
+        cloud: {
+          region: "eu-west",
+          service: null,
+          provider: "DigitalOcean"
         },
-        {
-          port: 80,
-          name: "HTTP",
-          transport: "tcp",
-          product: "nginx"
+        location: {
+          city: "Amsterdam",
+          region_code: "NH",
+          area_code: null,
+          longitude: 4.9392,
+          country_name: "Netherlands",
+          country_code: "NL",
+          latitude: 52.3824
         },
-        {
-          port: 443,
-          name: "HTTPS",
-          transport: "tcp",
-          product: "nginx",
-          ssl: {
-            cert: {
-              issuer: {
-                C: "US", 
-                CN: "E6", 
-                O: "Let's Encrypt"
-              },
-              subject: {
-                CN: "sclowy.com"
-              },
-              expires: "2025-05-19T12:14:49Z"
-            }
-          }
-        }
-      ],
-      vulnerabilities: [
-        {
-          severity: 1,
-          name: "SSL Version 2 and 3 Protocol Detection",
-          description: "SSL 2.0 and 3.0 protocols have known vulnerabilities and should be disabled.",
-          remediation: "Upgrade to TLS 1.2 or higher and disable older SSL protocols."
-        }
-      ]
-    }
-  ]
+        product: "OpenSSH",
+        tags: ["cloud"],
+        timestamp: "2023-12-15T08:30:12.000Z",
+        hostnames: ["sclowy.com"],
+        org: "DigitalOcean, LLC",
+        data: "SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.12",
+        asn: "AS14061",
+        cpe23: ["cpe:2.3:a:openbsd:openssh:8.2p1:*:*:*:*:*:*:*"],
+        isp: "DigitalOcean, LLC",
+        cpe: ["cpe:/a:openbsd:openssh:8.2p1"],
+        domains: ["sclowy.com"],
+        ip_str: "159.65.201.6",
+        os: "Ubuntu",
+        _shodan: {
+          region: "eu-west",
+          module: "ssh",
+          ptr: true,
+          id: "abcd1234",
+          options: {},
+          crawler: "crawler-01"
+        },
+        opts: {},
+        ssh: {
+          type: "ssh-rsa",
+          fingerprint: "2b:02:23:77:e9:d2:ff:99:33:7f:cf:f1:ed:10:35:80",
+          mac: "hmac-sha2-256",
+          cipher: "aes256-ctr",
+          key: "AAAAB3NzaC1...",
+          kex: {
+            unused: 0,
+            server_host_key_algorithms: ["ssh-rsa", "ssh-ed25519"],
+            encryption_algorithms: ["aes256-ctr", "aes256-gcm@openssh.com"],
+            kex_follows: false,
+            languages: [],
+            kex_algorithms: ["curve25519-sha256", "diffie-hellman-group16-sha512"],
+            compression_algorithms: ["none", "zlib@openssh.com"],
+            mac_algorithms: ["hmac-sha2-256", "hmac-sha2-512"]
+          },
+          hassh: "abcdef123456789"
+        },
+        version: "8.2p1"
+      }
+    ],
+    asn: "AS14061",
+    ip_str: "159.65.201.6"
+  }
 };
 
 const Index: React.FC = () => {
