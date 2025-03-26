@@ -1,11 +1,10 @@
-
 import React, { useState } from "react";
 import GlassPanel from "./ui/GlassPanel";
 import { ShieldAlert, Mail, Database, ExternalLink, AlertTriangle } from "lucide-react";
 import { OsintData } from "@/types/data";
 import StatCard from "./ui/StatCard";
 import { countUniqueDatabases, countUniqueEmails } from "@/utils/formatters";
-import InfoAccordion from "./ui/InfoAccordion";
+import InfoSheet from "./ui/InfoSheet";
 import { Button } from "./ui/button";
 import { QualysVulnerability, sampleQualysData, severityColors, getSeverityLabel } from "@/utils/qualysParser";
 
@@ -57,7 +56,6 @@ const SecurityPanel: React.FC<SecurityPanelProps> = ({ data }) => {
             animationDelay={700}
             className="cursor-pointer hover:shadow-md transition-shadow"
             onClick={() => {
-              // Open data leaks details in accordion
               setActiveVulnerability(null);
               setAccordionOpen(true);
             }}
@@ -69,7 +67,6 @@ const SecurityPanel: React.FC<SecurityPanelProps> = ({ data }) => {
             animationDelay={800}
             className="cursor-pointer hover:shadow-md transition-shadow"
             onClick={() => {
-              // Open data leaks details in accordion
               setActiveVulnerability(null);
               setAccordionOpen(true);
             }}
@@ -80,7 +77,6 @@ const SecurityPanel: React.FC<SecurityPanelProps> = ({ data }) => {
             className="bg-red-50 cursor-pointer hover:shadow-md transition-shadow"
             animationDelay={900}
             onClick={() => {
-              // Open data leaks details in accordion
               setActiveVulnerability(null);
               setAccordionOpen(true);
             }}
@@ -124,9 +120,9 @@ const SecurityPanel: React.FC<SecurityPanelProps> = ({ data }) => {
         </div>
       </GlassPanel>
 
-      {/* Detailed Vulnerability Accordion */}
+      {/* Detailed Vulnerability Sheet */}
       {activeVulnerability ? (
-        <InfoAccordion
+        <InfoSheet
           open={accordionOpen}
           onClose={() => setAccordionOpen(false)}
           title={activeVulnerability.title}
@@ -181,9 +177,9 @@ const SecurityPanel: React.FC<SecurityPanelProps> = ({ data }) => {
               </div>
             )}
           </div>
-        </InfoAccordion>
+        </InfoSheet>
       ) : (
-        <InfoAccordion
+        <InfoSheet
           open={accordionOpen}
           onClose={() => setAccordionOpen(false)}
           title="Security Analysis Report"
@@ -274,7 +270,7 @@ const SecurityPanel: React.FC<SecurityPanelProps> = ({ data }) => {
               </div>
             </div>
           </div>
-        </InfoAccordion>
+        </InfoSheet>
       )}
     </>
   );

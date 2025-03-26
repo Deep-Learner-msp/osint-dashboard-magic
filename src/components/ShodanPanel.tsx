@@ -4,7 +4,7 @@ import GlassPanel from "./ui/GlassPanel";
 import { Shield, Map, Server, Globe, ExternalLink, Lock } from "lucide-react";
 import { ShodanData } from "@/types/shodan";
 import StatCard from "./ui/StatCard";
-import InfoAccordion from "./ui/InfoAccordion";
+import InfoSheet from "./ui/InfoSheet";
 import InfoCard from "./ui/InfoCard";
 import { Badge } from "./ui/badge";
 import { formatDate } from "@/utils/formatters";
@@ -399,8 +399,8 @@ const ShodanPanel: React.FC<ShodanPanelProps> = ({ data }) => {
         </div>
       </GlassPanel>
       
-      {/* Detail Accordion */}
-      <InfoAccordion
+      {/* Detail Sheet */}
+      <InfoSheet
         open={accordionOpen}
         onClose={() => setAccordionOpen(false)}
         title={
@@ -412,14 +412,14 @@ const ShodanPanel: React.FC<ShodanPanelProps> = ({ data }) => {
         }
         description={
           activeDetail === "location"
-            ? `Location: ${data.city}, ${data.country_name}`
+            ? `Location: ${data?.city}, ${data?.country_name}`
             : activeDetail === "services"
-              ? `${data.ports.length} services detected on target system`
+              ? `${data?.ports.length} services detected on target system`
               : `Technologies detected on target web services`
         }
       >
         {renderDetailContent()}
-      </InfoAccordion>
+      </InfoSheet>
     </>
   );
 };
