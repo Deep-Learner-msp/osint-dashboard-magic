@@ -151,6 +151,8 @@ export interface ShodanServiceData {
   ssh?: ShodanSSHData;
   ssl?: ShodanSSLData;
   info?: string;
+  // Adding the missing version property
+  version?: string;
 }
 
 export interface ShodanData {
