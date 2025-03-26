@@ -11,10 +11,11 @@ import DataLeaksPanel from "./DataLeaksPanel";
 import FileSearchPanel from "./FileSearchPanel";
 import ContactInformationPanel from "./ContactInformationPanel";
 import ShodanPanel from "./ShodanPanel";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import ErrorBoundary from "./ui/error-boundary";
 import { useToast } from "@/hooks/use-toast";
 import { formatDate } from "@/utils/formatters";
-import LoadingSpinner from "./ui/LoadingSpinner";
+import LoadingSpinner from "./ui/loading-spinner";
 
 interface DashboardProps {
   data: OsintData;
@@ -41,31 +42,29 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
   
   if (isLoading) {
     return (
-      <div className="container flex items-center justify-center min-h-screen">
+      <div className="container mx-auto px-4 py-8 flex items-center justify-center min-h-screen">
         <div className="text-center">
           <LoadingSpinner size="lg" className="mx-auto mb-4" />
           <h2 className="text-xl font-semibold mb-2">Loading OSINT Data</h2>
-          <p className="text-muted">Gathering intelligence information...</p>
+          <p className="text-muted-foreground">Gathering intelligence information...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="container">
+    <div className="container mx-auto px-4 py-8">
       <Header organizationName="SC Lowy" />
       
-      <div className="alert alert-warning mb-6">
-        <AlertTriangle className="h-4 w-4 text-osint-yellow mr-2" />
-        <div>
-          <div className="alert-title">Intelligence Report</div>
-          <div className="alert-description">
-            This dashboard displays sensitive OSINT data collected on {formatDate(scanDate)}. For security assessment purposes only.
-          </div>
-        </div>
-      </div>
+      <Alert className="mb-6 bg-yellow-50 border-yellow-200">
+        <AlertTriangle className="h-4 w-4 text-yellow-600" />
+        <AlertTitle className="text-yellow-800">Intelligence Report</AlertTitle>
+        <AlertDescription className="text-yellow-700">
+          This dashboard displays sensitive OSINT data collected on {formatDate(scanDate)}. For security assessment purposes only.
+        </AlertDescription>
+      </Alert>
       
-      <div className="grid grid-cols-1 lg-grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <ErrorBoundary>
           <div>
             <InfrastructurePanel data={data} />
@@ -85,7 +84,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
         </ErrorBoundary>
       </div>
       
-      <footer className="mt-8 text-center text-sm text-muted animate-fade-in" style={{ animationDelay: "1500ms" }}>
+      <footer className="mt-8 text-center text-sm text-muted-foreground opacity-0 animate-fade-in" style={{ animationDelay: "1500ms" }}>
         <div className="flex items-center justify-center mb-2">
           <Shield className="h-4 w-4 mr-1 text-osint-blue" />
           <span>OSINT Dashboard</span>

@@ -21,7 +21,7 @@ const GlassPanel: React.FC<GlassPanelProps> = ({
   return (
     <div
       className={cn(
-        "bg-white/70 backdrop-blur-md rounded-xl border border-white/20 shadow-sm p-5 animate-fade-in-up",
+        "glass-panel p-5 opacity-0 animate-fade-in-up",
         className
       )}
       style={style}

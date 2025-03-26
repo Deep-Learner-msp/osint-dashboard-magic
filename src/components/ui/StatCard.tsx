@@ -30,7 +30,7 @@ const StatCard: React.FC<StatCardProps> = ({
   return (
     <div
       className={cn(
-        "glass-card animate-scale-in",
+        "glass-card p-4 opacity-0 animate-scale-in",
         className
       )}
       style={style}
@@ -50,7 +50,7 @@ const StatCard: React.FC<StatCardProps> = ({
           )}
         </div>
         {icon && (
-          <div className="p-2 rounded-full bg-blue-50 text-osint-blue">
+          <div className="p-2 rounded-full bg-osint-blue/10 text-osint-blue">
             {icon}
           </div>
         )}
