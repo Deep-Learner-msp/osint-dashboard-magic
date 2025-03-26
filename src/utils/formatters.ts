@@ -1,4 +1,3 @@
-
 /**
  * Format a number as currency
  */
@@ -96,7 +95,7 @@ export const getFileIcon = (url: string): string => {
       return 'file-spreadsheet';
     case 'ppt':
     case 'pptx':
-      return 'file-presentation';
+      return 'presentation';
     default:
       return 'file';
   }
@@ -141,6 +140,51 @@ export const countUniqueDatabases = (leaks: any[]): number => {
  * Get total file count
  */
 export const getTotalFileCount = (fileSearch: Record<string, string[]>): number => {
+  if (!fileSearch) return 0;
+  
   return Object.values(fileSearch).reduce((total, files) => 
     total + (Array.isArray(files) ? files.length : 0), 0);
+};
+
+/**
+ * Format date to a readable string
+ */
+export const formatDate = (date: Date): string => {
+  return new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }).format(date);
+};
+
+/**
+ * Get a human-readable timeframe label
+ */
+export const getTimeframeLabel = (days: number): string => {
+  if (days === 1) return 'Last 24 hours';
+  if (days === 7) return 'Last 7 days';
+  if (days === 30) return 'Last 30 days';
+  if (days === 90) return 'Last 3 months';
+  if (days === 365) return 'Last year';
+  return `Last ${days} days`;
+};
+
+/**
+ * Format a phone number for display
+ */
+export const formatPhoneNumber = (phone: string): string => {
+  if (!phone) return '';
+  
+  // Remove all non-digit characters
+  const cleaned = phone.replace(/\D/g, '');
+  
+  // Format based on length
+  if (cleaned.length === 10) {
+    return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
+  } else if (cleaned.length === 11 && cleaned.startsWith('1')) {
+    return `+1 (${cleaned.slice(1, 4)}) ${cleaned.slice(4, 7)}-${cleaned.slice(7)}`;
+  } else {
+    // If international or other format, just add a plus if needed
+    return phone.startsWith('+') ? phone : `+${phone}`;
+  }
 };
