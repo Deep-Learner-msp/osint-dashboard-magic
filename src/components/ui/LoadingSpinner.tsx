@@ -1,5 +1,6 @@
 
 import React from "react";
+import { cn } from "@/lib/utils";
 
 interface LoadingSpinnerProps {
   size?: "sm" | "md" | "lg";
@@ -14,11 +15,19 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   text,
   center = false,
 }) => {
-  const sizeClass = size === "sm" ? "spinner-sm" : size === "lg" ? "spinner-lg" : "spinner-md";
+  const sizeClasses = {
+    sm: "w-4 h-4 border-2",
+    md: "w-8 h-8 border-2",
+    lg: "w-12 h-12 border-3",
+  };
   
   const spinner = (
     <div
-      className={`spinner ${sizeClass} ${className}`}
+      className={cn(
+        "inline-block rounded-full border-osint-blue border-t-transparent animate-spin",
+        sizeClasses[size],
+        className
+      )}
       role="status"
       aria-label="Loading"
     />
@@ -26,16 +35,16 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
 
   if (text) {
     return (
-      <div className={`flex flex-col items-center gap-3 ${center ? "justify-center min-h-100" : ""}`}>
+      <div className={cn("flex flex-col items-center gap-3", center ? "justify-center min-h-[100px]" : "")}>
         {spinner}
-        <p className="text-sm text-muted">{text}</p>
+        <p className="text-sm text-muted-foreground">{text}</p>
       </div>
     );
   }
 
   if (center) {
     return (
-      <div className="flex justify-center min-h-100 items-center">
+      <div className="flex justify-center min-h-[100px] items-center">
         {spinner}
       </div>
     );

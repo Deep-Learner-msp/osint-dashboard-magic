@@ -25,7 +25,7 @@ const InfoCard: React.FC<InfoCardProps> = ({
   return (
     <div
       className={cn(
-        "glass-card animate-scale-in",
+        "bg-white/80 backdrop-blur-sm rounded-lg border border-white/20 shadow-sm p-4 animate-scale-in transition-all hover:bg-white/90",
         className
       )}
       style={style}
