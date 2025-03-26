@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import GlassPanel from "./ui/GlassPanel";
-import { File, Download, FileSpreadsheet, FileText, FilePresentation } from "lucide-react";
+import { File, Download, FileSpreadsheet, FileText, Presentation } from "lucide-react";
 import { OsintData } from "@/types/data";
 import { formatFileName, getTotalFileCount } from "@/utils/formatters";
 import { cn } from "@/lib/utils";
@@ -27,7 +27,7 @@ const FileSearchPanel: React.FC<FileSearchPanelProps> = ({ data }) => {
       case "DOC":
         return <FileText className="h-4 w-4" />;
       case "PPt":
-        return <FilePresentation className="h-4 w-4" />;
+        return <Presentation className="h-4 w-4" />;
       default:
         return <File className="h-4 w-4" />;
     }
