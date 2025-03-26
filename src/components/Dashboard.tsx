@@ -10,10 +10,12 @@ import SecurityPanel from "./SecurityPanel";
 import DataLeaksPanel from "./DataLeaksPanel";
 import FileSearchPanel from "./FileSearchPanel";
 import ContactInformationPanel from "./ContactInformationPanel";
+import ShodanPanel from "./ShodanPanel";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import ErrorBoundary from "./ui/error-boundary";
 import { useToast } from "@/hooks/use-toast";
 import { formatDate } from "@/utils/formatters";
+import LoadingSpinner from "./ui/loading-spinner";
 
 interface DashboardProps {
   data: OsintData;
@@ -42,7 +44,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
     return (
       <div className="container mx-auto px-4 py-8 flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <div className="inline-block rounded-full border-4 border-t-transparent border-osint-blue size-16 animate-spin mb-4"></div>
+          <LoadingSpinner size="lg" className="mx-auto mb-4" />
           <h2 className="text-xl font-semibold mb-2">Loading OSINT Data</h2>
           <p className="text-muted-foreground">Gathering intelligence information...</p>
         </div>
@@ -67,6 +69,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
           <div>
             <InfrastructurePanel data={data} />
             <OverviewPanel data={data} />
+            <ShodanPanel data={data.shodanData} />
             <TechStackPanel data={data} />
           </div>
         </ErrorBoundary>

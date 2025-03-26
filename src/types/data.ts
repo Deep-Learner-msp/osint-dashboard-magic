@@ -25,6 +25,7 @@ export interface OsintData {
     DOC: string[];
     PPt: string[];
   };
+  shodanData?: import("./shodan").ShodanData;
 }
 
 export interface DataLeak {
