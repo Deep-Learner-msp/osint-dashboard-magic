@@ -140,7 +140,7 @@ export const countUniqueDatabases = (leaks: any[]): number => {
 /**
  * Get total file count
  */
-export const getTotalFileCount = (fileSearch: any): number => {
-  return Object.values(fileSearch).reduce((total: number, files: any[]) => 
+export const getTotalFileCount = (fileSearch: Record<string, string[]>): number => {
+  return Object.values(fileSearch).reduce((total, files) => 
     total + (Array.isArray(files) ? files.length : 0), 0);
 };
