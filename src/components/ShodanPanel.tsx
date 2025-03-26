@@ -4,7 +4,7 @@ import GlassPanel from "./ui/GlassPanel";
 import { Shield, Map, Server, Globe, ExternalLink, Lock } from "lucide-react";
 import { ShodanData } from "@/types/shodan";
 import StatCard from "./ui/StatCard";
-import InfoDrawer from "./ui/InfoDrawer";
+import InfoAccordion from "./ui/InfoAccordion";
 import InfoCard from "./ui/InfoCard";
 import { Badge } from "./ui/badge";
 import { formatDate } from "@/utils/formatters";
@@ -17,7 +17,7 @@ interface ShodanPanelProps {
 }
 
 const ShodanPanel: React.FC<ShodanPanelProps> = ({ data }) => {
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [accordionOpen, setAccordionOpen] = useState(false);
   const [activeDetail, setActiveDetail] = useState<string | null>(null);
   
   if (!data) {
@@ -38,7 +38,7 @@ const ShodanPanel: React.FC<ShodanPanelProps> = ({ data }) => {
   
   const handleCardClick = (detail: string) => {
     setActiveDetail(detail);
-    setDrawerOpen(true);
+    setAccordionOpen(true);
   };
   
   const technologies = data.data
@@ -300,7 +300,7 @@ const ShodanPanel: React.FC<ShodanPanelProps> = ({ data }) => {
 
   return (
     <>
-      <GlassPanel className="mb-6" animationDelay={800}>
+      <GlassPanel className="mb-6" animationDelay={800} expanded={accordionOpen}>
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center">
             <Globe className="h-5 w-5 mr-2 text-osint-blue" />
@@ -399,10 +399,10 @@ const ShodanPanel: React.FC<ShodanPanelProps> = ({ data }) => {
         </div>
       </GlassPanel>
       
-      {/* Detail Drawer */}
-      <InfoDrawer
-        open={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
+      {/* Detail Accordion */}
+      <InfoAccordion
+        open={accordionOpen}
+        onClose={() => setAccordionOpen(false)}
         title={
           activeDetail === "location" 
             ? "Geographic Location" 
@@ -419,7 +419,7 @@ const ShodanPanel: React.FC<ShodanPanelProps> = ({ data }) => {
         }
       >
         {renderDetailContent()}
-      </InfoDrawer>
+      </InfoAccordion>
     </>
   );
 };

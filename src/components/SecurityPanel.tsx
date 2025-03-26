@@ -5,7 +5,7 @@ import { ShieldAlert, Mail, Database, ExternalLink, AlertTriangle } from "lucide
 import { OsintData } from "@/types/data";
 import StatCard from "./ui/StatCard";
 import { countUniqueDatabases, countUniqueEmails } from "@/utils/formatters";
-import InfoDrawer from "./ui/InfoDrawer";
+import InfoAccordion from "./ui/InfoAccordion";
 import { Button } from "./ui/button";
 import { QualysVulnerability, sampleQualysData, severityColors, getSeverityLabel } from "@/utils/qualysParser";
 
@@ -15,7 +15,7 @@ interface SecurityPanelProps {
 
 const SecurityPanel: React.FC<SecurityPanelProps> = ({ data }) => {
   const { dataLeaksCompliance } = data;
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [accordionOpen, setAccordionOpen] = useState(false);
   const [activeVulnerability, setActiveVulnerability] = useState<QualysVulnerability | null>(null);
   
   // Analytics for leaks
@@ -25,108 +25,110 @@ const SecurityPanel: React.FC<SecurityPanelProps> = ({ data }) => {
   
   const openVulnerabilityDetails = (vulnerability: QualysVulnerability) => {
     setActiveVulnerability(vulnerability);
-    setDrawerOpen(true);
+    setAccordionOpen(true);
   };
 
   return (
-    <GlassPanel className="mb-6" animationDelay={600}>
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center">
-          <ShieldAlert className="h-5 w-5 mr-2 text-osint-blue" />
-          <h2 className="text-xl font-semibold">Security Findings</h2>
+    <>
+      <GlassPanel className="mb-6" animationDelay={600} expanded={accordionOpen}>
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center">
+            <ShieldAlert className="h-5 w-5 mr-2 text-osint-blue" />
+            <h2 className="text-xl font-semibold">Security Findings</h2>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            className="text-xs"
+            onClick={() => {
+              setActiveVulnerability(null);
+              setAccordionOpen(true);
+            }}
+          >
+            View Full Report
+          </Button>
         </div>
-        <Button
-          variant="outline"
-          size="sm"
-          className="text-xs"
-          onClick={() => {
-            setActiveVulnerability(null);
-            setDrawerOpen(true);
-          }}
-        >
-          View Full Report
-        </Button>
-      </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-        <StatCard 
-          value={uniqueEmails}
-          label="Compromised Accounts"
-          icon={<Mail className="h-5 w-5" />}
-          animationDelay={700}
-          className="cursor-pointer hover:shadow-md transition-shadow"
-          onClick={() => {
-            // Open data leaks details in drawer
-            setActiveVulnerability(null);
-            setDrawerOpen(true);
-          }}
-        />
-        <StatCard 
-          value={uniqueDatabases}
-          label="Breach Databases"
-          icon={<Database className="h-5 w-5" />}
-          animationDelay={800}
-          className="cursor-pointer hover:shadow-md transition-shadow"
-          onClick={() => {
-            // Open data leaks details in drawer
-            setActiveVulnerability(null);
-            setDrawerOpen(true);
-          }}
-        />
-        <StatCard 
-          value={passwordLeaks}
-          label="Password Leaks"
-          className="bg-red-50 cursor-pointer hover:shadow-md transition-shadow"
-          animationDelay={900}
-          onClick={() => {
-            // Open data leaks details in drawer
-            setActiveVulnerability(null);
-            setDrawerOpen(true);
-          }}
-        />
-      </div>
-
-      <div className="bg-white/70 p-4 rounded-lg">
-        <h3 className="text-base font-medium mb-2">Vulnerability Scan Results</h3>
-        <p className="text-sm text-muted-foreground mb-4">
-          Recent Qualys scan detected {sampleQualysData.length} security vulnerabilities.
-        </p>
         
-        <div className="space-y-3">
-          {sampleQualysData.map((vuln, index) => (
-            <div 
-              key={vuln.qid} 
-              className="flex items-start p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors"
-              onClick={() => openVulnerabilityDetails(vuln)}
-            >
-              <div className={`rounded-full h-6 w-6 flex items-center justify-center ${severityColors[vuln.severity]} mr-3 flex-shrink-0`}>
-                {vuln.severity}
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center justify-between">
-                  <h4 className="text-sm font-medium">{vuln.title}</h4>
-                  <ExternalLink className="h-4 w-4 text-gray-400" />
-                </div>
-                <div className="flex items-center text-xs text-muted-foreground mt-1">
-                  <span className="mr-2">QID: {vuln.qid}</span>
-                  {vuln.cveId && (
-                    <span className="mr-2 text-osint-blue">{vuln.cveId}</span>
-                  )}
-                  {vuln.port && (
-                    <span>Port: {vuln.port}</span>
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <StatCard 
+            value={uniqueEmails}
+            label="Compromised Accounts"
+            icon={<Mail className="h-5 w-5" />}
+            animationDelay={700}
+            className="cursor-pointer hover:shadow-md transition-shadow"
+            onClick={() => {
+              // Open data leaks details in accordion
+              setActiveVulnerability(null);
+              setAccordionOpen(true);
+            }}
+          />
+          <StatCard 
+            value={uniqueDatabases}
+            label="Breach Databases"
+            icon={<Database className="h-5 w-5" />}
+            animationDelay={800}
+            className="cursor-pointer hover:shadow-md transition-shadow"
+            onClick={() => {
+              // Open data leaks details in accordion
+              setActiveVulnerability(null);
+              setAccordionOpen(true);
+            }}
+          />
+          <StatCard 
+            value={passwordLeaks}
+            label="Password Leaks"
+            className="bg-red-50 cursor-pointer hover:shadow-md transition-shadow"
+            animationDelay={900}
+            onClick={() => {
+              // Open data leaks details in accordion
+              setActiveVulnerability(null);
+              setAccordionOpen(true);
+            }}
+          />
         </div>
-      </div>
 
-      {/* Detailed Vulnerability Drawer */}
+        <div className="bg-white/70 p-4 rounded-lg">
+          <h3 className="text-base font-medium mb-2">Vulnerability Scan Results</h3>
+          <p className="text-sm text-muted-foreground mb-4">
+            Recent Qualys scan detected {sampleQualysData.length} security vulnerabilities.
+          </p>
+          
+          <div className="space-y-3">
+            {sampleQualysData.map((vuln, index) => (
+              <div 
+                key={vuln.qid} 
+                className="flex items-start p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors"
+                onClick={() => openVulnerabilityDetails(vuln)}
+              >
+                <div className={`rounded-full h-6 w-6 flex items-center justify-center ${severityColors[vuln.severity]} mr-3 flex-shrink-0`}>
+                  {vuln.severity}
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-sm font-medium">{vuln.title}</h4>
+                    <ExternalLink className="h-4 w-4 text-gray-400" />
+                  </div>
+                  <div className="flex items-center text-xs text-muted-foreground mt-1">
+                    <span className="mr-2">QID: {vuln.qid}</span>
+                    {vuln.cveId && (
+                      <span className="mr-2 text-osint-blue">{vuln.cveId}</span>
+                    )}
+                    {vuln.port && (
+                      <span>Port: {vuln.port}</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </GlassPanel>
+
+      {/* Detailed Vulnerability Accordion */}
       {activeVulnerability ? (
-        <InfoDrawer
-          open={drawerOpen}
-          onClose={() => setDrawerOpen(false)}
+        <InfoAccordion
+          open={accordionOpen}
+          onClose={() => setAccordionOpen(false)}
           title={activeVulnerability.title}
           description={activeVulnerability.cveId ? `${activeVulnerability.cveId} | QID: ${activeVulnerability.qid}` : `QID: ${activeVulnerability.qid}`}
         >
@@ -179,11 +181,11 @@ const SecurityPanel: React.FC<SecurityPanelProps> = ({ data }) => {
               </div>
             )}
           </div>
-        </InfoDrawer>
+        </InfoAccordion>
       ) : (
-        <InfoDrawer
-          open={drawerOpen}
-          onClose={() => setDrawerOpen(false)}
+        <InfoAccordion
+          open={accordionOpen}
+          onClose={() => setAccordionOpen(false)}
           title="Security Analysis Report"
           description="Comprehensive overview of all security findings"
         >
@@ -272,9 +274,9 @@ const SecurityPanel: React.FC<SecurityPanelProps> = ({ data }) => {
               </div>
             </div>
           </div>
-        </InfoDrawer>
+        </InfoAccordion>
       )}
-    </GlassPanel>
+    </>
   );
 };
 
