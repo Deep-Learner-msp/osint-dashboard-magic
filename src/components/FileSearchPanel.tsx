@@ -7,7 +7,7 @@ import { formatFileName, getTotalFileCount } from "@/utils/formatters";
 import { cn } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "./ui/button";
-import InfoDrawer from "./ui/InfoDrawer";
+import InfoAccordion from "./ui/InfoAccordion";
 
 interface FileSearchPanelProps {
   data: OsintData;
@@ -143,15 +143,15 @@ const FileSearchPanel: React.FC<FileSearchPanelProps> = ({ data }) => {
         </div>
       </GlassPanel>
       
-      {/* File Preview Drawer */}
-      <InfoDrawer
+      {/* File Preview Accordion */}
+      <InfoAccordion
         open={previewOpen}
         onClose={() => setPreviewOpen(false)}
         title={selectedFile ? formatFileName(selectedFile) : "File Preview"}
         description={selectedFile || ""}
       >
         {renderFilePreview()}
-      </InfoDrawer>
+      </InfoAccordion>
     </>
   );
 };
