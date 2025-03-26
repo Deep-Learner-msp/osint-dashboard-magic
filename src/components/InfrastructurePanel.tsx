@@ -1,10 +1,12 @@
+
 import React, { useState } from "react";
 import GlassPanel from "./ui/GlassPanel";
 import QualysSeverityBar from "./ui/QualysSeverityBar";
 import { Layers, Server, ShieldAlert, ExternalLink, Info } from "lucide-react";
 import { OsintData } from "@/types/data";
 import StatCard from "./ui/StatCard";
-import InfoAccordion from "./ui/InfoAccordion";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetClose } from "@/components/ui/sheet";
+import { Button } from "./ui/button";
 import { sampleQualysData, severityColors, getSeverityLabel } from "@/utils/qualysParser";
 
 interface InfrastructurePanelProps {
@@ -13,7 +15,7 @@ interface InfrastructurePanelProps {
 
 const InfrastructurePanel: React.FC<InfrastructurePanelProps> = ({ data }) => {
   const { openPorts, qualysScan } = data;
-  const [accordionOpen, setAccordionOpen] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
   const [activeDetail, setActiveDetail] = useState<string | null>(null);
   
   const totalVulnerabilities = 
@@ -24,7 +26,7 @@ const InfrastructurePanel: React.FC<InfrastructurePanelProps> = ({ data }) => {
 
   const handleCardClick = (detail: string) => {
     setActiveDetail(detail);
-    setAccordionOpen(true);
+    setSheetOpen(true);
   };
 
   const renderDetailContent = () => {
@@ -256,27 +258,39 @@ const InfrastructurePanel: React.FC<InfrastructurePanelProps> = ({ data }) => {
         </div>
       </GlassPanel>
       
-      {/* Detail Accordion */}
-      <InfoAccordion
-        open={accordionOpen}
-        onClose={() => setAccordionOpen(false)}
-        title={
-          activeDetail === "ports" 
-            ? "Open Ports Analysis" 
-            : activeDetail === "vulnerabilities"
-              ? "Vulnerability Analysis"
-              : "Critical Vulnerabilities"
-        }
-        description={
-          activeDetail === "ports"
-            ? `${openPorts.length} open ports detected on the target system`
-            : activeDetail === "vulnerabilities"
-              ? `${totalVulnerabilities} vulnerabilities detected across all severity levels`
-              : `${qualysScan.severity_1} critical vulnerabilities requiring immediate attention`
-        }
-      >
-        {renderDetailContent()}
-      </InfoAccordion>
+      {/* Detail Sheet */}
+      <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+        <SheetContent className="w-full md:max-w-4xl sm:max-w-xl p-0 overflow-y-auto">
+          <div className="h-full flex flex-col">
+            <SheetHeader className="px-6 py-4 border-b">
+              <SheetTitle className="text-lg font-semibold">
+                {activeDetail === "ports" 
+                  ? "Open Ports Analysis" 
+                  : activeDetail === "vulnerabilities"
+                    ? "Vulnerability Analysis"
+                    : "Critical Vulnerabilities"}
+              </SheetTitle>
+              <SheetDescription>
+                {activeDetail === "ports"
+                  ? `${openPorts.length} open ports detected on the target system`
+                  : activeDetail === "vulnerabilities"
+                    ? `${totalVulnerabilities} vulnerabilities detected across all severity levels`
+                    : `${qualysScan.severity_1} critical vulnerabilities requiring immediate attention`}
+              </SheetDescription>
+            </SheetHeader>
+            
+            <div className="flex-1 p-6 overflow-y-auto">
+              {renderDetailContent()}
+            </div>
+            
+            <div className="border-t p-4 flex justify-end">
+              <SheetClose asChild>
+                <Button variant="outline">Close</Button>
+              </SheetClose>
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
     </>
   );
 };

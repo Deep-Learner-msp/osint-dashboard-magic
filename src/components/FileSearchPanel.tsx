@@ -7,7 +7,7 @@ import { formatFileName, getTotalFileCount } from "@/utils/formatters";
 import { cn } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "./ui/button";
-import InfoAccordion from "./ui/InfoAccordion";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetClose } from "@/components/ui/sheet";
 
 interface FileSearchPanelProps {
   data: OsintData;
@@ -143,15 +143,41 @@ const FileSearchPanel: React.FC<FileSearchPanelProps> = ({ data }) => {
         </div>
       </GlassPanel>
       
-      {/* File Preview Accordion */}
-      <InfoAccordion
-        open={previewOpen}
-        onClose={() => setPreviewOpen(false)}
-        title={selectedFile ? formatFileName(selectedFile) : "File Preview"}
-        description={selectedFile || ""}
-      >
-        {renderFilePreview()}
-      </InfoAccordion>
+      {/* File Preview Sheet */}
+      <Sheet open={previewOpen} onOpenChange={setPreviewOpen}>
+        <SheetContent className="w-full md:max-w-4xl sm:max-w-xl p-0 overflow-y-auto">
+          <div className="h-full flex flex-col">
+            <SheetHeader className="px-6 py-4 border-b">
+              <SheetTitle className="text-lg font-semibold">
+                {selectedFile ? formatFileName(selectedFile) : "File Preview"}
+              </SheetTitle>
+              {selectedFile && (
+                <SheetDescription className="text-sm truncate max-w-[90%]">
+                  {selectedFile}
+                </SheetDescription>
+              )}
+            </SheetHeader>
+            
+            <div className="flex-1 p-6 overflow-y-auto">
+              {renderFilePreview()}
+            </div>
+            
+            <div className="border-t p-4 flex justify-end">
+              <SheetClose asChild>
+                <Button variant="outline">Close</Button>
+              </SheetClose>
+              {selectedFile && (
+                <Button asChild className="ml-2">
+                  <a href={selectedFile} target="_blank" rel="noopener noreferrer" className="flex items-center">
+                    <Download className="mr-2 h-4 w-4" />
+                    Download
+                  </a>
+                </Button>
+              )}
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
     </>
   );
 };
