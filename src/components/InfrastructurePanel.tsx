@@ -1,11 +1,10 @@
-
 import React, { useState } from "react";
 import GlassPanel from "./ui/GlassPanel";
 import QualysSeverityBar from "./ui/QualysSeverityBar";
 import { Layers, Server, ShieldAlert, ExternalLink, Info } from "lucide-react";
 import { OsintData } from "@/types/data";
 import StatCard from "./ui/StatCard";
-import InfoDrawer from "./ui/InfoDrawer";
+import InfoAccordion from "./ui/InfoAccordion";
 import { sampleQualysData, severityColors, getSeverityLabel } from "@/utils/qualysParser";
 
 interface InfrastructurePanelProps {
@@ -14,7 +13,7 @@ interface InfrastructurePanelProps {
 
 const InfrastructurePanel: React.FC<InfrastructurePanelProps> = ({ data }) => {
   const { openPorts, qualysScan } = data;
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [accordionOpen, setAccordionOpen] = useState(false);
   const [activeDetail, setActiveDetail] = useState<string | null>(null);
   
   const totalVulnerabilities = 
@@ -25,7 +24,7 @@ const InfrastructurePanel: React.FC<InfrastructurePanelProps> = ({ data }) => {
 
   const handleCardClick = (detail: string) => {
     setActiveDetail(detail);
-    setDrawerOpen(true);
+    setAccordionOpen(true);
   };
 
   const renderDetailContent = () => {
@@ -257,10 +256,10 @@ const InfrastructurePanel: React.FC<InfrastructurePanelProps> = ({ data }) => {
         </div>
       </GlassPanel>
       
-      {/* Detail Drawer */}
-      <InfoDrawer
-        open={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
+      {/* Detail Accordion */}
+      <InfoAccordion
+        open={accordionOpen}
+        onClose={() => setAccordionOpen(false)}
         title={
           activeDetail === "ports" 
             ? "Open Ports Analysis" 
@@ -277,7 +276,7 @@ const InfrastructurePanel: React.FC<InfrastructurePanelProps> = ({ data }) => {
         }
       >
         {renderDetailContent()}
-      </InfoDrawer>
+      </InfoAccordion>
     </>
   );
 };
