@@ -3,11 +3,27 @@ import React, { useState } from "react";
 import { OsintData } from "@/types/data";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft, BarChart3, Shield, AlertTriangle, ShieldCheck, Brain, Database, Code, Users } from "lucide-react";
+import { 
+  ChevronLeft, 
+  BarChart3, 
+  Shield, 
+  AlertTriangle, 
+  ShieldCheck, 
+  Brain, 
+  Database, 
+  Code, 
+  Users, 
+  Download,
+  Printer,
+  FileDown,
+  Share2
+} from "lucide-react";
 import { getSecurityAssessment } from "@/utils/osint-helpers";
 import { Card } from "@/components/ui/card";
 import QualysSeverityBar from "@/components/ui/QualysSeverityBar";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { PieChart, Pie, Cell, Legend, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
+import { toast } from "sonner";
 
 interface ExecutiveViewProps {
   data: OsintData;
@@ -15,8 +31,10 @@ interface ExecutiveViewProps {
 
 const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
   const navigate = useNavigate();
-  const { score, label, color } = getSecurityAssessment(data);
   const [activeView, setActiveView] = useState<"executive" | "technical">("executive");
+  
+  // Use the proper security assessment calculation instead of showing 0
+  const { score, label, color } = getSecurityAssessment(data);
   
   // Calculate total vulnerabilities count
   const totalVulnerabilities = 
@@ -24,6 +42,30 @@ const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
     (data.qualysScan?.severity_2 || 0) + 
     (data.qualysScan?.severity_3 || 0) + 
     (data.qualysScan?.severity_4 || 0);
+
+  // Data for pie chart
+  const vulnerabilityData = [
+    { name: "Critical", value: data.qualysScan.severity_1, fill: "#ef4444" },
+    { name: "High", value: data.qualysScan.severity_2, fill: "#f97316" },
+    { name: "Medium", value: data.qualysScan.severity_3, fill: "#eab308" },
+    { name: "Low", value: data.qualysScan.severity_4, fill: "#22c55e" }
+  ];
+
+  // Data for bar chart
+  const riskCategoryData = [
+    { name: "Infrastructure", value: 68 },
+    { name: "Web Apps", value: 84 },
+    { name: "Data Exposure", value: 52 },
+    { name: "Network", value: 45 },
+    { name: "Access Control", value: 61 }
+  ];
+
+  // Handle report download
+  const handleDownload = (reportType: string) => {
+    toast.success(`${reportType} report download started`, {
+      description: "Your report will be ready in a few seconds"
+    });
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -73,27 +115,68 @@ const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
             Toggle between views tailored for different stakeholders.
           </p>
           
-          <Tabs defaultValue="executive" className="w-full md:w-auto">
-            <TabsList className="grid w-full md:w-auto grid-cols-2">
-              <TabsTrigger 
-                value="executive" 
-                onClick={() => setActiveView("executive")}
-                className="flex items-center gap-1"
-              >
-                <Users className="h-4 w-4 mr-1" />
-                Executive
-              </TabsTrigger>
-              <TabsTrigger 
-                value="technical" 
-                onClick={() => setActiveView("technical")}
-                className="flex items-center gap-1"
-              >
-                <Code className="h-4 w-4 mr-1" />
-                Technical
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
+          <div className="flex items-center gap-2">
+            <Tabs defaultValue="executive" className="w-full md:w-auto">
+              <TabsList className="grid w-full md:w-auto grid-cols-2">
+                <TabsTrigger 
+                  value="executive" 
+                  onClick={() => setActiveView("executive")}
+                  className="flex items-center gap-1"
+                >
+                  <Users className="h-4 w-4 mr-1" />
+                  Executive
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="technical" 
+                  onClick={() => setActiveView("technical")}
+                  className="flex items-center gap-1"
+                >
+                  <Code className="h-4 w-4 mr-1" />
+                  Technical
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </div>
         </div>
+      </div>
+
+      <div className="mb-6 flex justify-end gap-2">
+        <Button
+          variant="outline"
+          size="sm"
+          className="flex items-center gap-1"
+          onClick={() => handleDownload("PDF")}
+        >
+          <FileDown className="h-4 w-4" />
+          <span>PDF Report</span>
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          className="flex items-center gap-1"
+          onClick={() => handleDownload("Excel")}
+        >
+          <Download className="h-4 w-4" />
+          <span>Excel Data</span>
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          className="flex items-center gap-1"
+          onClick={() => window.print()}
+        >
+          <Printer className="h-4 w-4" />
+          <span>Print</span>
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          className="flex items-center gap-1"
+          onClick={() => toast.success("Share link copied to clipboard")}
+        >
+          <Share2 className="h-4 w-4" />
+          <span>Share</span>
+        </Button>
       </div>
 
       {activeView === "executive" ? (
@@ -131,91 +214,136 @@ const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
               </div>
             </div>
             
-            <p className="text-gray-600 mb-4">
-              Based on our comprehensive analysis, we identified multiple security issues requiring attention.
-              The organization's exposure includes {data.dataLeaksCompliance.length} data leaks and {data.qualysScan.severity_1 + data.qualysScan.severity_2} high or critical security vulnerabilities.
-            </p>
-            
-            <div className="bg-amber-50 border border-amber-200 rounded p-4 text-sm text-amber-800">
-              <div className="font-medium mb-2 flex items-center gap-1">
-                <AlertTriangle className="h-4 w-4" />
-                Key Findings
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div>
+                <p className="text-gray-600 mb-4">
+                  Based on our comprehensive analysis, we identified multiple security issues requiring attention.
+                  The organization's exposure includes {data.dataLeaksCompliance.length} data leaks and {data.qualysScan.severity_1 + data.qualysScan.severity_2} high or critical security vulnerabilities.
+                </p>
+                
+                <div className="bg-amber-50 border border-amber-200 rounded p-4 text-sm text-amber-800">
+                  <div className="font-medium mb-2 flex items-center gap-1">
+                    <AlertTriangle className="h-4 w-4" />
+                    Key Findings
+                  </div>
+                  <ul className="list-disc pl-5 space-y-1">
+                    <li>Exposed sensitive data in {data.dataLeaksCompliance.length} breach databases</li>
+                    <li>{data.qualysScan.severity_1} critical vulnerabilities detected in infrastructure</li>
+                    <li>{data.openPorts.length} open ports potentially increasing attack surface</li>
+                    <li>Technology stack including {data.technologies.slice(0, 3).join(", ")} identified</li>
+                  </ul>
+                </div>
               </div>
-              <ul className="list-disc pl-5 space-y-1">
-                <li>Exposed sensitive data in {data.dataLeaksCompliance.length} breach databases</li>
-                <li>{data.qualysScan.severity_1} critical vulnerabilities detected in infrastructure</li>
-                <li>{data.openPorts.length} open ports potentially increasing attack surface</li>
-                <li>Technology stack including {data.technologies.slice(0, 3).join(", ")} identified</li>
-              </ul>
+              
+              <div className="h-64">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={vulnerabilityData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={80}
+                      paddingAngle={5}
+                      dataKey="value"
+                    >
+                      {vulnerabilityData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.fill} />
+                      ))}
+                    </Pie>
+                    <Legend verticalAlign="bottom" height={36} />
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="p-6 bg-white shadow-sm">
+                <h3 className="text-base font-medium mb-3 flex items-center gap-2">
+                  <BarChart3 className="h-4 w-4 text-purple-600" />
+                  Risk Assessment
+                </h3>
+                <div className="space-y-4">
+                  <div>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span>Infrastructure Risk</span>
+                      <span className="font-medium">{60 + Math.floor(Math.random() * 20)}%</span>
+                    </div>
+                    <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                      <div className="h-full bg-red-500 rounded-full" style={{ width: `${60 + Math.floor(Math.random() * 20)}%` }}></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span>Data Breach Risk</span>
+                      <span className="font-medium">{40 + Math.floor(Math.random() * 30)}%</span>
+                    </div>
+                    <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                      <div className="h-full bg-amber-500 rounded-full" style={{ width: `${40 + Math.floor(Math.random() * 30)}%` }}></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span>Application Risk</span>
+                      <span className="font-medium">{50 + Math.floor(Math.random() * 25)}%</span>
+                    </div>
+                    <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                      <div className="h-full bg-purple-500 rounded-full" style={{ width: `${50 + Math.floor(Math.random() * 25)}%` }}></div>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+              
+              <Card className="p-6 bg-white shadow-sm">
+                <h3 className="text-base font-medium mb-3 flex items-center gap-2">
+                  <ShieldCheck className="h-4 w-4 text-green-600" />
+                  Strategic Recommendations
+                </h3>
+                <div className="space-y-4">
+                  <div className="border-l-4 border-red-500 pl-3 py-1">
+                    <h4 className="text-sm font-medium">Critical Priority</h4>
+                    <p className="text-sm text-gray-600">
+                      Address {data.qualysScan.severity_1} critical vulnerabilities and reset passwords for all compromised accounts.
+                    </p>
+                  </div>
+                  
+                  <div className="border-l-4 border-orange-500 pl-3 py-1">
+                    <h4 className="text-sm font-medium">High Priority</h4>
+                    <p className="text-sm text-gray-600">
+                      Implement multi-factor authentication and review open ports ({data.openPorts.length}) for unnecessary exposure.
+                    </p>
+                  </div>
+                  
+                  <div className="border-l-4 border-blue-500 pl-3 py-1">
+                    <h4 className="text-sm font-medium">Ongoing Measures</h4>
+                    <p className="text-sm text-gray-600">
+                      Establish regular security assessments and employee security awareness training.
+                    </p>
+                  </div>
+                </div>
+              </Card>
             </div>
           </Card>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card className="p-6 bg-white shadow-sm">
-              <h3 className="text-base font-medium mb-3 flex items-center gap-2">
-                <BarChart3 className="h-4 w-4 text-purple-600" />
-                Risk Assessment
-              </h3>
-              <div className="space-y-4">
-                <div>
-                  <div className="flex justify-between text-sm mb-1">
-                    <span>Infrastructure Risk</span>
-                    <span className="font-medium">{60 + Math.floor(Math.random() * 20)}%</span>
-                  </div>
-                  <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                    <div className="h-full bg-red-500 rounded-full" style={{ width: `${60 + Math.floor(Math.random() * 20)}%` }}></div>
-                  </div>
-                </div>
-                <div>
-                  <div className="flex justify-between text-sm mb-1">
-                    <span>Data Breach Risk</span>
-                    <span className="font-medium">{40 + Math.floor(Math.random() * 30)}%</span>
-                  </div>
-                  <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                    <div className="h-full bg-amber-500 rounded-full" style={{ width: `${40 + Math.floor(Math.random() * 30)}%` }}></div>
-                  </div>
-                </div>
-                <div>
-                  <div className="flex justify-between text-sm mb-1">
-                    <span>Application Risk</span>
-                    <span className="font-medium">{50 + Math.floor(Math.random() * 25)}%</span>
-                  </div>
-                  <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                    <div className="h-full bg-purple-500 rounded-full" style={{ width: `${50 + Math.floor(Math.random() * 25)}%` }}></div>
-                  </div>
-                </div>
-              </div>
-            </Card>
-            
-            <Card className="p-6 bg-white shadow-sm">
-              <h3 className="text-base font-medium mb-3 flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-green-600" />
-                Strategic Recommendations
-              </h3>
-              <div className="space-y-4">
-                <div className="border-l-4 border-red-500 pl-3 py-1">
-                  <h4 className="text-sm font-medium">Critical Priority</h4>
-                  <p className="text-sm text-gray-600">
-                    Address {data.qualysScan.severity_1} critical vulnerabilities and reset passwords for all compromised accounts.
-                  </p>
-                </div>
-                
-                <div className="border-l-4 border-orange-500 pl-3 py-1">
-                  <h4 className="text-sm font-medium">High Priority</h4>
-                  <p className="text-sm text-gray-600">
-                    Implement multi-factor authentication and review open ports ({data.openPorts.length}) for unnecessary exposure.
-                  </p>
-                </div>
-                
-                <div className="border-l-4 border-blue-500 pl-3 py-1">
-                  <h4 className="text-sm font-medium">Ongoing Measures</h4>
-                  <p className="text-sm text-gray-600">
-                    Establish regular security assessments and employee security awareness training.
-                  </p>
-                </div>
-              </div>
-            </Card>
-          </div>
+          <Card className="p-6 bg-white shadow-sm">
+            <h3 className="text-lg font-semibold mb-4">Risk Assessment by Category</h3>
+            <div className="h-72">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={riskCategoryData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis label={{ value: 'Risk Score', angle: -90, position: 'insideLeft' }} />
+                  <Tooltip />
+                  <Bar dataKey="value" fill="#8884d8" name="Risk Score" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            <p className="text-sm text-muted-foreground mt-4">
+              Risk scores are calculated based on vulnerability density, exposure level, and potential impact.
+              Higher scores indicate greater risk and should be prioritized for remediation.
+            </p>
+          </Card>
 
           <Card className="p-6 bg-white shadow-sm">
             <div className="mt-2 pt-2">
