@@ -1,10 +1,9 @@
 
 import React from "react";
 import { OsintData } from "@/types/data";
-import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft, Database } from "lucide-react";
+import { ChevronLeft, Database, Brain, BarChart3 } from "lucide-react";
 import InfrastructurePanel from "@/components/InfrastructurePanel";
 import TechStackPanel from "@/components/TechStackPanel";
 import DataLeaksPanel from "@/components/DataLeaksPanel";
@@ -31,23 +30,25 @@ const ExtractedData: React.FC<ExtractedDataProps> = ({ data }) => {
             className="text-gray-600"
           >
             <ChevronLeft className="h-4 w-4 mr-1" />
-            Back to Dashboard
+            Back to Home
           </Button>
         </div>
         <div className="flex gap-2">
           <Button 
             variant="outline" 
             onClick={() => navigate("/intelligent-mapping")}
-            className="text-purple-700 border-purple-300"
+            className="flex items-center gap-1"
           >
-            Intelligent Mapping
+            <Brain className="h-4 w-4" />
+            <span className="hidden sm:inline">Intelligent</span> Mapping
           </Button>
           <Button 
             variant="outline" 
             onClick={() => navigate("/executive-view")}
-            className="text-green-700 border-green-300"
+            className="flex items-center gap-1"
           >
-            Executive View
+            <BarChart3 className="h-4 w-4" />
+            <span className="hidden sm:inline">Intelligence</span> Report
           </Button>
         </div>
       </div>
@@ -56,7 +57,7 @@ const ExtractedData: React.FC<ExtractedDataProps> = ({ data }) => {
         <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
           <Database className="h-5 w-5 text-blue-600" />
         </div>
-        <h1 className="text-2xl font-bold">Extracted Data</h1>
+        <h1 className="text-2xl font-bold">Processed Data</h1>
       </div>
 
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
@@ -85,7 +86,7 @@ const ExtractedData: React.FC<ExtractedDataProps> = ({ data }) => {
       </div>
       
       <footer className="mt-8 text-center text-sm text-muted-foreground">
-        <p>Extracted data from multiple intelligence sources. For security assessment purposes only.</p>
+        <p>Processed data from multiple intelligence sources. For security assessment purposes only.</p>
       </footer>
     </div>
   );
