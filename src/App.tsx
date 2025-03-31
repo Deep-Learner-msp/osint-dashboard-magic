@@ -10,7 +10,6 @@ import Landing from "./pages/Landing";
 import ExtractedData from "./pages/ExtractedData";
 import IntelligentMapping from "./pages/IntelligentMapping";
 import ExecutiveView from "./pages/ExecutiveView";
-import { OsintData } from "./types/data";
 
 // Create a client
 const queryClient = new QueryClient({
