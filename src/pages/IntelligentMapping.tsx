@@ -29,6 +29,7 @@ import ThreatIntelligencePanel from "@/components/ThreatIntelligencePanel";
 import AttackVectorPanel from "@/components/AttackVectorPanel";
 import IpEnumerationPanel from "@/components/IpEnumerationPanel";
 import SocialIntelPanel from "@/components/SocialIntelPanel";
+import ReportGenerator from "@/components/ReportGenerator";
 import { PieChart, Pie, Cell, Legend, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, LineChart, Line } from "recharts";
 
 interface IntelligentMappingProps {
@@ -372,14 +373,17 @@ const IntelligentMapping: React.FC<IntelligentMappingProps> = ({ data }) => {
               View the complete report for executive or technical stakeholders.
             </p>
           </div>
-          <Button 
-            variant="default" 
-            className="bg-purple-600 hover:bg-purple-700"
-            onClick={() => navigate("/executive-view")}
-          >
-            <FileText className="h-4 w-4 mr-2" />
-            View Intelligence Report
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <Button 
+              variant="outline" 
+              onClick={() => navigate("/executive-view")}
+            >
+              <FileText className="h-4 w-4 mr-2" />
+              View Intelligence Report
+            </Button>
+            
+            <ReportGenerator data={data} companyName="SC Lowy" />
+          </div>
         </div>
       </Card>
       
