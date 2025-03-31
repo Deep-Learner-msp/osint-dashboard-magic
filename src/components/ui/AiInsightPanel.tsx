@@ -6,7 +6,6 @@ import { hasCriticalIssues, getSecurityAssessment } from "@/utils/osint-helpers"
 import { Button } from "./button";
 import { Progress } from "./progress";
 import { Separator } from "./separator";
-import { useRouter } from "react-router-dom";
 
 interface AiInsightPanelProps {
   data: OsintData;
