@@ -13,6 +13,8 @@ import ContactInformationPanel from "./ContactInformationPanel";
 import ShodanPanel from "./ShodanPanel";
 import AiInsightPanel from "./ui/AiInsightPanel";
 import IntelligenceReportSheet from "./ui/IntelligenceReportSheet";
+import ThreatIntelligencePanel from "./ThreatIntelligencePanel";
+import SocialIntelPanel from "./SocialIntelPanel";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import ErrorBoundary from "./ui/error-boundary";
 import { useToast } from "@/hooks/use-toast";
@@ -109,6 +111,20 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
         {/* Security Panel - takes up 1/3 of the space */}
         <ErrorBoundary>
           <SecurityPanel data={data} />
+        </ErrorBoundary>
+      </div>
+      
+      {/* New Threat Intelligence Panel */}
+      <div className="mb-6">
+        <ErrorBoundary>
+          <ThreatIntelligencePanel data={data} />
+        </ErrorBoundary>
+      </div>
+      
+      {/* Social Intelligence Panel */}
+      <div className="mb-6">
+        <ErrorBoundary>
+          <SocialIntelPanel data={data} />
         </ErrorBoundary>
       </div>
       
