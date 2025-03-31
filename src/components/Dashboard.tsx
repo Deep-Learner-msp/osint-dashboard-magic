@@ -12,6 +12,7 @@ import FileSearchPanel from "./FileSearchPanel";
 import ContactInformationPanel from "./ContactInformationPanel";
 import ShodanPanel from "./ShodanPanel";
 import AiInsightPanel from "./ui/AiInsightPanel";
+import IntelligenceReportSheet from "./ui/IntelligenceReportSheet";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import ErrorBoundary from "./ui/error-boundary";
 import { useToast } from "@/hooks/use-toast";
@@ -27,6 +28,7 @@ interface DashboardProps {
 const Dashboard: React.FC<DashboardProps> = ({ data }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [dataCompletenessScore, setDataCompletenessScore] = useState(0);
+  const [showIntelligenceReport, setShowIntelligenceReport] = useState(false);
   const { toast } = useToast();
   const scanDate = new Date();
   
@@ -45,7 +47,20 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
       });
     }, 800);
     
-    return () => clearTimeout(timer);
+    // Handle URL fragment for intelligence report
+    const handleHashChange = () => {
+      if (window.location.hash === "#intelligence-report") {
+        setShowIntelligenceReport(true);
+      }
+    };
+    
+    window.addEventListener('hashchange', handleHashChange);
+    handleHashChange(); // Check on initial load
+    
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('hashchange', handleHashChange);
+    };
   }, [toast, data]);
   
   if (isLoading) {
@@ -123,6 +138,16 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
         </div>
         <p>Intelligence data gathered from {12 + Math.floor(Math.random() * 8)} sources on {formatDate(scanDate)}. For security assessment purposes only.</p>
       </footer>
+      
+      {/* Intelligence Report Sheet */}
+      <IntelligenceReportSheet 
+        open={showIntelligenceReport} 
+        onClose={() => {
+          setShowIntelligenceReport(false);
+          window.location.hash = "";
+        }} 
+        data={data}
+      />
     </div>
   );
 };

@@ -6,6 +6,7 @@ import { hasCriticalIssues, getSecurityAssessment } from "@/utils/osint-helpers"
 import { Button } from "./button";
 import { Progress } from "./progress";
 import { Separator } from "./separator";
+import { useRouter } from "react-router-dom";
 
 interface AiInsightPanelProps {
   data: OsintData;
@@ -21,6 +22,13 @@ const AiInsightPanel: React.FC<AiInsightPanelProps> = ({ data, className }) => {
   
   // Get top recommendations based on data
   const recommendations = generateRecommendations(data);
+
+  const getProgressColor = (score: number): string => {
+    if (score > 75) return 'var(--green-9)';
+    if (score > 60) return 'var(--yellow-9)';
+    if (score > 40) return 'var(--orange-9)';
+    return 'var(--red-9)';
+  };
 
   return (
     <div className={`rounded-lg border bg-card p-6 shadow-sm ${className}`}>
@@ -38,10 +46,7 @@ const AiInsightPanel: React.FC<AiInsightPanelProps> = ({ data, className }) => {
           </div>
           <Progress value={score} className="h-2" 
             style={{ 
-              '--progress-background': score > 75 ? 'var(--green-9)' : 
-                                      score > 60 ? 'var(--yellow-9)' : 
-                                      score > 40 ? 'var(--orange-9)' : 
-                                      'var(--red-9)'
+              '--progress-background': getProgressColor(score)
             } as React.CSSProperties} 
           />
           <p className="text-sm text-muted-foreground">
@@ -93,7 +98,12 @@ const AiInsightPanel: React.FC<AiInsightPanelProps> = ({ data, className }) => {
         <Separator />
         
         <div className="flex justify-end">
-          <Button variant="outline" size="sm" className="text-xs">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="text-xs"
+            onClick={() => window.location.hash = "intelligence-report"}
+          >
             View Full Intelligence Report
           </Button>
         </div>

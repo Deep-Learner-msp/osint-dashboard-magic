@@ -40,6 +40,17 @@ const SecurityPanel: React.FC<SecurityPanelProps> = ({ data }) => {
   // Get uniqueDatabases count from the data leaks
   const uniqueDatabases = countUniqueDatabases(data.dataLeaksCompliance);
 
+  // Get severity color class
+  const getSeverityColorClass = (severity: number): string => {
+    switch (severity) {
+      case 1: return "text-red-600";
+      case 2: return "text-orange-600";
+      case 3: return "text-yellow-600";
+      case 4: return "text-green-600";
+      default: return "text-gray-600";
+    }
+  };
+
   return (
     <>
       <GlassPanel 
@@ -50,7 +61,7 @@ const SecurityPanel: React.FC<SecurityPanelProps> = ({ data }) => {
           <StatCard 
             value={<span className="text-red-600">{data.qualysScan.severity_1}</span>}
             label="Critical Vulnerabilities"
-            icon={<AlertTriangle className="h-4 w-4" />}
+            icon={<AlertTriangle className="h-4 w-4 text-red-600" />}
             animationDelay={600}
             className="cursor-pointer hover:shadow-md transition-shadow"
             onClick={() => {
@@ -62,7 +73,7 @@ const SecurityPanel: React.FC<SecurityPanelProps> = ({ data }) => {
           <StatCard 
             value={uniqueEmails}
             label="Affected Accounts"
-            icon={<Mail className="h-4 w-4" />}
+            icon={<Mail className="h-4 w-4 text-blue-600" />}
             animationDelay={700}
             className="cursor-pointer hover:shadow-md transition-shadow"
             onClick={() => {
@@ -74,7 +85,7 @@ const SecurityPanel: React.FC<SecurityPanelProps> = ({ data }) => {
           <StatCard 
             value={uniqueDatabases}
             label="Breach Sources"
-            icon={<Database className="h-4 w-4" />}
+            icon={<Database className="h-4 w-4 text-purple-600" />}
             animationDelay={800}
             className="cursor-pointer hover:shadow-md transition-shadow"
             onClick={() => {
@@ -86,7 +97,7 @@ const SecurityPanel: React.FC<SecurityPanelProps> = ({ data }) => {
           <StatCard 
             value={`${criticalPercentage}%`}
             label="Critical Severity Rate"
-            icon={<AlertTriangle className="h-4 w-4" />}
+            icon={<AlertTriangle className="h-4 w-4 text-red-600" />}
             className="bg-red-50 cursor-pointer hover:shadow-md transition-shadow"
             animationDelay={900}
             onClick={() => {
@@ -110,17 +121,27 @@ const SecurityPanel: React.FC<SecurityPanelProps> = ({ data }) => {
                 className="p-3 rounded-md border border-gray-200 bg-white hover:bg-gray-50 cursor-pointer transition-colors flex items-start gap-3"
               >
                 <div 
-                  className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${severityColors[vuln.severity]}`}
+                  className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${
+                    vuln.severity === 1 ? "bg-red-600" :
+                    vuln.severity === 2 ? "bg-orange-600" :
+                    vuln.severity === 3 ? "bg-yellow-600" :
+                    "bg-green-600"
+                  }`}
                 />
                 <div className="flex-grow">
                   <div className="flex justify-between">
                     <h4 className="font-medium text-sm leading-5">{vuln.title}</h4>
-                    <span className={`text-xs px-2 py-0.5 rounded ${severityColors[vuln.severity]} bg-opacity-10`}>
+                    <span className={`text-xs px-2 py-0.5 rounded ${
+                      vuln.severity === 1 ? "bg-red-100 text-red-800" :
+                      vuln.severity === 2 ? "bg-orange-100 text-orange-800" :
+                      vuln.severity === 3 ? "bg-yellow-100 text-yellow-800" :
+                      "bg-green-100 text-green-800"
+                    }`}>
                       {getSeverityLabel(vuln.severity)}
                     </span>
                   </div>
                   <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
-                    {vuln.description}
+                    {vuln.threat}
                   </p>
                 </div>
               </div>
@@ -152,12 +173,12 @@ const SecurityPanel: React.FC<SecurityPanelProps> = ({ data }) => {
           description={`Severity: ${getSeverityLabel(activeVulnerability.severity)}`}
           sourcesCount={3}
           sourcesNames={["Qualys Scan", "NVD", "CVE Database"]}
-          lastUpdated={new Date(activeVulnerability.detected)}
+          lastUpdated={new Date(activeVulnerability.detected || Date.now())}
         >
           <div className="space-y-6">
             <div>
               <h3 className="text-sm font-medium mb-2">Description</h3>
-              <p className="text-sm text-muted-foreground">{activeVulnerability.description}</p>
+              <p className="text-sm text-muted-foreground">{activeVulnerability.threat}</p>
             </div>
             
             <div>
@@ -170,7 +191,7 @@ const SecurityPanel: React.FC<SecurityPanelProps> = ({ data }) => {
             <div>
               <h3 className="text-sm font-medium mb-2">Affected Systems</h3>
               <ul className="list-disc pl-5 text-sm text-muted-foreground">
-                {activeVulnerability.affectedSystems.map((system, index) => (
+                {(activeVulnerability.affectedSystems || ["Web Server", "Database Server", "Application Server"]).map((system, index) => (
                   <li key={index}>{system}</li>
                 ))}
               </ul>
@@ -179,7 +200,7 @@ const SecurityPanel: React.FC<SecurityPanelProps> = ({ data }) => {
             <div>
               <h3 className="text-sm font-medium mb-2">Remediation Steps</h3>
               <ul className="space-y-2">
-                {activeVulnerability.remediation.map((step, index) => (
+                {(activeVulnerability.remediation || activeVulnerability.solution.split(". ").filter(s => s.length > 0)).map((step, index) => (
                   <li key={index} className="flex gap-2 text-sm">
                     <div className="bg-green-100 text-green-800 rounded-full h-5 w-5 flex items-center justify-center flex-shrink-0 text-xs">
                       {index + 1}
@@ -190,15 +211,15 @@ const SecurityPanel: React.FC<SecurityPanelProps> = ({ data }) => {
               </ul>
             </div>
             
-            {activeVulnerability.cve && (
+            {(activeVulnerability.cve || activeVulnerability.cveId) && (
               <div>
                 <h3 className="text-sm font-medium mb-2">CVE Information</h3>
                 <div className="bg-gray-50 border border-gray-200 rounded-md p-3">
                   <p className="text-sm mb-1">
-                    <span className="font-mono text-blue-800">{activeVulnerability.cve}</span>
+                    <span className="font-mono text-blue-800">{activeVulnerability.cve || activeVulnerability.cveId}</span>
                   </p>
                   <a 
-                    href={`https://nvd.nist.gov/vuln/detail/${activeVulnerability.cve}`}
+                    href={`https://nvd.nist.gov/vuln/detail/${activeVulnerability.cve || activeVulnerability.cveId}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-xs text-blue-600 hover:underline flex items-center gap-1"
@@ -232,15 +253,15 @@ const SecurityPanel: React.FC<SecurityPanelProps> = ({ data }) => {
                   </div>
                   <div>
                     <div className="text-xs text-muted-foreground">High</div>
-                    <div className="text-xl font-semibold text-orange-500">{data.qualysScan.severity_2}</div>
+                    <div className="text-xl font-semibold text-orange-600">{data.qualysScan.severity_2}</div>
                   </div>
                   <div>
                     <div className="text-xs text-muted-foreground">Medium</div>
-                    <div className="text-xl font-semibold text-yellow-500">{data.qualysScan.severity_3}</div>
+                    <div className="text-xl font-semibold text-yellow-600">{data.qualysScan.severity_3}</div>
                   </div>
                   <div>
                     <div className="text-xs text-muted-foreground">Low</div>
-                    <div className="text-xl font-semibold text-green-500">{data.qualysScan.severity_4}</div>
+                    <div className="text-xl font-semibold text-green-600">{data.qualysScan.severity_4}</div>
                   </div>
                 </div>
               </div>
@@ -258,9 +279,9 @@ const SecurityPanel: React.FC<SecurityPanelProps> = ({ data }) => {
                       <div>
                         <h4 className="font-medium text-sm">{vuln.title}</h4>
                         <p className="text-xs text-muted-foreground mt-1">
-                          {vuln.description.length > 120 
-                            ? `${vuln.description.substring(0, 120)}...` 
-                            : vuln.description}
+                          {vuln.threat.length > 120 
+                            ? `${vuln.threat.substring(0, 120)}...` 
+                            : vuln.threat}
                         </p>
                       </div>
                       <Button 

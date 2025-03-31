@@ -37,8 +37,8 @@ const InfoCard: React.FC<InfoCardProps> = ({
         {icon && <div className="text-osint-blue">{icon}</div>}
         <h3 className="text-base font-semibold">{title}</h3>
       </div>
-      <div>
-        {value !== undefined && <div>{value}</div>}
+      <div className="flex flex-col">
+        {value !== undefined && <div className="font-medium">{value}</div>}
         {children}
       </div>
     </div>
