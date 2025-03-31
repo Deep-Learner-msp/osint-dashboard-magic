@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { Server, Globe, ShieldAlert, Network, HelpCircle, Info } from "lucide-react";
+import { Server, Globe, ShieldAlert, Network, HelpCircle, Info, AlertTriangle } from "lucide-react";
 import { OsintData } from "@/types/data";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -15,10 +15,14 @@ interface IpEnumerationPanelProps {
 const IpEnumerationPanel: React.FC<IpEnumerationPanelProps> = ({ data }) => {
   // Dialog state
   const [explanationOpen, setExplanationOpen] = useState(false);
-  const [explanationContent, setExplanationContent] = useState({
+  const [explanationContent, setExplanationContent] = useState<{
+    title: string;
+    description: string;
+    content: React.ReactElement;
+  }>({
     title: "",
     description: "",
-    content: <></>
+    content: <div />
   });
 
   // Function to open explanation dialog
@@ -26,7 +30,7 @@ const IpEnumerationPanel: React.FC<IpEnumerationPanelProps> = ({ data }) => {
     setExplanationContent({
       title,
       description,
-      content
+      content: <>{content}</>
     });
     setExplanationOpen(true);
   };

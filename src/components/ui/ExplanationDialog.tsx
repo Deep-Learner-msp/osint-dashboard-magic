@@ -7,7 +7,7 @@ interface ExplanationDialogProps {
   onClose: () => void;
   title: string;
   description?: string;
-  children: React.ReactNode;
+  children: React.ReactNode; // This is already correct
 }
 
 const ExplanationDialog: React.FC<ExplanationDialogProps> = ({

@@ -15,10 +15,14 @@ interface AttackVectorPanelProps {
 const AttackVectorPanel: React.FC<AttackVectorPanelProps> = ({ data }) => {
   // Dialog state
   const [explanationOpen, setExplanationOpen] = useState(false);
-  const [explanationContent, setExplanationContent] = useState({
+  const [explanationContent, setExplanationContent] = useState<{
+    title: string;
+    description: string;
+    content: React.ReactElement;
+  }>({
     title: "",
     description: "",
-    content: <></>
+    content: <div />
   });
 
   // Function to open explanation dialog
@@ -26,7 +30,7 @@ const AttackVectorPanel: React.FC<AttackVectorPanelProps> = ({ data }) => {
     setExplanationContent({
       title,
       description,
-      content
+      content: <>{content}</>
     });
     setExplanationOpen(true);
   };

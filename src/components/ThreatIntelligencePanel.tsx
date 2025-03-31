@@ -18,10 +18,14 @@ interface ThreatIntelligencePanelProps {
 const ThreatIntelligencePanel: React.FC<ThreatIntelligencePanelProps> = ({ data }) => {
   // Dialog state
   const [explanationOpen, setExplanationOpen] = useState(false);
-  const [explanationContent, setExplanationContent] = useState({
+  const [explanationContent, setExplanationContent] = useState<{
+    title: string;
+    description: string;
+    content: React.ReactElement;
+  }>({
     title: "",
     description: "",
-    content: <></>
+    content: <div />
   });
 
   // Function to open explanation dialog
@@ -29,7 +33,7 @@ const ThreatIntelligencePanel: React.FC<ThreatIntelligencePanelProps> = ({ data 
     setExplanationContent({
       title,
       description,
-      content
+      content: <>{content}</>
     });
     setExplanationOpen(true);
   };
