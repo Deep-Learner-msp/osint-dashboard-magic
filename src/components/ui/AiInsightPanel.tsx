@@ -33,6 +33,13 @@ const AiInsightPanel: React.FC<AiInsightPanelProps> = ({ data, className }) => {
     return 'var(--red-9)';
   };
 
+  // Calculate total vulnerabilities count
+  const totalVulnerabilities = 
+    (data.qualysScan?.severity_1 || 0) + 
+    (data.qualysScan?.severity_2 || 0) + 
+    (data.qualysScan?.severity_3 || 0) + 
+    (data.qualysScan?.severity_4 || 0);
+
   return (
     <>
       <div className={`rounded-xl border bg-card p-0 shadow-sm ${className}`}>
@@ -138,7 +145,7 @@ const AiInsightPanel: React.FC<AiInsightPanelProps> = ({ data, className }) => {
                 animationDelay={100}
               >
                 <p className="text-sm mb-2">
-                  Our AI correlates {data.openPorts.length} detected ports with {data.qualysScan.vulnerability_count} vulnerabilities.
+                  Our AI correlates {data.openPorts.length} detected ports with {totalVulnerabilities} vulnerabilities.
                 </p>
                 <div className="text-xs text-muted-foreground">
                   <strong>Key finding:</strong> {data.qualysScan.severity_1} critical vulnerabilities identified on port {data.openPorts[0] || 80}.

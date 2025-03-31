@@ -53,6 +53,13 @@ const IntelligenceReportSheet: React.FC<IntelligenceReportSheetProps> = ({
     !!data.organizationDescription
   ].filter(Boolean).length;
 
+  // Calculate total vulnerabilities count
+  const totalVulnerabilities = 
+    (data.qualysScan?.severity_1 || 0) + 
+    (data.qualysScan?.severity_2 || 0) + 
+    (data.qualysScan?.severity_3 || 0) + 
+    (data.qualysScan?.severity_4 || 0);
+
   return (
     <Sheet open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
       <SheetContent 
@@ -246,7 +253,7 @@ const IntelligenceReportSheet: React.FC<IntelligenceReportSheetProps> = ({
                         Vulnerabilities
                       </h3>
                       <div className="text-xs text-center font-medium py-1 px-2 bg-red-100 rounded mb-2">
-                        {data.qualysScan.vulnerability_count} vulnerabilities found
+                        {totalVulnerabilities} vulnerabilities found
                       </div>
                     </div>
                     
