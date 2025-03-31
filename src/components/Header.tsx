@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Shield, AlertTriangle, Lock } from "lucide-react";
+import { Shield, AlertTriangle, Lock, ExternalLink } from "lucide-react";
 
 interface HeaderProps {
   organizationName: string;
@@ -12,16 +12,22 @@ const Header: React.FC<HeaderProps> = ({ organizationName }) => {
       <div className="flex flex-col md:flex-row md:items-center justify-between">
         <div>
           <div className="inline-flex items-center space-x-2 mb-2">
-            <Shield className="h-6 w-6 text-osint-blue animate-pulse-glow" />
-            <h1 className="text-2xl font-bold tracking-tight">OSINT Dashboard</h1>
+            <div className="flex items-center">
+              <img 
+                src="/lovable-uploads/a40a54f9-328b-43f3-8b66-ace987e135ae.png" 
+                alt="K2K Discovery Logo" 
+                className="h-8 w-auto mr-3"
+              />
+              <h1 className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-k2k-gradient">K2K Discovery</h1>
+            </div>
           </div>
           <div className="flex items-center">
             <h2 className="text-3xl font-bold tracking-tight">{organizationName}</h2>
             <div className="ml-4 flex space-x-2">
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-osint-blue/10 text-osint-blue">
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-k2k-blue/10 text-k2k-blue">
                 Financial Services
               </span>
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-osint-yellow/10 text-osint-yellow">
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-k2k-accent/10 text-k2k-accent">
                 <AlertTriangle className="mr-1 h-3 w-3" />
                 38 Vulnerabilities
               </span>

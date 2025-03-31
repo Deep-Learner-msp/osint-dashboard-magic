@@ -26,6 +26,7 @@ export interface OsintData {
     PPt: string[];
   };
   shodanData?: import("./shodan").ShodanData;
+  biasDistribution?: BiasDistribution;
 }
 
 export interface DataLeak {
@@ -48,4 +49,22 @@ export interface CategoryData {
   category: string;
   data: string;
   insights: string;
+}
+
+export interface BiasDistribution {
+  personnel: {
+    leftLeaning: number;
+    center: number;
+    rightLeaning: number;
+  };
+  media: {
+    leftLeaning: number;
+    center: number;
+    rightLeaning: number;
+  };
+  product: {
+    leftLeaning: number;
+    center: number;
+    rightLeaning: number;
+  };
 }

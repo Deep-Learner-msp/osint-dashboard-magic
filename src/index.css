@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -118,6 +118,10 @@
   ::-webkit-scrollbar-thumb:hover {
     background: rgba(100, 116, 139, 0.5);
   }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-space-grotesk;
+  }
 }
 
 @layer components {
@@ -128,6 +132,19 @@
   .glass-card {
     @apply bg-osint-card backdrop-blur-md rounded-lg border border-white/20 shadow-md transition-all 
     hover:bg-osint-card-hover hover:shadow-lg;
+  }
+
+  .k2k-glass {
+    @apply bg-black/30 backdrop-blur-md rounded-xl border border-white/10 shadow-lg;
+  }
+
+  .k2k-card {
+    @apply bg-black/20 backdrop-blur-sm rounded-lg border border-white/5 shadow-md transition-all 
+    hover:bg-black/30 hover:border-white/10 hover:shadow-lg;
+  }
+
+  .k2k-gradient-text {
+    @apply bg-clip-text text-transparent bg-k2k-gradient;
   }
 
   .stat-value {
@@ -164,4 +181,25 @@
   .font-inter {
     font-family: 'Inter', sans-serif;
   }
+  
+  .font-space-grotesk {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  
+  .bias-meter {
+    @apply relative h-6 rounded-md bg-gradient-to-r from-blue-500 via-gray-500 to-red-500 mb-2 overflow-hidden;
+  }
+  
+  .bias-indicator {
+    @apply h-full border-l-2 border-r-2 border-white border-opacity-50 relative;
+  }
+  
+  .bias-dot {
+    @apply absolute inset-0 flex items-center justify-center;
+  }
+  
+  .bias-dot-inner {
+    @apply bg-white rounded-full h-3 w-3;
+  }
 }
+

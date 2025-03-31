@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { OsintData } from "@/types/data";
 import { Button } from "@/components/ui/button";
@@ -36,21 +35,47 @@ interface ExecutiveViewProps {
   data: OsintData;
 }
 
+const BiasDistributionMeter: React.FC<{ 
+  leftValue: number;
+  centerValue: number;
+  rightValue: number;
+  label?: string;
+}> = ({ leftValue, centerValue, rightValue, label }) => {
+  return (
+    <div>
+      {label && <div className="text-sm font-medium mb-1">{label}</div>}
+      <div className="bias-meter">
+        <div className="absolute inset-0 flex">
+          <div style={{ width: `${leftValue}%` }}></div>
+          <div style={{ width: `${centerValue}%` }} className="bias-indicator">
+            <div className="bias-dot">
+              <div className="bias-dot-inner"></div>
+            </div>
+          </div>
+          <div style={{ width: `${rightValue}%` }}></div>
+        </div>
+      </div>
+      <div className="flex justify-between text-xs text-muted-foreground">
+        <div>Left: {leftValue}%</div>
+        <div>Center: {centerValue}%</div>
+        <div>Right: {rightValue}%</div>
+      </div>
+    </div>
+  );
+};
+
 const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
   const navigate = useNavigate();
   const [activeView, setActiveView] = useState<"executive" | "technical">("executive");
   
-  // Use the proper security assessment calculation instead of showing 0
   const { score, label, color } = getSecurityAssessment(data);
   
-  // Calculate total vulnerabilities count
   const totalVulnerabilities = 
     (data.qualysScan?.severity_1 || 0) + 
     (data.qualysScan?.severity_2 || 0) + 
     (data.qualysScan?.severity_3 || 0) + 
     (data.qualysScan?.severity_4 || 0);
 
-  // Data for pie chart
   const vulnerabilityData = [
     { name: "Critical", value: data.qualysScan.severity_1, fill: "#ef4444" },
     { name: "High", value: data.qualysScan.severity_2, fill: "#f97316" },
@@ -58,7 +83,6 @@ const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
     { name: "Low", value: data.qualysScan.severity_4, fill: "#22c55e" }
   ];
 
-  // Data for bar chart
   const riskCategoryData = [
     { name: "Infrastructure", value: 68 },
     { name: "Web Apps", value: 84 },
@@ -67,14 +91,12 @@ const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
     { name: "Access Control", value: 61 }
   ];
 
-  // Handle report download
   const handleDownload = (reportType: string) => {
     toast.success(`${reportType} report download started`, {
       description: "Your report will be ready in a few seconds"
     });
   };
 
-  // LinkedIn data for SC Lowy's key executives
   const executives = [
     {
       name: "Michel Lowy",
@@ -126,7 +148,6 @@ const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
     }
   ];
 
-  // Recent breach news in the financial sector
   const breachNews = [
     {
       title: "LoanDepot Data Breach",
@@ -158,7 +179,6 @@ const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
     }
   ];
 
-  // Brand intelligence metrics
   const brandMetrics = {
     sentimentScore: 72,
     mediaPresence: {
@@ -175,7 +195,6 @@ const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
     recentMentions: 134
   };
 
-  // Function to get badge color based on severity
   const getSeverityColor = (severity: string) => {
     switch (severity.toLowerCase()) {
       case "critical":
@@ -191,7 +210,6 @@ const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
     }
   };
 
-  // Function to get initials from name
   const getInitials = (name: string) => {
     return name
       .split(" ")
@@ -200,7 +218,6 @@ const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
       .toUpperCase();
   };
 
-  // Generate sample threat intelligence data
   const threatEntities = [
     {
       type: "CVE",
@@ -235,6 +252,24 @@ const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
       relatedTo: ["Network Traffic", "Firewall Logs"]
     }
   ];
+
+  const biasDistribution = data.biasDistribution || {
+    personnel: {
+      leftLeaning: 28,
+      center: 59,
+      rightLeaning: 13,
+    },
+    media: {
+      leftLeaning: 35,
+      center: 42,
+      rightLeaning: 23,
+    },
+    product: {
+      leftLeaning: 19,
+      center: 65,
+      rightLeaning: 16,
+    }
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -271,10 +306,14 @@ const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
       </div>
 
       <div className="flex items-center mb-6">
-        <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center mr-3">
-          <BarChart3 className="h-5 w-5 text-green-600" />
+        <div className="flex items-center">
+          <img 
+            src="/lovable-uploads/a40a54f9-328b-43f3-8b66-ace987e135ae.png" 
+            alt="K2K Discovery Logo" 
+            className="h-8 w-auto mr-3"
+          />
+          <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-k2k-gradient">Intelligence Report</h1>
         </div>
-        <h1 className="text-2xl font-bold">Intelligence Report</h1>
       </div>
 
       <div className="bg-white rounded-lg border shadow-sm p-4 mb-6">
@@ -495,7 +534,6 @@ const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
             </div>
           </Card>
 
-          {/* NEW ADDITION: Threat, Personnel, and Brand Intelligence Card */}
           <Card className="p-6 bg-white shadow-md">
             <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
               <Shield className="h-5 w-5 text-red-600" />
@@ -518,7 +556,6 @@ const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
                 </TabsTrigger>
               </TabsList>
               
-              {/* Threat Intelligence Tab */}
               <TabsContent value="threats" className="space-y-4">
                 <div className="grid gap-4">
                   {threatEntities.map((threat, index) => (
@@ -582,7 +619,6 @@ const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
                 </div>
               </TabsContent>
               
-              {/* Key Personnel Tab */}
               <TabsContent value="personnel">
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-4 mb-4">
@@ -600,16 +636,15 @@ const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
                     </div>
                     
                     <div className="bg-purple-50 p-3 rounded-lg border border-purple-100">
-                      <h3 className="text-sm font-medium mb-1 flex items-center gap-2">
+                      <h3 className="text-sm font-medium mb-2 flex items-center gap-2">
                         <Linkedin className="h-4 w-4 text-purple-600" />
-                        LinkedIn Presence
+                        Perspective Analysis
                       </h3>
-                      <div className="text-2xl font-bold text-purple-700 mb-1">
-                        100%
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        All executives have LinkedIn profiles
-                      </div>
+                      <BiasDistributionMeter 
+                        leftValue={biasDistribution.personnel.leftLeaning}
+                        centerValue={biasDistribution.personnel.center}
+                        rightValue={biasDistribution.personnel.rightLeaning}
+                      />
                     </div>
                   </div>
                 
@@ -652,7 +687,6 @@ const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
                 </div>
               </TabsContent>
               
-              {/* Brand Intelligence Tab */}
               <TabsContent value="brand">
                 <div className="space-y-4">
                   <div className="bg-white border rounded-lg p-4">
@@ -728,35 +762,45 @@ const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
                       <Separator />
                       
                       <div>
-                        <h4 className="text-sm font-medium mb-2">Source Bias Distribution</h4>
-                        <div className="relative h-6 rounded-md bg-gradient-to-r from-blue-500 via-gray-400 to-red-500 mb-1 overflow-hidden">
-                          <div className="absolute inset-0 flex">
-                            <div style={{ width: `${brandMetrics.sourceBias.leftLeaning}%` }}></div>
-                            <div 
-                              style={{ width: `${brandMetrics.sourceBias.center}%` }}
-                              className="h-full border-l-2 border-r-2 border-white border-opacity-50 relative"
-                            >
-                              <div className="absolute inset-0 flex items-center justify-center">
-                                <div className="bg-white rounded-full h-3 w-3"></div>
-                              </div>
-                            </div>
-                            <div style={{ width: `${brandMetrics.sourceBias.rightLeaning}%` }}></div>
+                        <h4 className="text-sm font-medium mb-2">Perspective Analysis</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div>
+                            <h5 className="text-xs font-medium mb-2 text-blue-800">Media Source Bias</h5>
+                            <BiasDistributionMeter 
+                              leftValue={biasDistribution.media.leftLeaning}
+                              centerValue={biasDistribution.media.center}
+                              rightValue={biasDistribution.media.rightLeaning}
+                            />
+                            <p className="text-xs mt-2 text-gray-500">
+                              How the organization is portrayed by media sources with different political leanings.
+                            </p>
                           </div>
-                        </div>
-                        <div className="flex justify-between text-xs text-muted-foreground">
-                          <div>Left: {brandMetrics.sourceBias.leftLeaning}%</div>
-                          <div>Center: {brandMetrics.sourceBias.center}%</div>
-                          <div>Right: {brandMetrics.sourceBias.rightLeaning}%</div>
+                          <div>
+                            <h5 className="text-xs font-medium mb-2 text-green-800">Product Perception</h5>
+                            <BiasDistributionMeter 
+                              leftValue={biasDistribution.product.leftLeaning}
+                              centerValue={biasDistribution.product.center}
+                              rightValue={biasDistribution.product.rightLeaning}
+                            />
+                            <p className="text-xs mt-2 text-gray-500">
+                              How products and services are perceived by audiences with different perspectives.
+                            </p>
+                          </div>
                         </div>
                       </div>
                       
                       <div className="bg-blue-50 p-3 rounded-lg border border-blue-100">
-                        <h4 className="text-sm font-medium mb-2">AI-Generated Summary</h4>
+                        <h4 className="text-sm font-medium mb-2">Perspective Impact Analysis</h4>
                         <p className="text-sm">
-                          SC Lowy maintains a relatively positive media presence with {brandMetrics.mediaPresence.positive}% favorable coverage.
-                          Most reporting comes from center-leaning sources ({brandMetrics.sourceBias.center}%), suggesting balanced coverage.
-                          The high factuality score of {brandMetrics.factualityScore}/100, indicates reporting on the company tends to be accurate 
-                          and well-sourced.
+                          Our analysis indicates that perspectives significantly influence how your organization is portrayed. 
+                          {biasDistribution.media.center > 50 ? 
+                            " Your coverage is predominantly from center-leaning sources, indicating balanced representation." :
+                            biasDistribution.media.leftLeaning > biasDistribution.media.rightLeaning ? 
+                              " Left-leaning sources provide more coverage, which may affect how certain audiences perceive your messaging." :
+                              " Right-leaning sources provide more coverage, which may affect how certain audiences perceive your messaging."
+                          }
+                          
+                          Understanding these biases can help tailor communications for different audience segments.
                         </p>
                       </div>
                     </div>
@@ -960,7 +1004,11 @@ const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
       
       <footer className="mt-8 text-center text-sm text-muted-foreground">
         <div className="flex items-center justify-center mb-2">
-          <Shield className="h-4 w-4 mr-1 text-green-600" />
+          <img 
+            src="/lovable-uploads/a40a54f9-328b-43f3-8b66-ace987e135ae.png" 
+            alt="K2K Discovery Logo" 
+            className="h-4 w-auto mr-2"
+          />
           <span>Intelligence Report</span>
         </div>
         <p>{activeView === "executive" ? "Executive" : "Technical"} intelligence analysis based on data gathered from multiple sources. For security assessment purposes only.</p>
