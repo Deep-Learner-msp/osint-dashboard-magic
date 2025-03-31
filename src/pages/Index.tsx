@@ -1,10 +1,11 @@
-
 import React from "react";
 import Dashboard from "@/components/Dashboard";
 import { OsintData } from "@/types/data";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 // Mock data for the dashboard
-const mockData: OsintData = {
+export const mockData: OsintData = {
   openPorts: [80, 443],
   qualysScan: {
     severity_1: 26,
@@ -135,7 +136,6 @@ const mockData: OsintData = {
     ],
     PPt: []
   },
-  // Add Shodan data
   shodanData: {
     "city": "Amsterdam",
     "region_code": "NH",
@@ -468,7 +468,7 @@ const mockData: OsintData = {
                 "jarm": "00000000000000000000000000000000000000000000000000000000000000",
                 "tlsext": [],
                 "chain": [
-                    "-----BEGIN CERTIFICATE-----\nMIIDojCCAyigAwIBAgISA43ZFXK50RRl++iBZ6djOrO7MAoGCCqGSM49BAMDMDIx\nCzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1MZXQncyBFbmNyeXB0MQswCQYDVQQDEwJF\nNjAeFw0yNTAyMTgxMjE0NTBaFw0yNTA1MTkxMjE0NDlaMBUxEzARBgNVBAMTCnNj\nbG93eS5jb20wdjAQBgcqhkjOPQIBBgUrgQQAIgNiAAR9xHrZpRWkmzD878d6hLkh\nmfZLewbVcUGInTTBYEQ6YkHNWPfkqFy+EWsK+5e9/OPIgQY84YNzjeXGWkrahmp0\nUuNq9D1tuQKDdj6BnsdphEl07hBvzZYiKUXupJ2Q7uOjggIcMIICGDAOBgNVHQ8B\nAf8EBAMCB4AwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAwGA1UdEwEB\n/wQCMAAwHQYDVR0OBBYEFNyVjev2ydmK2b3L8pBG8TGPyPEvMB8GA1UdIwQYMBaA\nFJMnRpgDqVFojpjWxEJI2yO/WJTSMFUGCCsGAQUFBwEBBEkwRzAhBggrBgEFBQcw\nAYYVaHR0cDovL2U2Lm8ubGVuY3Iub3JnMCIGCCsGAQUFBzAChhZodHRwOi8vZTYu\naS5sZW5jci5vcmcvMCUGA1UdEQQeMByCCnNjbG93eS5jb22CDnd3dy5zY2xvd3ku\nY29tMBMGA1UdIAQMMAowCAYGZ4EMAQIBMIIBBAYKKwYBBAHWeQIEAgSB9QSB8gDw\nAHYAouMK5EXvva2bfjjtR2d3U9eCW4SU1yteGyzEuVCkR+cAAAGVGTEQ4gAABAMA\nRzBFAiEA/u240dMg/O9NrrVMR66vWMECXIFpSMZEMxWCO5JvID8CIBeZIDCM3aEA\nTAGNNZB3/J9hhC0IDdZtLF0GOjKd7ef2AHYAzPsPaoVxCWX+lZtTzumyfCLphVwN\nl422qX5UwP5MDbAAAAGVGTEQ7wAABAMARzBFAiBt+MZfkvmCiJgtmNlMfZehBly0\nDRVaRv3eweO0sZxD6gIhANUpbieC5rn3abEiboyI3SfqfE0mnIzXUhz4ZZpAsu8C\nMAoGCCqGSM49BAMDA2gAMGUCMQDS9QC7zvr0TN48ufRaPxkRAswDPkOgEGY+CO0p\nsIG0ZF6tUEDMZvTIEuOppY6iGUkCMEmxQnurRinXIEp0fWqYsiP3B+tzDBdRZQlM\ndLUG+kfljn4hpmtdoyigAeN2qnMLjQ==\n-----END CERTIFICATE-----\n",
+                    "-----BEGIN CERTIFICATE-----\nMIIDojCCAyigAwIBAgISA43ZFXK50RRl++iBZ6djOrO7MAoGCCqGSM49BAMDMDIx\nCzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1MZXQncyBFbmNyeXB0MQswCQYDVQQDEwJF\nNjAeFw0yNTAyMTgxMjE0NTBaFw0yNTA1MTkxMjE0NDlaMBUxEzARBgNVBAMTCnNj\nbG93eS5jb20wdjAQBgcqhkjOPQIBBgUrgQQAIgNiAAR9xHrZpRWkmzD878d6hLkh\nmfZLewbVcUGInTTBYEQ6YkHNWPfkqFy+EWsK+5e9/OPIgQY84YNzjeXGWkrahmp0\nUuNq9D1tuQKDdj6BnsdphEl07hBvzZYiKUXupJ2Q7uOjggIcMIICGDAOBgNVHQ8B\nAf8EBAMCB4AwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAwGA1UdEwEB\n/wQCMAAwHQYDVR0gBAwwCjAIBgZngQwBAgEwJwYDVR0fBCAwHjAcoBqgGIYWaHR0cDovL3gxLmMubGVu\nY3Iub3JnLzANBgkqhkiG9w0BAQsFAAOCAgEAfYt7SiA1sgWGCIpunk46r4AExIRc\nMxkKgUhNlrrv1B21hOaXN/5miE+LOTbrcmU/M9yvC6MVY730GNFoL8IhJ8j8vrOL\npMY22OP6baS1k9YMrtDTlwJHoGby04ThTUeBDksS9RiuHvicZqBedQdIF65pZuhp\neDcGBcLiYasQr/EO5gxxtLyTmgsHSOVSBcFOn9lgv7LECPq9i7mfH3mpxgrRKSxH\npOoZ0KXMcB+hHuvlklHntvcI0mMMQ0mhYj6qtMFStkF1RpCG3IPdIwpVCQqu8GV7\ns8ubknRzs+3C/Bm19RFOoiPpDkwvyNfvmQ14XkyqqKK5oZ8zhD32kFRQkxa8uZSu\nh4aTImFxknu39waBxIRXE4jKxlAmQc4QjFZoq1KmQqQg0J/1JF8RlFvJas1VcjLv\nYlvUB2t6npO6oQjB3l+PNf0DpQH7iUx3Wz5AjQCi6L25FjyE06q6BZ/QlmtYdl/8\nZYao4SRqPEs/6cAiF+Qf5zg2UkaWtDphl1LKMuTNLotvsX99HP69V2faNyegodQ0\nLyTApr/vT01YPE46vNsDLgK+4cL6TrzC/a4WcmF5SRJ938zrv/duJHLXQIku5v0+\nEwOy59Hdm0PT/Er/84dDV0CSjdR/2XuZM3kpysSKLgD1cKiDA+IRguODCxfO9cyY\nIg46v9mFmBvyH04=\n-----END CERTIFICATE-----\n",
                     "-----BEGIN CERTIFICATE-----\nMIIEVzCCAj+gAwIBAgIRALBXPpFzlydw27SHyzpFKzgwDQYJKoZIhvcNAQELBQAw\nTzELMAkGA1UEBhMCVVMxKTAnBgNVBAoTIEludGVybmV0IFNlY3VyaXR5IFJlc2Vh\ncmNoIEdyb3VwMRUwEwYDVQQDEwxJU1JHIFJvb3QgWDEwHhcNMjQwMzEzMDAwMDAw\nWhcNMjcwMzEyMjM1OTU5WjAyMQswCQYDVQQGEwJVUzEWMBQGA1UEChMNTGV0J3Mg\nRW5jcnlwdDELMAkGA1UEAxMCRTYwdjAQBgcqhkjOPQIBBgUrgQQAIgNiAATZ8Z5G\nh/ghcWCoJuuj+rnq2h25EqfUJtlRFLFhfHWWvyILOR/VvtEKRqotPEoJhC6+QJVV\n6RlAN2Z17TJOdwRJ+HB7wxjnzvdxEP6sdNgA1O1tHHMWMxCcOrLqbGL0vbijgfgw\ngfUwDgYDVR0PAQH/BAQDAgGGMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcD\nATASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdDgQWBBSTJ0aYA6lRaI6Y1sRCSNsj\nv1iU0jAfBgNVHSMEGDAWgBR5tFnme7bl5AFzgAiIyBpY9umbbjAyBggrBgEFBQcB\nAQQmMCQwIgYIKwYBBQUHMAKGFmh0dHA6Ly94MS5pLmxlbmNyLm9yZy8wEwYDVR0g\nBAwwCjAIBgZngQwBAgEwJwYDVR0fBCAwHjAcoBqgGIYWaHR0cDovL3gxLmMubGVu\nY3Iub3JnLzANBgkqhkiG9w0BAQsFAAOCAgEAfYt7SiA1sgWGCIpunk46r4AExIRc\nMxkKgUhNlrrv1B21hOaXN/5miE+LOTbrcmU/M9yvC6MVY730GNFoL8IhJ8j8vrOL\npMY22OP6baS1k9YMrtDTlwJHoGby04ThTUeBDksS9RiuHvicZqBedQdIF65pZuhp\neDcGBcLiYasQr/EO5gxxtLyTmgsHSOVSBcFOn9lgv7LECPq9i7mfH3mpxgrRKSxH\npOoZ0KXMcB+hHuvlklHntvcI0mMMQ0mhYj6qtMFStkF1RpCG3IPdIwpVCQqu8GV7\ns8ubknRzs+3C/Bm19RFOoiPpDkwvyNfvmQ14XkyqqKK5oZ8zhD32kFRQkxa8uZSu\nh4aTImFxknu39waBxIRXE4jKxlAmQc4QjFZoq1KmQqQg0J/1JF8RlFvJas1VcjLv\nYlvUB2t6npO6oQjB3l+PNf0DpQH7iUx3Wz5AjQCi6L25FjyE06q6BZ/QlmtYdl/8\nZYao4SRqPEs/6cAiF+Qf5zg2UkaWtDphl1LKMuTNLotvsX99HP69V2faNyegodQ0\nLyTApr/vT01YPE46vNsDLgK+4cL6TrzC/a4WcmF5SRJ938zrv/duJHLXQIku5v0+\nEwOy59Hdm0PT/Er/84dDV0CSjdR/2XuZM3kpysSKLgD1cKiDA+IRguODCxfO9cyY\nIg46v9mFmBvyH04=\n-----END CERTIFICATE-----\n"
                 ],
                 "versions": [
@@ -621,8 +621,6 @@ const mockData: OsintData = {
 // Include all data leaks
 mockData.dataLeaksCompliance = [
   ...mockData.dataLeaksCompliance,
-  // Add rest of data leaks from the original dataset
-  // This is a partial list for brevity
   {
     id: "7597891868",
     email: "peter.tolhurst@sclowy.com",
@@ -691,9 +689,28 @@ mockData.dataLeaksCompliance = [
 ];
 
 const Index = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen">
-      <Dashboard data={mockData} />
+      <div className="container mx-auto p-4">
+        <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-4 mb-6">
+          <h2 className="text-lg font-medium text-yellow-800 mb-2">Legacy Dashboard View</h2>
+          <p className="text-yellow-700 mb-3">
+            This is the legacy single-page dashboard. We recommend using our new multi-page experience for better navigation and organization.
+          </p>
+          <div className="flex gap-2">
+            <Button 
+              onClick={() => navigate("/")}
+              variant="outline"
+              className="border-yellow-300 text-yellow-700"
+            >
+              Go to New Dashboard
+            </Button>
+          </div>
+        </div>
+        <Dashboard data={mockData} />
+      </div>
     </div>
   );
 };

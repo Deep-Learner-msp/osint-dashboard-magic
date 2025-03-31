@@ -9,6 +9,7 @@ interface InfoCardProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
   animationDelay?: number;
   children?: React.ReactNode;
+  variant?: "default" | "outline" | "secondary" | "highlight";
 }
 
 const InfoCard: React.FC<InfoCardProps> = ({
@@ -18,16 +19,25 @@ const InfoCard: React.FC<InfoCardProps> = ({
   children,
   className,
   animationDelay = 0,
+  variant = "default",
   ...props
 }) => {
   const style: React.CSSProperties = {
     animationDelay: `${animationDelay}ms`,
   };
 
+  const variantStyles = {
+    default: "border shadow-sm bg-white",
+    outline: "border-2 bg-white",
+    secondary: "border bg-gray-50",
+    highlight: "border-blue-200 bg-blue-50"
+  };
+
   return (
     <div
       className={cn(
-        "rounded-lg border p-4 opacity-0 animate-scale-in shadow-sm",
+        "rounded-lg p-4 opacity-0 animate-scale-in",
+        variantStyles[variant],
         className
       )}
       style={style}
