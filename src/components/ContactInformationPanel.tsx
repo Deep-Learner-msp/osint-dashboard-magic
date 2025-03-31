@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import GlassPanel from "./ui/GlassPanel";
 import { MapPin, Phone, Twitter, Linkedin, Mail, Globe, Info, Download, ExternalLink, Shield, Users } from "lucide-react";
@@ -130,18 +129,15 @@ const ContactInformationPanel: React.FC<ContactInformationPanelProps> = ({ data 
       </html>
     `;
     
-    // Create a Blob with the HTML content
     const blob = new Blob([reportHtml], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     
-    // Create a temporary anchor element to download the file
     const a = document.createElement('a');
     a.href = url;
     a.download = 'contact-intelligence-report.html';
     document.body.appendChild(a);
     a.click();
     
-    // Clean up
     setTimeout(() => {
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
@@ -220,11 +216,41 @@ const ContactInformationPanel: React.FC<ContactInformationPanelProps> = ({ data 
                         style={{ animationDelay: `${1100 + index * 100}ms` }}
                       >
                         <div className="text-sm">{phone}</div>
-                        <DialogTrigger asChild>
-                          <Button variant="ghost" size="sm" className="mt-1 text-xs">
-                            Why is this important? <Info className="h-3 w-3 ml-1" />
-                          </Button>
-                        </DialogTrigger>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button variant="ghost" size="sm" className="mt-1 text-xs">
+                              Why is this important? <Info className="h-3 w-3 ml-1" />
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="max-w-md">
+                            <DialogHeader>
+                              <DialogTitle>Contact Intelligence Analysis</DialogTitle>
+                              <DialogDescription>
+                                Understanding the significance of public contact information in cybersecurity analysis
+                              </DialogDescription>
+                            </DialogHeader>
+                            
+                            <div className="space-y-4">
+                              <p className="text-sm">
+                                Public phone numbers are often leveraged in social engineering attacks. Threat actors can use these 
+                                numbers to:
+                              </p>
+                              
+                              <ul className="list-disc pl-5 text-sm space-y-1">
+                                <li>Conduct vishing (voice phishing) attacks targeting employees</li>
+                                <li>Gather information about internal systems and processes</li>
+                                <li>Impersonate legitimate services to gain credentials or access</li>
+                                <li>Map out organizational structure through cold calling</li>
+                              </ul>
+                              
+                              <div className="bg-amber-50 p-3 rounded-lg border border-amber-100 text-sm text-amber-800">
+                                <strong>Why this matters:</strong> In our analysis, {contactInformation.phone.length} phone numbers were 
+                                found publicly associated with your organization, potentially increasing the attack surface for 
+                                social engineering attempts.
+                              </div>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
                       </div>
                     ))}
                   </div>
