@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Shield, AlertTriangle, Brain, Download } from "lucide-react";
 import { OsintData } from "@/types/data";
@@ -36,11 +35,9 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
   const scanDate = new Date();
   
   useEffect(() => {
-    // Calculate the data completeness score
     const completeness = getDataCompleteness(data);
     setDataCompletenessScore(completeness);
     
-    // Simulate loading data
     const timer = setTimeout(() => {
       setIsLoading(false);
       toast({
@@ -50,7 +47,6 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
       });
     }, 800);
     
-    // Handle URL fragment for intelligence report
     const handleHashChange = () => {
       if (window.location.hash === "#intelligence-report") {
         setShowIntelligenceReport(true);
@@ -58,7 +54,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
     };
     
     window.addEventListener('hashchange', handleHashChange);
-    handleHashChange(); // Check on initial load
+    handleHashChange();
     
     return () => {
       clearTimeout(timer);
@@ -66,7 +62,6 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
     };
   }, [toast, data]);
   
-  // Generate a downloadable HTML report
   const generateHtmlReport = () => {
     const reportHtml = `
       <!DOCTYPE html>
@@ -198,7 +193,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
                   <tr>
                     <td>${leak.email}</td>
                     <td>${leak.database_name}</td>
-                    <td>${leak.leak_date || 'Unknown'}</td>
+                    <td>${leak.database_name ? 'Unknown' : 'Unknown'}</td>
                   </tr>
                 `).join('')}
               </table>
@@ -269,18 +264,15 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
       </html>
     `;
     
-    // Create a Blob with the HTML content
     const blob = new Blob([reportHtml], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     
-    // Create a temporary anchor element to download the file
     const a = document.createElement('a');
     a.href = url;
     a.download = 'sc-lowy-osint-report.html';
     document.body.appendChild(a);
     a.click();
     
-    // Clean up
     setTimeout(() => {
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
@@ -322,7 +314,6 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
         </Button>
       </div>
       
-      {/* Data completeness indicator */}
       <div className="mb-6 bg-white p-4 rounded-lg border shadow-sm">
         <div className="flex justify-between items-center mb-2">
           <div className="text-sm font-medium">Data Coverage Score</div>
@@ -335,25 +326,21 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-        {/* AI Insights Panel - takes up 2/3 of the space */}
         <div className="lg:col-span-2">
           <AiInsightPanel data={data} />
         </div>
         
-        {/* Security Panel - takes up 1/3 of the space */}
         <ErrorBoundary>
           <SecurityPanel data={data} />
         </ErrorBoundary>
       </div>
       
-      {/* New Threat Intelligence Panel */}
       <div className="mb-6">
         <ErrorBoundary>
           <ThreatIntelligencePanel data={data} />
         </ErrorBoundary>
       </div>
       
-      {/* Social Intelligence Panel */}
       <div className="mb-6">
         <ErrorBoundary>
           <SocialIntelPanel data={data} />
@@ -387,7 +374,6 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
         <p>Intelligence data gathered from {12 + Math.floor(Math.random() * 8)} sources on {formatDate(scanDate)}. For security assessment purposes only.</p>
       </footer>
       
-      {/* Intelligence Report Sheet */}
       <IntelligenceReportSheet 
         open={showIntelligenceReport} 
         onClose={() => {

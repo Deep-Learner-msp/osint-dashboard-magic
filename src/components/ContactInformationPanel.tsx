@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import GlassPanel from "./ui/GlassPanel";
-import { MapPin, Phone, Twitter, Linkedin, Mail, Globe, Info, Download, ExternalLink } from "lucide-react";
+import { MapPin, Phone, Twitter, Linkedin, Mail, Globe, Info, Download, ExternalLink, Shield, Users } from "lucide-react";
 import { OsintData } from "@/types/data";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";

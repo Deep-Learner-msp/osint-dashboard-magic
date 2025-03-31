@@ -40,6 +40,7 @@ export interface DataLeak {
   address: string;
   phone: string;
   database_name: string;
+  leak_date?: string; // Added optional leak_date property
 }
 
 export interface CategoryData {
