@@ -5,14 +5,16 @@ import React from "react";
 interface InfoCardProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
   icon?: React.ReactNode;
-  children: React.ReactNode;
+  value?: string | number | React.ReactNode;
   className?: string;
   animationDelay?: number;
+  children?: React.ReactNode;
 }
 
 const InfoCard: React.FC<InfoCardProps> = ({
   title,
   icon,
+  value,
   children,
   className,
   animationDelay = 0,
@@ -35,7 +37,10 @@ const InfoCard: React.FC<InfoCardProps> = ({
         {icon && <div className="text-osint-blue">{icon}</div>}
         <h3 className="text-base font-semibold">{title}</h3>
       </div>
-      <div>{children}</div>
+      <div>
+        {value !== undefined && <div>{value}</div>}
+        {children}
+      </div>
     </div>
   );
 };

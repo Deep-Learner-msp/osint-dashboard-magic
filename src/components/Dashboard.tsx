@@ -102,7 +102,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
           <div>
             <InfrastructurePanel data={data} />
             <OverviewPanel data={data} />
-            <ShodanPanel data={data} />
+            {data.shodanData && <ShodanPanel data={data.shodanData} />}
             <TechStackPanel data={data} />
           </div>
         </ErrorBoundary>
