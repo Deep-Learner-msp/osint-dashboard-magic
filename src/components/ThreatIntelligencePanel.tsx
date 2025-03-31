@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Shield, AlertTriangle, Lock, BarChart, Users, Briefcase, Linkedin, ExternalLink, AlertCircle, Info, HelpCircle } from "lucide-react";
 import { OsintData } from "@/types/data";
@@ -748,4 +749,33 @@ const ThreatIntelligencePanel: React.FC<ThreatIntelligencePanelProps> = ({ data 
                               <div className="bg-white rounded-full h-3 w-3"></div>
                             </div>
                           </div>
-                          <div style={{ width: `${
+                          <div style={{ width: `${brandMetrics.sourceBias.rightLeaning}%` }}></div>
+                        </div>
+                      </div>
+                      <div className="flex justify-between text-xs text-muted-foreground">
+                        <div>Left: {brandMetrics.sourceBias.leftLeaning}%</div>
+                        <div>Center: {brandMetrics.sourceBias.center}%</div>
+                        <div>Right: {brandMetrics.sourceBias.rightLeaning}%</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </CardContent>
+      </Card>
+      
+      <ExplanationDialog
+        open={explanationOpen}
+        onClose={() => setExplanationOpen(false)}
+        title={explanationContent.title}
+        description={explanationContent.description}
+      >
+        {explanationContent.content}
+      </ExplanationDialog>
+    </>
+  );
+};
+
+export default ThreatIntelligencePanel;
