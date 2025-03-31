@@ -2,7 +2,8 @@
 import { cn } from "@/lib/utils";
 import React from "react";
 
-interface GlassPanelProps extends React.HTMLAttributes<HTMLDivElement> {
+// Omit 'title' from HTMLAttributes to avoid type collision
+interface GlassPanelProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
   children: React.ReactNode;
   className?: string;
   animationDelay?: number;
