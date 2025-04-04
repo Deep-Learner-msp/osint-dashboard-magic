@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { OsintData } from "@/types/data";
 import { Button } from "@/components/ui/button";
@@ -9,6 +8,7 @@ import TechStackPanel from "@/components/TechStackPanel";
 import DataLeaksPanel from "@/components/DataLeaksPanel";
 import FileSearchPanel from "@/components/FileSearchPanel";
 import ContactInformationPanel from "@/components/ContactInformationPanel";
+import SocialIntelPanel from "@/components/SocialIntelPanel";
 import ShodanPanel from "@/components/ShodanPanel";
 import ErrorBoundary from "@/components/ui/error-boundary";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
@@ -108,14 +108,6 @@ const ExtractedData: React.FC<ExtractedDataProps> = ({ data }) => {
         </Dialog>
       </div>
 
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-        <p className="text-blue-800">
-          This view presents the raw intelligence data collected from various sources without advanced analysis. 
-          It shows infrastructure details, technologies, data leaks, and other extracted information.
-        </p>
-      </div>
-
-      {/* Organization Information Card */}
       <div className="bg-white border border-gray-200 rounded-lg p-6 mb-6 shadow-sm">
         <div className="flex items-center mb-4">
           <Building className="h-5 w-5 mr-2 text-osint-blue" />
@@ -210,6 +202,7 @@ const ExtractedData: React.FC<ExtractedDataProps> = ({ data }) => {
         
         <ErrorBoundary>
           <div>
+            <SocialIntelPanel data={data} />
             <DataLeaksPanel data={data} />
             <FileSearchPanel data={data} />
             <ContactInformationPanel data={data} />
