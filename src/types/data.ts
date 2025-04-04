@@ -1,3 +1,4 @@
+
 export interface OsintData {
   openPorts: number[];
   qualysScan: {
@@ -27,6 +28,7 @@ export interface OsintData {
   shodanData?: import("./shodan").ShodanData;
   biasDistribution?: BiasDistribution;
   executiveData?: ExecutiveData;
+  recentNews?: NewsItem[];
 }
 
 export interface DataLeak {
@@ -88,4 +90,15 @@ export interface Executive {
     linkedin?: string;
     twitter?: string;
   };
+}
+
+export interface NewsItem {
+  title: string;
+  date: string;
+  source: string;
+  url: string;
+  summary: string;
+  sentiment: 'positive' | 'neutral' | 'negative';
+  relevance: number;
+  tags: string[];
 }
