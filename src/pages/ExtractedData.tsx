@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { OsintData } from "@/types/data";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft, Database, Brain, BarChart3, Info, MapPin, Users, Building } from "lucide-react";
+import { ChevronLeft, Database, Brain, BarChart3, Info, MapPin, Users, Building, Globe, Briefcase, Shield, AlertTriangle } from "lucide-react";
 import InfrastructurePanel from "@/components/InfrastructurePanel";
 import TechStackPanel from "@/components/TechStackPanel";
 import DataLeaksPanel from "@/components/DataLeaksPanel";
@@ -15,6 +15,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import ExplanationDialog from "@/components/ui/ExplanationDialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { getSecurityAssessment } from "@/utils/osint-helpers";
 
 interface ExtractedDataProps {
   data: OsintData;
@@ -33,7 +34,6 @@ const ExtractedData: React.FC<ExtractedDataProps> = ({ data }) => {
     content: <div />
   });
 
-  // Function to open explanation dialog
   const showExplanation = (title: string, description: string, content: React.ReactNode) => {
     setExplanationContent({
       title,
@@ -42,6 +42,8 @@ const ExtractedData: React.FC<ExtractedDataProps> = ({ data }) => {
     });
     setExplanationOpen(true);
   };
+
+  const securityAssessment = getSecurityAssessment(data);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -109,9 +111,17 @@ const ExtractedData: React.FC<ExtractedDataProps> = ({ data }) => {
       </div>
 
       <div className="bg-white border border-gray-200 rounded-lg p-6 mb-6 shadow-sm">
-        <div className="flex items-center mb-4">
-          <Building className="h-5 w-5 mr-2 text-osint-blue" />
-          <h2 className="text-xl font-semibold">Organization Overview</h2>
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center">
+            <Building className="h-5 w-5 mr-2 text-osint-blue" />
+            <h2 className="text-xl font-semibold">Organization Overview</h2>
+          </div>
+          <Badge 
+            variant={securityAssessment.score >= 70 ? "success" : securityAssessment.score >= 50 ? "warning" : "destructive"}
+            className="text-xs"
+          >
+            Security Rating: {securityAssessment.label}
+          </Badge>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -120,33 +130,110 @@ const ExtractedData: React.FC<ExtractedDataProps> = ({ data }) => {
               <MapPin className="h-4 w-4 text-gray-600 mr-2" />
               <h3 className="font-medium text-gray-800">Location & Jurisdiction</h3>
             </div>
-            <p className="text-gray-700">Hong Kong, SAR China</p>
+            <p className="text-gray-700">Primary: Hong Kong, SAR China</p>
             <p className="text-sm text-gray-500 mt-1">Financial Services Authority, HK</p>
+            <p className="text-xs text-gray-500 mt-2">Secondary Jurisdictions:</p>
+            <ul className="text-xs text-gray-500 list-disc pl-4 mt-1">
+              <li>Singapore (Monetary Authority)</li>
+              <li>United Kingdom (FCA)</li>
+              <li>United States (SEC, FINRA)</li>
+            </ul>
           </div>
           
           <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
             <div className="flex items-center mb-2">
               <Users className="h-4 w-4 text-gray-600 mr-2" />
-              <h3 className="font-medium text-gray-800">Employee Count</h3>
+              <h3 className="font-medium text-gray-800">Personnel</h3>
             </div>
             <p className="text-gray-700">{data.organizationStructure[0]} Employees</p>
             <p className="text-sm text-gray-500 mt-1">Across 9 global offices</p>
+            <div className="mt-2">
+              <p className="text-xs text-gray-500">Executive Team: 12 members</p>
+              <p className="text-xs text-gray-500">Board: 8 directors (3 independent)</p>
+            </div>
           </div>
           
           <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
             <div className="flex items-center mb-2">
-              <Info className="h-4 w-4 text-gray-600 mr-2" />
-              <h3 className="font-medium text-gray-800">Founded</h3>
+              <Globe className="h-4 w-4 text-gray-600 mr-2" />
+              <h3 className="font-medium text-gray-800">Global Presence</h3>
             </div>
-            <p className="text-gray-700">2010</p>
-            <p className="text-sm text-gray-500 mt-1">Independent investment bank</p>
+            <p className="text-gray-700">9 Office Locations</p>
+            <div className="text-xs text-gray-500 mt-2 space-y-1">
+              <p>APAC: Hong Kong (HQ), Singapore, Tokyo, Sydney</p>
+              <p>EMEA: London, Frankfurt, Dubai</p>
+              <p>Americas: New York, San Francisco</p>
+            </div>
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+            <div className="flex items-center mb-2">
+              <Briefcase className="h-4 w-4 text-gray-600 mr-2" />
+              <h3 className="font-medium text-gray-800">Executive Intelligence</h3>
+            </div>
+            <div className="text-sm text-gray-700">
+              <p className="font-medium">CEO: Michael Chen</p>
+              <p className="text-xs text-gray-500 mt-1">Former JP Morgan executive, 15+ years in investment banking</p>
+              
+              <p className="font-medium mt-2">CIO: Sarah Williams</p>
+              <p className="text-xs text-gray-500 mt-1">Ex-Goldman Sachs, specializes in algorithmic trading systems</p>
+              
+              <p className="font-medium mt-2">CISO: Robert Tanaka</p>
+              <p className="text-xs text-gray-500 mt-1">Previous role at Citigroup, cybersecurity background</p>
+            </div>
+          </div>
+          
+          <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+            <div className="flex items-center mb-2">
+              <Shield className="h-4 w-4 text-gray-600 mr-2" />
+              <h3 className="font-medium text-gray-800">Risk Profile</h3>
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <p className="text-sm text-gray-700">Cyber Exposure:</p>
+                <Badge variant={securityAssessment.score >= 70 ? "success" : securityAssessment.score >= 50 ? "warning" : "destructive"}>
+                  {securityAssessment.label}
+                </Badge>
+              </div>
+              <div className="flex items-center justify-between">
+                <p className="text-sm text-gray-700">Regulatory Compliance:</p>
+                <Badge variant="info">Moderate Risk</Badge>
+              </div>
+              <div className="flex items-center justify-between">
+                <p className="text-sm text-gray-700">Reputation Monitor:</p>
+                <Badge variant="success">Low Risk</Badge>
+              </div>
+              <div className="flex items-center justify-between">
+                <p className="text-sm text-gray-700">Competitor Intelligence:</p>
+                <Badge variant="info">43 Tracked Entities</Badge>
+              </div>
+            </div>
           </div>
         </div>
         
         <div className="mb-6">
-          <h3 className="font-medium text-gray-800 mb-2">Organization Highlights</h3>
+          <div className="flex items-center mb-2">
+            <Info className="h-4 w-4 text-gray-600 mr-2" />
+            <h3 className="font-medium text-gray-800">Organization Highlights</h3>
+          </div>
           <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
             <p className="text-gray-700">{data.organizationDescription[0]}</p>
+            <div className="mt-3 space-y-1">
+              <p className="text-sm text-gray-600 flex items-center">
+                <AlertTriangle className="h-3 w-3 text-amber-500 mr-1" />
+                <span>Executive insight: Potential M&A activity detected from public filings and press references</span>
+              </p>
+              <p className="text-sm text-gray-600 flex items-center">
+                <AlertTriangle className="h-3 w-3 text-amber-500 mr-1" />
+                <span>Strategic indicators suggest expansion into cryptocurrency trading services</span>
+              </p>
+              <p className="text-sm text-gray-600 flex items-center">
+                <AlertTriangle className="h-3 w-3 text-amber-500 mr-1" />
+                <span>Regulatory inquiries ongoing in Singapore operations (MAS documentation)</span>
+              </p>
+            </div>
           </div>
         </div>
         
@@ -159,6 +246,7 @@ const ExtractedData: React.FC<ExtractedDataProps> = ({ data }) => {
                 <TableHead>Type</TableHead>
                 <TableHead>Last Updated</TableHead>
                 <TableHead>Reliability</TableHead>
+                <TableHead>Executive Value</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -167,24 +255,42 @@ const ExtractedData: React.FC<ExtractedDataProps> = ({ data }) => {
                 <TableCell>Primary</TableCell>
                 <TableCell>2023-11-15</TableCell>
                 <TableCell><Badge className="bg-green-100 text-green-800 hover:bg-green-200">High</Badge></TableCell>
+                <TableCell>Medium</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Bloomberg Terminal</TableCell>
                 <TableCell>Financial</TableCell>
                 <TableCell>2023-12-01</TableCell>
                 <TableCell><Badge className="bg-green-100 text-green-800 hover:bg-green-200">High</Badge></TableCell>
+                <TableCell>High</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>SEC Filings</TableCell>
                 <TableCell>Regulatory</TableCell>
                 <TableCell>2023-10-22</TableCell>
                 <TableCell><Badge className="bg-green-100 text-green-800 hover:bg-green-200">High</Badge></TableCell>
+                <TableCell>High</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>LinkedIn</TableCell>
                 <TableCell>Social</TableCell>
                 <TableCell>2023-12-10</TableCell>
                 <TableCell><Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-200">Medium</Badge></TableCell>
+                <TableCell>Medium</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Internal Memo Leaks</TableCell>
+                <TableCell>Confidential</TableCell>
+                <TableCell>2023-09-05</TableCell>
+                <TableCell><Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-200">Medium</Badge></TableCell>
+                <TableCell>Very High</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Dark Web Monitoring</TableCell>
+                <TableCell>Threat Intel</TableCell>
+                <TableCell>2023-12-15</TableCell>
+                <TableCell><Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-200">Medium</Badge></TableCell>
+                <TableCell>High</TableCell>
               </TableRow>
             </TableBody>
           </Table>

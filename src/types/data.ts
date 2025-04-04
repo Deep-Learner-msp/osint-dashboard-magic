@@ -1,4 +1,3 @@
-
 export interface OsintData {
   openPorts: number[];
   qualysScan: {
@@ -27,6 +26,7 @@ export interface OsintData {
   };
   shodanData?: import("./shodan").ShodanData;
   biasDistribution?: BiasDistribution;
+  executiveData?: ExecutiveData;
 }
 
 export interface DataLeak {
@@ -41,7 +41,7 @@ export interface DataLeak {
   address: string;
   phone: string;
   database_name: string;
-  leak_date?: string; // Added optional leak_date property
+  leak_date?: string;
 }
 
 export interface CategoryData {
@@ -66,5 +66,26 @@ export interface BiasDistribution {
     leftLeaning: number;
     center: number;
     rightLeaning: number;
+  };
+}
+
+export interface ExecutiveData {
+  executives: Executive[];
+  riskMetrics: {
+    cyberExposure: number;
+    regulatoryCompliance: string;
+    reputationRisk: string;
+    competitorCount: number;
+  };
+  strategicInsights: string[];
+}
+
+export interface Executive {
+  name: string;
+  title: string;
+  background: string;
+  socialProfiles?: {
+    linkedin?: string;
+    twitter?: string;
   };
 }
