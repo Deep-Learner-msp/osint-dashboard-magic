@@ -19,7 +19,7 @@ function App() {
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
       <Router>
         <Routes>
-          <Route path="/" element={<Index />} />
+          <Route path="/" element={<Index data={mockData} />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/data" element={<ExtractedData data={mockData} />} />
           <Route
