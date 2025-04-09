@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { OsintData } from "@/types/data";
 import { Button } from "@/components/ui/button";
@@ -17,14 +16,9 @@ import ExplanationDialog from "@/components/ui/ExplanationDialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { getSecurityAssessment } from "@/utils/osint-helpers";
+import { mockData } from "./Index";
 
-// Export the props interface so it can be imported in App.tsx
-export interface ExtractedDataProps {
-  data: OsintData;
-}
-
-// Explicitly type the component as React.FC<ExtractedDataProps>
-const ExtractedData: React.FC<ExtractedDataProps> = ({ data }) => {
+const ExtractedData: React.FC = () => {
   const navigate = useNavigate();
   const [explanationOpen, setExplanationOpen] = useState(false);
   const [explanationContent, setExplanationContent] = useState<{
@@ -36,6 +30,8 @@ const ExtractedData: React.FC<ExtractedDataProps> = ({ data }) => {
     description: "",
     content: <div />
   });
+
+  const data: OsintData = mockData;
 
   const showExplanation = (title: string, description: string, content: React.ReactNode) => {
     setExplanationContent({
