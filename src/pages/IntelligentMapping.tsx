@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { OsintData } from "@/types/data";
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,7 @@ import { Separator } from "@/components/ui/separator";
 import { Progress } from "@/components/ui/progress";
 import ErrorBoundary from "@/components/ui/error-boundary";
 
+// Export the props interface so it can be imported elsewhere
 export interface IntelligentMappingProps {
   data: OsintData;
 }
