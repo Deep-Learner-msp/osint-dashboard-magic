@@ -11,7 +11,7 @@ import DataDiscovery from "./pages/DataDiscovery";
 import CorrelatedIntelligence from "./pages/CorrelatedIntelligence";
 import IntelligenceReporting from "./pages/IntelligenceReporting";
 import IntelligentMapping from "./pages/IntelligentMapping";
-import ExtractedData, { ExtractedDataProps } from "./pages/ExtractedData"; // Import both component and its props type
+import ExtractedData from "./pages/ExtractedData"; // Only import the component
 import { OsintData } from "./types/data";
 
 // Create a client
