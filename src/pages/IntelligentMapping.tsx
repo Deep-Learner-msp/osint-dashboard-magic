@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { OsintData } from "@/types/data";
 import { Button } from "@/components/ui/button";
@@ -27,7 +26,7 @@ import {
   Newspaper,
   Zap,
   Users,
-  LineChart,
+  LineChart as LineChartIcon,
   FileOutput
 } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
@@ -79,6 +78,16 @@ const IntelligentMapping: React.FC<IntelligentMappingProps> = ({ data }) => {
     { day: "Month 1", probability: 45 },
     { day: "Month 3", probability: 65 },
     { day: "Month 6", probability: 80 }
+  ];
+
+  // Sentiment data for the news analysis chart
+  const sentimentData = [
+    { month: 'Jan', sentiment: 65 },
+    { month: 'Feb', sentiment: 70 },
+    { month: 'Mar', sentiment: 68 },
+    { month: 'Apr', sentiment: 45 },
+    { month: 'May', sentiment: 52 },
+    { month: 'Jun', sentiment: 60 }
   ];
 
   const COLORS = ["#ef4444", "#f97316", "#eab308", "#22c55e"];
@@ -619,14 +628,7 @@ const IntelligentMapping: React.FC<IntelligentMappingProps> = ({ data }) => {
                     <div className="space-y-4">
                       <div className="h-64 mb-4">
                         <ResponsiveContainer width="100%" height="100%">
-                          <LineChart data={[
-                            { month: 'Jan', sentiment: 65 },
-                            { month: 'Feb', sentiment: 70 },
-                            { month: 'Mar', sentiment: 68 },
-                            { month: 'Apr', sentiment: 45 },
-                            { month: 'May', sentiment: 52 },
-                            { month: 'Jun', sentiment: 60 }
-                          ]}>
+                          <LineChart data={sentimentData}>
                             <XAxis dataKey="month" />
                             <YAxis domain={[0, 100]} />
                             <Tooltip />
@@ -775,7 +777,7 @@ const IntelligentMapping: React.FC<IntelligentMappingProps> = ({ data }) => {
               <Card className="bg-white shadow-sm mb-4">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-lg flex items-center gap-2">
-                    <LineChart className="h-5 w-5 text-blue-500" />
+                    <LineChartIcon className="h-5 w-5 text-blue-500" />
                     Technical Dashboard
                   </CardTitle>
                   <CardDescription>
