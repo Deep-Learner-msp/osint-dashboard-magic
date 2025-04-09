@@ -17,12 +17,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { getSecurityAssessment } from "@/utils/osint-helpers";
 
-// Export the props interface so it can be used in App.tsx
 export interface ExtractedDataProps {
   data: OsintData;
 }
 
-// Clearly define the component as React.FC<ExtractedDataProps>
 const ExtractedData: React.FC<ExtractedDataProps> = ({ data }) => {
   const navigate = useNavigate();
   const [explanationOpen, setExplanationOpen] = useState(false);
