@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { OsintData } from "@/types/data";
 import { Button } from "@/components/ui/button";
@@ -16,7 +15,7 @@ export interface IntelligentMappingProps {
   data: OsintData;
 }
 
-const IntelligentMapping = ({ data }: IntelligentMappingProps) => {
+const IntelligentMapping: React.FC<IntelligentMappingProps> = ({ data }) => {
   const navigate = useNavigate();
   const [mappingProgress, setMappingProgress] = useState(78);
   const [showAllConnections, setShowAllConnections] = useState(false);

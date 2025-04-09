@@ -220,7 +220,11 @@ const ExtractedData: React.FC<ExtractedDataProps> = ({ data }) => {
             <h3 className="font-medium text-gray-800">Organization Highlights</h3>
           </div>
           <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-            <p className="text-gray-700">{data.organizationDescription[0]}</p>
+            <ul className="list-disc pl-5 space-y-2 text-gray-700 mb-3">
+              <li>SC Lowy is a leading alternative asset manager with $1.6 billion in assets under management, specializing in opportunistic credit and private credit across global markets.</li>
+              <li>Founded in 2009, the firm operates from nine global offices with over 50 professionals, focusing on capital preservation through senior secured lending backed by hard assets.</li>
+            </ul>
+            
             <div className="mt-3 space-y-1">
               <p className="text-sm text-gray-600 flex items-center">
                 <AlertTriangle className="h-3 w-3 text-amber-500 mr-1" />
