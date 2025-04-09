@@ -24,6 +24,12 @@ const queryClient = new QueryClient({
 
 // Import mock data from Index.tsx
 import { mockData } from "./pages/Index";
+import { OsintData } from "./types/data";
+
+// Define DataProps interface to ensure all pages have proper typing
+interface DataProps {
+  data: OsintData;
+}
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
