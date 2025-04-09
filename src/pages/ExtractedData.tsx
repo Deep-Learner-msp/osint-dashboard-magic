@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { OsintData } from "@/types/data";
 import { Button } from "@/components/ui/button";
@@ -18,7 +19,11 @@ import { Badge } from "@/components/ui/badge";
 import { getSecurityAssessment } from "@/utils/osint-helpers";
 import { mockData } from "./Index";
 
-const ExtractedData: React.FC = () => {
+export interface ExtractedDataProps {
+  data?: OsintData;
+}
+
+const ExtractedData: React.FC<ExtractedDataProps> = (props) => {
   const navigate = useNavigate();
   const [explanationOpen, setExplanationOpen] = useState(false);
   const [explanationContent, setExplanationContent] = useState<{
@@ -31,7 +36,8 @@ const ExtractedData: React.FC = () => {
     content: <div />
   });
 
-  const data: OsintData = mockData;
+  // Use provided data or fallback to mockData
+  const data: OsintData = props.data || mockData;
 
   const showExplanation = (title: string, description: string, content: React.ReactNode) => {
     setExplanationContent({
