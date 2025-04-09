@@ -11,7 +11,8 @@ import DataDiscovery from "./pages/DataDiscovery";
 import CorrelatedIntelligence from "./pages/CorrelatedIntelligence";
 import IntelligenceReporting from "./pages/IntelligenceReporting";
 import IntelligentMapping from "./pages/IntelligentMapping";
-import ExtractedData from "./pages/ExtractedData"; // Import the component correctly
+import ExtractedData from "./pages/ExtractedData"; // Import the component
+import { OsintData } from "./types/data"; // Import type to ensure type safety
 
 // Create a client
 const queryClient = new QueryClient({
