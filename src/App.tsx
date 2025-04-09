@@ -24,6 +24,7 @@ const queryClient = new QueryClient({
 
 // Import mock data from Index.tsx
 import { mockData } from "./pages/Index";
+import IntelligentMapping from "./pages/IntelligentMapping";
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -37,6 +38,7 @@ const App = () => (
           <Route path="/data-discovery" element={<DataDiscovery data={mockData} />} />
           <Route path="/correlated-intelligence" element={<CorrelatedIntelligence data={mockData} />} />
           <Route path="/intelligence-reporting" element={<IntelligenceReporting data={mockData} />} />
+          <Route path="/intelligent-mapping" element={<IntelligentMapping data={mockData} />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

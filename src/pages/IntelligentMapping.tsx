@@ -3,34 +3,13 @@ import React, { useState } from "react";
 import { OsintData } from "@/types/data";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { 
-  ChevronLeft, 
-  Brain, 
-  Shield, 
-  Database, 
-  BarChart3, 
-  Network, 
-  Globe, 
-  ArrowUpRight, 
-  AlertTriangle, 
-  Target, 
-  Server,
-  UserCheck,
-  FileText,
-  Download
-} from "lucide-react";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { ChevronLeft, Network, Brain, BarChart3, Info, Database } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Separator } from "@/components/ui/separator";
 import { Progress } from "@/components/ui/progress";
-import { getDataCompleteness } from "@/utils/osint-helpers";
 import ErrorBoundary from "@/components/ui/error-boundary";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import ThreatIntelligencePanel from "@/components/ThreatIntelligencePanel";
-import AttackVectorPanel from "@/components/AttackVectorPanel";
-import IpEnumerationPanel from "@/components/IpEnumerationPanel";
-import SocialIntelPanel from "@/components/SocialIntelPanel";
-import ReportGenerator from "@/components/ReportGenerator";
-import { PieChart, Pie, Cell, Legend, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, LineChart, Line } from "recharts";
 
 interface IntelligentMappingProps {
   data: OsintData;
@@ -38,36 +17,23 @@ interface IntelligentMappingProps {
 
 const IntelligentMapping: React.FC<IntelligentMappingProps> = ({ data }) => {
   const navigate = useNavigate();
-  const dataCompletenessScore = getDataCompleteness(data);
-  const [activeTab, setActiveTab] = useState("threat");
-
-  // Generate threat data for visualization
-  const threatData = [
-    { name: "Critical", value: data.qualysScan.severity_1, color: "#ef4444" },
-    { name: "High", value: data.qualysScan.severity_2, color: "#f97316" },
-    { name: "Medium", value: data.qualysScan.severity_3, color: "#eab308" },
-    { name: "Low", value: data.qualysScan.severity_4, color: "#22c55e" }
-  ];
-
-  // Attack vector data
-  const attackVectorData = [
-    { name: "Web App", value: 35 + Math.floor(Math.random() * 20) },
-    { name: "Network", value: 25 + Math.floor(Math.random() * 15) },
-    { name: "Social Eng", value: 20 + Math.floor(Math.random() * 10) },
-    { name: "Insider", value: 15 + Math.floor(Math.random() * 10) },
-    { name: "Physical", value: 5 + Math.floor(Math.random() * 5) }
-  ];
-
-  // Timeline data for potential exploits
-  const timelineData = [
-    { day: "Day 1", probability: 10 },
-    { day: "Week 1", probability: 25 },
-    { day: "Month 1", probability: 45 },
-    { day: "Month 3", probability: 65 },
-    { day: "Month 6", probability: 80 }
-  ];
-
-  const COLORS = ["#ef4444", "#f97316", "#eab308", "#22c55e"];
+  const [mappingProgress, setMappingProgress] = useState(78);
+  const [showAllConnections, setShowAllConnections] = useState(false);
+  
+  // For demo purposes - simulating intelligence mapping progress
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setMappingProgress((prev) => {
+        if (prev >= 98) {
+          clearInterval(timer);
+          return 100;
+        }
+        return prev + Math.random() * 2;
+      });
+    }, 2000);
+    
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -76,11 +42,11 @@ const IntelligentMapping: React.FC<IntelligentMappingProps> = ({ data }) => {
           <Button 
             variant="ghost" 
             size="sm"
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/dashboard")}
             className="text-gray-600"
           >
             <ChevronLeft className="h-4 w-4 mr-1" />
-            Back to Home
+            Back to Dashboard
           </Button>
         </div>
         <div className="flex gap-2">
@@ -94,7 +60,7 @@ const IntelligentMapping: React.FC<IntelligentMappingProps> = ({ data }) => {
           </Button>
           <Button 
             variant="outline" 
-            onClick={() => navigate("/executive-view")}
+            onClick={() => navigate("/intelligence-reporting")}
             className="flex items-center gap-1"
           >
             <BarChart3 className="h-4 w-4" />
@@ -105,294 +71,301 @@ const IntelligentMapping: React.FC<IntelligentMappingProps> = ({ data }) => {
 
       <div className="flex items-center mb-6">
         <div className="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center mr-3">
-          <Brain className="h-5 w-5 text-purple-600" />
+          <Network className="h-5 w-5 text-purple-600" />
         </div>
         <h1 className="text-2xl font-bold">Intelligent Mapping</h1>
+        <Button variant="ghost" size="icon" className="ml-2">
+          <Info className="h-4 w-4" />
+        </Button>
       </div>
 
       <Alert className="mb-6 bg-purple-50 border-purple-200">
         <Brain className="h-4 w-4 text-purple-600" />
-        <AlertTitle className="text-purple-800">AI-Powered Intelligence Analysis</AlertTitle>
+        <AlertTitle className="text-purple-800">AI-Powered Intelligence Mapping</AlertTitle>
         <AlertDescription className="text-purple-700">
-          Our AI has analyzed the raw OSINT data to extract actionable intelligence, identify attack vectors, map potential threats, 
-          and provide security intelligence that goes beyond simple data collection.
+          This view displays intelligence data correlated across multiple sources to identify hidden patterns and connections.
         </AlertDescription>
       </Alert>
-      
-      {/* Intelligence Coverage indicator */}
-      <div className="mb-6 bg-white p-4 rounded-lg border shadow-sm">
-        <div className="flex justify-between items-center mb-2">
-          <div className="text-sm font-medium">Intelligence Coverage</div>
-          <div className="text-sm font-medium">{dataCompletenessScore}%</div>
-        </div>
-        <Progress value={dataCompletenessScore} className="h-2" />
-        <p className="text-xs text-muted-foreground mt-2">
-          Based on data correlation across multiple intelligence sources including OSINT, infrastructure, and data leak analysis
-        </p>
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <Card className="bg-white shadow-sm">
-          <CardContent className="p-4">
-            <div className="flex flex-col items-center">
-              <div className="text-3xl font-bold text-red-600 mt-2">
-                {data.qualysScan.severity_1 + data.qualysScan.severity_2}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Network className="h-4 w-4 text-purple-600" />
+              Connection Strength
+            </CardTitle>
+            <CardDescription>Entity relationship analysis</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="mt-2 space-y-4">
+              <div>
+                <div className="flex justify-between items-center mb-1 text-sm">
+                  <span>Internal Structure</span>
+                  <span className="font-medium">92%</span>
+                </div>
+                <Progress value={92} className="h-2" />
               </div>
-              <div className="text-sm text-gray-600 text-center">Critical & High Vulnerabilities</div>
+              <div>
+                <div className="flex justify-between items-center mb-1 text-sm">
+                  <span>External Partners</span>
+                  <span className="font-medium">76%</span>
+                </div>
+                <Progress value={76} className="h-2" />
+              </div>
+              <div>
+                <div className="flex justify-between items-center mb-1 text-sm">
+                  <span>Supply Chain</span>
+                  <span className="font-medium">63%</span>
+                </div>
+                <Progress value={63} className="h-2" />
+              </div>
+              <div>
+                <div className="flex justify-between items-center mb-1 text-sm">
+                  <span>Regulatory Bodies</span>
+                  <span className="font-medium">89%</span>
+                </div>
+                <Progress value={89} className="h-2" />
+              </div>
             </div>
           </CardContent>
         </Card>
         
-        <Card className="bg-white shadow-sm">
-          <CardContent className="p-4">
-            <div className="flex flex-col items-center">
-              <div className="text-3xl font-bold text-orange-500 mt-2">
-                {data.dataLeaksCompliance.length}
-              </div>
-              <div className="text-sm text-gray-600 text-center">Data Leaks Detected</div>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card className="bg-white shadow-sm">
-          <CardContent className="p-4">
-            <div className="flex flex-col items-center">
-              <div className="text-3xl font-bold text-blue-500 mt-2">
-                {data.openPorts.length}
-              </div>
-              <div className="text-sm text-gray-600 text-center">Attack Surface Points</div>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card className="bg-white shadow-sm">
-          <CardContent className="p-4">
-            <div className="flex flex-col items-center">
-              <div className="text-3xl font-bold text-purple-500 mt-2">
-                {Math.floor(Math.random() * 5) + 3}
-              </div>
-              <div className="text-sm text-gray-600 text-center">Potential Attack Vectors</div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <Tabs defaultValue="threat" className="mb-6" onValueChange={setActiveTab}>
-        <TabsList className="grid grid-cols-4 mb-4">
-          <TabsTrigger value="threat" className="flex items-center gap-1">
-            <Shield className="h-4 w-4" />
-            <span className="hidden sm:inline">Threat</span> Intelligence
-          </TabsTrigger>
-          <TabsTrigger value="attack" className="flex items-center gap-1">
-            <Target className="h-4 w-4" />
-            <span className="hidden sm:inline">Attack</span> Vectors
-          </TabsTrigger>
-          <TabsTrigger value="infrastructure" className="flex items-center gap-1">
-            <Server className="h-4 w-4" />
-            IP Enumeration
-          </TabsTrigger>
-          <TabsTrigger value="social" className="flex items-center gap-1">
-            <UserCheck className="h-4 w-4" />
-            Social Intelligence
-          </TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value="threat" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card className="bg-white shadow-sm">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <AlertTriangle className="h-5 w-5 text-red-500" />
-                  Vulnerability Distribution
-                </CardTitle>
-                <CardDescription>
-                  AI-analyzed vulnerability distribution by severity
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="h-64">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={threatData}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={60}
-                        outerRadius={80}
-                        paddingAngle={5}
-                        dataKey="value"
-                        label={({ name, value }) => `${name}: ${value}`}
-                      >
-                        {threatData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                      </Pie>
-                      <Legend />
-                      <Tooltip />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card className="bg-white shadow-sm">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <Target className="h-5 w-5 text-purple-500" />
-                  Exploitation Timeline Probability
-                </CardTitle>
-                <CardDescription>
-                  Likelihood of exploit occurrence over time
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="h-64">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={timelineData}>
-                      <XAxis dataKey="day" />
-                      <YAxis unit="%" />
-                      <Tooltip />
-                      <Line 
-                        type="monotone" 
-                        dataKey="probability" 
-                        stroke="#8884d8" 
-                        activeDot={{ r: 8 }} 
-                        name="Probability"
-                        unit="%"
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-          
-          <ErrorBoundary>
-            <ThreatIntelligencePanel data={data} />
-          </ErrorBoundary>
-        </TabsContent>
-        
-        <TabsContent value="attack" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card className="bg-white shadow-sm">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <Target className="h-5 w-5 text-orange-500" />
-                  Attack Vector Distribution
-                </CardTitle>
-                <CardDescription>
-                  Distribution of potential attack vectors
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="h-64">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={attackVectorData}>
-                      <XAxis dataKey="name" />
-                      <YAxis unit="%" />
-                      <Tooltip />
-                      <Bar dataKey="value" name="Likelihood" unit="%" fill="#8884d8" />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card className="bg-white shadow-sm">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <Shield className="h-5 w-5 text-blue-500" />
-                  Defensive Posture Analysis
-                </CardTitle>
-                <CardDescription>
-                  Current security measures effectiveness
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4 pt-4">
-                  <div>
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="text-sm">Web Application Firewall</span>
-                      <span className="text-sm font-medium text-amber-600">Moderate</span>
-                    </div>
-                    <Progress value={45} className="h-2" />
-                  </div>
-                  <div>
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="text-sm">Network Security</span>
-                      <span className="text-sm font-medium text-red-600">Weak</span>
-                    </div>
-                    <Progress value={28} className="h-2" />
-                  </div>
-                  <div>
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="text-sm">Endpoint Protection</span>
-                      <span className="text-sm font-medium text-green-600">Strong</span>
-                    </div>
-                    <Progress value={72} className="h-2" />
-                  </div>
-                  <div>
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="text-sm">Data Protection</span>
-                      <span className="text-sm font-medium text-amber-600">Moderate</span>
-                    </div>
-                    <Progress value={58} className="h-2" />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-          
-          <ErrorBoundary>
-            <AttackVectorPanel data={data} />
-          </ErrorBoundary>
-        </TabsContent>
-        
-        <TabsContent value="infrastructure" className="space-y-4">
-          <ErrorBoundary>
-            <IpEnumerationPanel data={data} />
-          </ErrorBoundary>
-        </TabsContent>
-        
-        <TabsContent value="social" className="space-y-4">
-          <ErrorBoundary>
-            <SocialIntelPanel data={data} />
-          </ErrorBoundary>
-        </TabsContent>
-      </Tabs>
-      
-      <Card className="p-6 bg-white shadow-sm mb-6">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div>
-            <h3 className="text-base font-medium flex items-center gap-2 mb-2">
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg flex items-center gap-2">
               <Brain className="h-4 w-4 text-purple-600" />
-              Intelligence Mapping Analysis
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              Our AI has analyzed the raw data and created an intelligence map highlighting key security concerns and actionable insights.
-              View the complete report for executive or technical stakeholders.
-            </p>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-2">
-            <Button 
-              variant="outline" 
-              onClick={() => navigate("/executive-view")}
-            >
-              <FileText className="h-4 w-4 mr-2" />
-              View Intelligence Report
-            </Button>
-            
-            <ReportGenerator data={data} companyName="SC Lowy" />
-          </div>
+              Intelligence Score
+            </CardTitle>
+            <CardDescription>Data reliability assessment</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center mt-4">
+              <div className="h-20 w-20 rounded-full border-4 border-purple-500 flex items-center justify-center mr-4">
+                <span className="text-2xl font-bold">{mappingProgress.toFixed(0)}%</span>
+              </div>
+              <div className="space-y-2">
+                <p className="text-sm text-muted-foreground">
+                  Intelligence mapping in progress. Current analysis phase: correlation of multiple data sources.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <Badge variant="outline" className="bg-purple-50">
+                    Financial Data
+                  </Badge>
+                  <Badge variant="outline" className="bg-purple-50">
+                    Personnel Records
+                  </Badge>
+                  <Badge variant="outline" className="bg-purple-50">
+                    Regulatory Filings
+                  </Badge>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg flex items-center gap-2">
+              <BarChart3 className="h-4 w-4 text-purple-600" />
+              Insight Confidence
+            </CardTitle>
+            <CardDescription>Predictive analytics accuracy</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="mt-2 space-y-4">
+              <div>
+                <div className="flex justify-between items-center mb-1 text-sm">
+                  <span>Current Intelligence</span>
+                  <span className="font-medium">95%</span>
+                </div>
+                <Progress value={95} className="h-2" />
+              </div>
+              <div>
+                <div className="flex justify-between items-center mb-1 text-sm">
+                  <span>1-Month Projection</span>
+                  <span className="font-medium">87%</span>
+                </div>
+                <Progress value={87} className="h-2" />
+              </div>
+              <div>
+                <div className="flex justify-between items-center mb-1 text-sm">
+                  <span>3-Month Projection</span>
+                  <span className="font-medium">72%</span>
+                </div>
+                <Progress value={72} className="h-2" />
+              </div>
+              <div>
+                <div className="flex justify-between items-center mb-1 text-sm">
+                  <span>6-Month Projection</span>
+                  <span className="font-medium">58%</span>
+                </div>
+                <Progress value={58} className="h-2" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+      
+      <ErrorBoundary>
+        <div className="mb-6">
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="flex items-center gap-2">
+                    <Network className="h-5 w-5 text-purple-600" />
+                    Entity Relationship Map
+                  </CardTitle>
+                  <CardDescription>
+                    Visualizing connections between key entities
+                  </CardDescription>
+                </div>
+                <div className="flex gap-2">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => setShowAllConnections(!showAllConnections)}
+                  >
+                    {showAllConnections ? "Hide" : "Show"} All Connections
+                  </Button>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="h-[400px] w-full flex items-center justify-center bg-purple-50 rounded-lg">
+                <div className="text-center">
+                  <Network className="h-12 w-12 text-purple-400 mx-auto mb-4" />
+                  <p className="text-sm text-muted-foreground">
+                    Entity relationship visualization would appear here.
+                    <br />
+                    (Visualization component would typically be implemented with
+                    <br /> 
+                    a library like D3.js, vis.js, or react-force-graph)
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
-      </Card>
+      </ErrorBoundary>
+      
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Brain className="h-5 w-5 text-purple-600" />
+              Intelligence Insights
+            </CardTitle>
+            <CardDescription>
+              AI-generated insights based on correlated data
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="p-3 bg-purple-50 rounded-lg">
+                <div className="flex items-center gap-2 mb-1">
+                  <Badge className="bg-purple-100 text-purple-800">High Confidence</Badge>
+                  <span className="text-sm font-medium">Executive Movement Pattern</span>
+                </div>
+                <p className="text-sm text-gray-600">
+                  Analysis of executive LinkedIn profiles indicates a pattern of hiring from Goldman Sachs over the past 18 months, suggesting a potential strategic partnership or acquisition target.
+                </p>
+              </div>
+              
+              <div className="p-3 bg-purple-50 rounded-lg">
+                <div className="flex items-center gap-2 mb-1">
+                  <Badge className="bg-purple-100 text-purple-800">Medium Confidence</Badge>
+                  <span className="text-sm font-medium">Technology Investment</span>
+                </div>
+                <p className="text-sm text-gray-600">
+                  Recent job postings and technology stack changes show increased investment in blockchain technologies, suggesting preparation for new cryptocurrency-related financial products.
+                </p>
+              </div>
+              
+              <div className="p-3 bg-purple-50 rounded-lg">
+                <div className="flex items-center gap-2 mb-1">
+                  <Badge className="bg-purple-100 text-purple-800">High Confidence</Badge>
+                  <span className="text-sm font-medium">Regulatory Focus</span>
+                </div>
+                <p className="text-sm text-gray-600">
+                  Increased engagement with Singapore monetary authorities detected from regulatory filings and public statements, indicating potential expansion of operations in the region.
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <BarChart3 className="h-5 w-5 text-purple-600" />
+              Strategic Intelligence
+            </CardTitle>
+            <CardDescription>
+              Competitive positioning and market intelligence
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <h3 className="text-sm font-medium">Market Position</h3>
+                <div className="grid grid-cols-3 gap-2">
+                  <div className="p-2 border rounded-lg text-center">
+                    <div className="text-lg font-bold">4th</div>
+                    <div className="text-xs text-muted-foreground">APAC Rank</div>
+                  </div>
+                  <div className="p-2 border rounded-lg text-center">
+                    <div className="text-lg font-bold">7th</div>
+                    <div className="text-xs text-muted-foreground">Global Rank</div>
+                  </div>
+                  <div className="p-2 border rounded-lg text-center">
+                    <div className="text-lg font-bold">↑ 3</div>
+                    <div className="text-xs text-muted-foreground">YoY Change</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <h3 className="text-sm font-medium mb-2">Competitive Focus Areas</h3>
+                <div className="space-y-3">
+                  <div>
+                    <div className="flex justify-between items-center mb-1 text-xs">
+                      <span>Distressed Debt</span>
+                      <span className="font-medium">Primary Focus</span>
+                    </div>
+                    <Progress value={95} className="h-1.5" />
+                  </div>
+                  <div>
+                    <div className="flex justify-between items-center mb-1 text-xs">
+                      <span>High Yield</span>
+                      <span className="font-medium">Secondary Focus</span>
+                    </div>
+                    <Progress value={70} className="h-1.5" />
+                  </div>
+                  <div>
+                    <div className="flex justify-between items-center mb-1 text-xs">
+                      <span>Special Situations</span>
+                      <span className="font-medium">Growing Focus</span>
+                    </div>
+                    <Progress value={65} className="h-1.5" />
+                  </div>
+                  <div>
+                    <div className="flex justify-between items-center mb-1 text-xs">
+                      <span>Cryptocurrency</span>
+                      <span className="font-medium">Emerging Focus</span>
+                    </div>
+                    <Progress value={35} className="h-1.5" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
       
       <footer className="mt-8 text-center text-sm text-muted-foreground">
-        <div className="flex items-center justify-center mb-2">
-          <Brain className="h-4 w-4 mr-1 text-purple-600" />
-          <span>Intelligence Mapping Analysis</span>
-        </div>
-        <p>AI-powered analysis of intelligence data gathered from multiple sources. For security assessment purposes only.</p>
+        <p>Intelligence mapping powered by advanced data correlation algorithms.</p>
+        <p className="text-xs mt-1">For security assessment purposes only.</p>
       </footer>
     </div>
   );
