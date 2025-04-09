@@ -34,9 +34,9 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/dashboard" element={<Index data={mockData} />} />
-          <Route path="/data-discovery" element={<DataDiscovery />} />
-          <Route path="/correlated-intelligence" element={<CorrelatedIntelligence />} />
-          <Route path="/intelligence-reporting" element={<IntelligenceReporting />} />
+          <Route path="/data-discovery" element={<DataDiscovery data={mockData} />} />
+          <Route path="/correlated-intelligence" element={<CorrelatedIntelligence data={mockData} />} />
+          <Route path="/intelligence-reporting" element={<IntelligenceReporting data={mockData} />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
