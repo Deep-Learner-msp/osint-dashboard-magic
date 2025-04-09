@@ -1,471 +1,718 @@
-import React, { useState, useEffect } from "react";
-import { OsintData, NewsItem } from "@/types/data";
-import { Button } from "@/components/ui/button";
+import React from "react";
+import Dashboard from "@/components/Dashboard";
+import { OsintData } from "@/types/data";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft, Database, Brain, BarChart3, Info, MapPin, Users, Building, Globe, Briefcase, Shield, AlertTriangle, ExternalLink, Newspaper } from "lucide-react";
-import InfrastructurePanel from "@/components/InfrastructurePanel";
-import TechStackPanel from "@/components/TechStackPanel";
-import DataLeaksPanel from "@/components/DataLeaksPanel";
-import FileSearchPanel from "@/components/FileSearchPanel";
-import ContactInformationPanel from "@/components/ContactInformationPanel";
-import SocialIntelPanel from "@/components/SocialIntelPanel";
-import ShodanPanel from "@/components/ShodanPanel";
-import ErrorBoundary from "@/components/ui/error-boundary";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
-import ExplanationDialog from "@/components/ui/ExplanationDialog";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { getSecurityAssessment } from "@/utils/osint-helpers";
+import { Button } from "@/components/ui/button";
 
-interface ExtractedDataProps {
-  data: OsintData;
-}
-
-const ExtractedData: React.FC<ExtractedDataProps> = ({ data }) => {
-  const navigate = useNavigate();
-  const [explanationOpen, setExplanationOpen] = useState(false);
-  const [explanationContent, setExplanationContent] = useState<{
-    title: string;
-    description?: string;
-    content: React.ReactElement;
-  }>({
-    title: "",
-    description: "",
-    content: <div />
-  });
-
-  const showExplanation = (title: string, description: string, content: React.ReactNode) => {
-    setExplanationContent({
-      title,
-      description,
-      content: <>{content}</>
-    });
-    setExplanationOpen(true);
-  };
-
-  const securityAssessment = getSecurityAssessment(data);
-
-  const recentNews: NewsItem[] = data.recentNews || [
+// Mock data for the dashboard
+export const mockData: OsintData = {
+  openPorts: [80, 443],
+  qualysScan: {
+    severity_1: 26,
+    severity_2: 7,
+    severity_3: 4,
+    severity_4: 1
+  },
+  organizationDescription: [
+    "SC Lowy is a leading alternative asset manager with $1.6 billion in assets under management, specializing in opportunistic credit, special situations, and private credit across Asia Pacific, the Middle East, and Europe. Founded in 2009, the firm operates out of nine global offices with a team of over 50 experienced professionals.\n\nAt SC Lowy, we leverage our deep market expertise and local presence to overcome barriers to entry in fragmented markets. Our dedicated local teams cultivate long-standing relationships, granting us prime access to untapped investment opportunities. We focus on solid, cash-generating businesses and prioritize capital preservation, with a strong emphasis on downside protection through senior secured lending backed by hard assets.\n\nWith a proven track record in both private credit closed-end and open-ended funds, SC Lowy is committed to delivering innovative financial solutions that maximize value for our investors. Our approach combines rigorous credit analysis with a focus on mitigating risk, ensuring robust returns while safeguarding capital."
+  ],
+  organizationStructure: [59],
+  technologies: [
+    "Google Maps (Non Paid Users)",
+    "Adobe Media Optimizer",
+    "reCAPTCHA",
+    "Google Tag Manager",
+    "Cedexis Radar",
+    "DigitalOcean",
+    "Apache",
+    "Nginx",
+    "Outlook",
+    "Mobile Friendly",
+    "Vimeo",
+    "WordPress.org",
+    "Google Maps",
+    "Google Font API",
+    "Gravity Forms"
+  ],
+  financialData: [450000000],
+  contactInformation: {
+    phone: ["+852 3405 1300"],
+    twitter: ["https://twitter.com/sclowynews"],
+    linkedin: ["http://www.linkedin.com/company/sclowy"],
+    address: ["8 Queen's Rd, Hong Kong, Hong Kong"]
+  },
+  websiteInsights: [
+    "159.65.201.6",
+    "195.191.218.28",
+    "14.0.145.137",
+    "14.0.209.132"
+  ],
+  dataLeaksCompliance: [
     {
-      title: "TradeFi Global Expands Cryptocurrency Trading Services",
-      date: "2023-12-10",
-      source: "Financial Times",
-      url: "#",
-      summary: "TradeFi Global announced plans to expand its cryptocurrency trading services, adding support for NFTs and DeFi protocols starting Q1 2024.",
-      sentiment: "positive",
-      relevance: 0.95,
-      tags: ["cryptocurrency", "expansion", "strategic", "trading"]
+      id: "21066022788",
+      email: "ada.yu@sclowy.com",
+      ip_address: "",
+      username: "",
+      password: "",
+      hashed_password: "",
+      name: "ada yu",
+      vin: "",
+      address: "HK;Hong Kong;HKG",
+      phone: "98226619",
+      database_name: "covve"
     },
     {
-      title: "Regulatory Inquiry into TradeFi's Singapore Operations",
-      date: "2023-11-28",
-      source: "Bloomberg",
-      url: "#",
-      summary: "The Monetary Authority of Singapore (MAS) has opened an inquiry into TradeFi Global's compliance procedures following a series of high-volume transactions.",
-      sentiment: "negative",
-      relevance: 0.89,
-      tags: ["regulatory", "compliance", "risk", "singapore"]
+      id: "4103859506",
+      email: "steve.lyons@sclowy.com",
+      ip_address: "",
+      username: "",
+      password: "iloveian",
+      hashed_password: "",
+      name: "",
+      vin: "",
+      address: "",
+      phone: "",
+      database_name: "BreachCompilation"
     },
     {
-      title: "TradeFi in Advanced Talks to Acquire Asian Fintech Startup",
-      date: "2023-12-05",
-      source: "Reuters",
-      url: "#",
-      summary: "Sources close to the matter reveal TradeFi is in advanced negotiations to acquire a Singapore-based fintech startup specializing in AI-driven trading algorithms.",
-      sentiment: "positive",
-      relevance: 0.92,
-      tags: ["acquisition", "M&A", "fintech", "AI"]
+      id: "16478160363",
+      email: "jamie.tadelis@sclowy.com",
+      ip_address: "",
+      username: "",
+      password: "jamiehal",
+      hashed_password: "",
+      name: "",
+      vin: "",
+      address: "",
+      phone: "",
+      database_name: "Collections"
     },
     {
-      title: "Executive Shuffle: TradeFi Appoints New CTO from Google",
-      date: "2023-11-15",
-      source: "Wall Street Journal",
-      url: "#",
-      summary: "TradeFi Global has appointed Dr. Lisa Xu, former Google Cloud engineering director, as its new Chief Technology Officer to lead its digital transformation efforts.",
-      sentiment: "positive",
-      relevance: 0.88,
-      tags: ["executive", "leadership", "technology", "digital transformation"]
+      id: "15135282863",
+      email: "bailey.yi@sclowy.com",
+      ip_address: "",
+      username: "",
+      password: "abcd1308",
+      hashed_password: "",
+      name: "",
+      vin: "",
+      address: "",
+      phone: "",
+      database_name: "Collections"
     },
     {
-      title: "Data Breach Investigation at TradeFi Subsidiary",
-      date: "2023-12-02",
-      source: "CyberSecurity Today",
-      url: "#",
-      summary: "A TradeFi subsidiary is investigating a potential data breach after unusual activity was detected in their client portal system. No confirmation of compromised data yet.",
-      sentiment: "negative",
-      relevance: 0.97,
-      tags: ["security", "breach", "risk", "data protection"]
+      id: "8797724263",
+      email: "michel.lowy@sclowy.com",
+      ip_address: "",
+      username: "f3c242fa465e25ba0a74999a7",
+      password: "",
+      hashed_password: "",
+      name: "michel.lowy@sclowy.com",
+      vin: "",
+      address: "",
+      phone: "",
+      database_name: "ShareThis"
     }
-  ];
+  ],
+  fileSearch: {
+    PDF: [
+      "https://files.brokercheck.finra.org/firm/firm_305918.pdf",
+      "https://reports.adviserinfo.sec.gov/reports/ADV/287701/PDF/287701.pdf",
+      "https://www.stockexchangeofmauritius.com/media/10528/upl-results-30-september-2024.pdf",
+      "https://reports.adviserinfo.sec.gov/reports/ADV/312843/PDF/312843.pdf",
+      "https://elvingerhoss.lu/sites/default/files/generated/sc-lowy-financial-hk-ltd-first-luxembourg-stand-alone-slp-2325.pdf"
+    ],
+    XLS: [
+      "https://www.bankingsupervision.europa.eu/ecb/pub/pdf/ssm.listofsupervisedentities202402.en.xlsx",
+      "https://haas.berkeley.edu/wp-content/uploads/2018-International-MBA-Offer-Compilation-with-citizenship-data.xlsx",
+      "https://aszp.mnb.hu/sw/static/file/penzugyi_hu_20191230.xls",
+      "https://dwtyzx6upklss.cloudfront.net/Uploads/g/p/l/list_of_pri_signatories_as_of_may_2024_45253.xlsx",
+      "https://www.globalprivatecapital.org/app/uploads/2024/08/GPCA_Private-Credit-in-Asia_2023_vF-1.xlsx"
+    ],
+    DOC: [
+      "https://fcbfi.org/wp-content/uploads/2023/12/SC-Lowy-Korea_Junior-Analyst_%EC%B1%84%EC%9A%A9%EC%84%A4%EB%AA%85%EC%84%9C.docx",
+      "https://cdn.success.isenberg.umass.edu/wp-content/uploads/sites/115/2021/09/Investment-Banking-Resources.docx",
+      "http://static2.vietstock.vn/vietstock/2017/8/10/1.MSR_201.08.10_Report%20of%20corporate%20governance%20for%20the%20mid-annual%20of%202017.docx"
+    ],
+    PPt: []
+  },
+  shodanData: {
+    "city": "Amsterdam",
+    "region_code": "NH",
+    "os": null,
+    "tags": [
+        "cloud"
+    ],
+    "ip": 2671888646,
+    "isp": "DigitalOcean, LLC",
+    "area_code": null,
+    "longitude": 4.88969,
+    "last_update": "2025-03-23T21:26:22.802009",
+    "ports": [
+        80,
+        443,
+        22
+    ],
+    "latitude": 52.37403,
+    "hostnames": [
+        "sclowy.com",
+        "www.sclowy.com"
+    ],
+    "country_code": "NL",
+    "country_name": "Netherlands",
+    "domains": [
+        "sclowy.com"
+    ],
+    "org": "DigitalOcean, LLC",
+    "data": [
+        {
+            "ip": 2671888646,
+            "port": 22,
+            "transport": "tcp",
+            "version": "8.2p1 Ubuntu 4ubuntu0.12",
+            "cloud": {
+                "region": "nl-nh",
+                "service": null,
+                "provider": "DigitalOcean"
+            },
+            "location": {
+                "city": "Amsterdam",
+                "region_code": "NH",
+                "area_code": null,
+                "longitude": 4.88969,
+                "country_name": "Netherlands",
+                "country_code": "NL",
+                "latitude": 52.37403
+            },
+            "product": "OpenSSH",
+            "hash": -1343835081,
+            "tags": [
+                "cloud"
+            ],
+            "timestamp": "2025-03-18T17:33:22.834715",
+            "hostnames": [],
+            "ssh": {
+                "type": "ssh-rsa",
+                "fingerprint": "c7:3b:7b:bd:6d:a0:25:d1:d8:1c:4d:e9:cc:b9:0f:30",
+                "mac": "hmac-sha2-256",
+                "cipher": "aes128-ctr",
+                "key": "AAAAB3NzaC1yc2EAAAADAQABAAABgQDZZE2rqJKFsYu6x9O7B6zOmn2yi/2gzKb3Hv9r/q6tZbxY\npCv/savk+znJ9aw4RsHdGCHYscori+1kOvjNPIG8oc0mMv67qjr3ZAsHeGrddtMgH2Q4HmALAcVx\nYnNCzknvmRSYES+LtCee86AtZmOkIqOPApUPisHnnewL9iSagR0Xa1dzL4t06JO0INbDjBZkezZ2\n3o8iZR+v+Qy4BSwEa0YMk4im65mq79P82wUKdPeYkBL7GztvOKVYxAl50+B+AhDOlH5q+tRJ35Qc\nwFJiuYYeAovQE7Rdjd0+gsF0xztkc9R8ETp6Fn2m08trQqHV0pxW+5zQ1VRW3pffk3zkVYsfE9s/\n49qf6dD40mV5pLG541lBBAjgnaK5CDf3wFNfcYLM8MFKn4pHqHqKeoKlJR87SMBZxuVMA0metlTJ\ny+CvxOnNXW95WVYftehJdhS02BYTD7ExJOvvK2RbTJpGNVi7wyq9E/dV1JWtVAxgnLJrljlcSq4f\nwozvwtf+Zw0=\n",
+                "kex": {
+                    "unused": 0,
+                    "server_host_key_algorithms": [
+                        "rsa-sha2-512",
+                        "rsa-sha2-256",
+                        "ssh-rsa",
+                        "ecdsa-sha2-nistp256",
+                        "ssh-ed25519"
+                    ],
+                    "encryption_algorithms": [
+                        "chacha20-poly1305@openssh.com",
+                        "aes128-ctr",
+                        "aes192-ctr",
+                        "aes256-ctr",
+                        "aes128-gcm@openssh.com",
+                        "aes256-gcm@openssh.com"
+                    ],
+                    "kex_follows": false,
+                    "languages": [
+                        ""
+                    ],
+                    "kex_algorithms": [
+                        "curve25519-sha256",
+                        "curve25519-sha256@libssh.org",
+                        "ecdh-sha2-nistp256",
+                        "ecdh-sha2-nistp384",
+                        "ecdh-sha2-nistp521",
+                        "diffie-hellman-group-exchange-sha256",
+                        "diffie-hellman-group16-sha512",
+                        "diffie-hellman-group18-sha512",
+                        "diffie-hellman-group14-sha256",
+                        "kex-strict-s-v00@openssh.com"
+                    ],
+                    "compression_algorithms": [
+                        "none",
+                        "zlib@openssh.com"
+                    ],
+                    "mac_algorithms": [
+                        "umac-64-etm@openssh.com",
+                        "umac-128-etm@openssh.com",
+                        "hmac-sha2-256-etm@openssh.com",
+                        "hmac-sha2-512-etm@openssh.com",
+                        "hmac-sha1-etm@openssh.com",
+                        "umac-64@openssh.com",
+                        "umac-128@openssh.com",
+                        "hmac-sha2-256",
+                        "hmac-sha2-512",
+                        "hmac-sha1"
+                    ]
+                },
+                "hassh": "779664e66160bf75999f091fce5edb5a"
+            },
+            "org": "DigitalOcean, LLC",
+            "data": "SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.12\nKey type: ssh-rsa\nKey: AAAAB3NzaC1yc2EAAAADAQABAAABgQDZZE2rqJKFsYu6x9O7B6zOmn2yi/2gzKb3Hv9r/q6tZbxY\npCv/savk+znJ9aw4RsHdGCHYscori+1kOvjNPIG8oc0mMv67qjr3ZAsHeGrddtMgH2Q4HmALAcVx\nYnNCzknvmRSYES+LtCee86AtZmOkIqOPApUPisHnnewL9iSagR0Xa1dzL4t06JO0INbDjBZkezZ2\n3o8iZR+v+Qy4BSwEa0YMk4im65mq79P82wUKdPeYkBL7GztvOKVYxAl50+B+AhDOlH5q+tRJ35Qc\nwFJiuYYeAovQE7Rdjd0+gsF0xztkc9R8ETp6Fn2m08trQqHV0pxW+5zQ1VRW3pffk3zkVYsfE9s/\n49qf6dD40mV5pLG541lBBAjgnaK5CDf3wFNfcYLM8MFKn4pHqHqKeoKlJR87SMBZxuVMA0metlTJ\ny+CvxOnNXW95WVYftehJdhS02BYTD7ExJOvvK2RbTJpGNVi7wyq9E/dV1JWtVAxgnLJrljlcSq4f\nwozvwtf+Zw0=\nFingerprint: c7:3b:7b:bd:6d:a0:25:d1:d8:1c:4d:e9:cc:b9:0f:30\n\nKex Algorithms:\n\tcurve25519-sha256\n\tcurve25519-sha256@libssh.org\n\tecdh-sha2-nistp256\n\tecdh-sha2-nistp384\n\tecdh-sha2-nistp521\n\tdiffie-hellman-group-exchange-sha256\n\tdiffie-hellman-group16-sha512\n\tdiffie-hellman-group18-sha512\n\tdiffie-hellman-group14-sha256\n\tkex-strict-s-v00@openssh.com\n\nServer Host Key Algorithms:\n\trsa-sha2-512\n\trsa-sha2-256\n\tssh-rsa\n\tecdsa-sha2-nistp256\n\tssh-ed25519\n\nEncryption Algorithms:\n\tchacha20-poly1305@openssh.com\n\taes128-ctr\n\taes192-ctr\n\taes256-ctr\n\taes128-gcm@openssh.com\n\taes256-gcm@openssh.com\n\nMAC Algorithms:\n\tumac-64-etm@openssh.com\n\tumac-128-etm@openssh.com\n\thmac-sha2-256-etm@openssh.com\n\thmac-sha2-512-etm@openssh.com\n\thmac-sha1-etm@openssh.com\n\tumac-64@openssh.com\n\tumac-128@openssh.com\n\thmac-sha2-256\n\thmac-sha2-512\n\thmac-sha1\n\nCompression Algorithms:\n\tnone\n\tzlib@openssh.com\n",
+            "asn": "AS14061",
+            "cpe23": [
+                "cpe:2.3:a:openbsd:openssh:8.2p1",
+                "cpe:2.3:o:canonical:ubuntu_linux"
+            ],
+            "info": "protocol 2.0",
+            "isp": "DigitalOcean, LLC",
+            "cpe": [
+                "cpe:/a:openbsd:openssh:8.2p1",
+                "cpe:/o:canonical:ubuntu_linux"
+            ],
+            "domains": [],
+            "ip_str": "159.65.201.6",
+            "os": "Linux",
+            "_shodan": {
+                "region": "eu",
+                "module": "ssh",
+                "ptr": true,
+                "id": "31079763-9ae8-4cb4-b662-60b6875d6666",
+                "options": {},
+                "crawler": "bfb295b1dac9b1783126e88777b186a5006c26b0"
+            },
+            "opts": {}
+        },
+        {
+            "ip": 2671888646,
+            "hash": -2116735968,
+            "port": 80,
+            "transport": "tcp",
+            "cloud": {
+                "region": "nl-nh",
+                "service": null,
+                "provider": "DigitalOcean"
+            },
+            "location": {
+                "city": "Amsterdam",
+                "region_code": "NH",
+                "area_code": null,
+                "longitude": 4.88969,
+                "country_name": "Netherlands",
+                "country_code": "NL",
+                "latitude": 52.37403
+            },
+            "product": "nginx",
+            "http": {
+                "status": 200,
+                "robots_hash": null,
+                "redirects": [],
+                "title_hash": 758560121,
+                "securitytxt": null,
+                "title": "Artboard",
+                "sitemap_hash": null,
+                "html_hash": 1361730808,
+                "robots": null,
+                "dom_hash": 495430245,
+                "headers_hash": -2017483894,
+                "host": "159.65.201.6",
+                "location": "/",
+                "components": {},
+                "securitytxt_hash": null,
+                "server": "nginx",
+                "sitemap": null,
+                "server_hash": -1340961475
+            },
+            "tags": [
+                "cloud"
+            ],
+            "timestamp": "2025-03-21T18:51:18.747408",
+            "hostnames": [],
+            "org": "DigitalOcean, LLC",
+            "data": "HTTP/1.1 200 OK\r\nServer: nginx\r\nDate: Fri, 21 Mar 2025 18:51:18 GMT\r\nContent-Type: text/html; charset=utf-8\r\nContent-Length: 29285\r\nLast-Modified: Fri, 12 Apr 2024 08:50:06 GMT\r\nConnection: keep-alive\r\nVary: Accept-Encoding\r\nETag: \"6618f5be-7265\"\r\nX-Frame-Options: SAMEORIGIN\r\nX-XSS-Protection: 1; mode=block\r\nX-Content-Type-Options: nosniff\r\nAccept-Ranges: bytes\r\n\r\n",
+            "asn": "AS14061",
+            "cpe23": [
+                "cpe:2.3:a:f5:nginx"
+            ],
+            "isp": "DigitalOcean, LLC",
+            "cpe": [
+                "cpe:/a:f5:nginx"
+            ],
+            "domains": [],
+            "ip_str": "159.65.201.6",
+            "os": null,
+            "_shodan": {
+                "region": "eu",
+                "module": "http",
+                "ptr": true,
+                "options": {},
+                "id": "4c096ac2-fc8d-4505-accd-837755ee94cc",
+                "crawler": "f84746de6c89bcf60f34a5f0aee149448facfc91"
+            },
+            "opts": {}
+        },
+        {
+            "ip": 2671888646,
+            "hash": 1450505649,
+            "port": 443,
+            "transport": "tcp",
+            "cloud": {
+                "region": "nl-nh",
+                "service": null,
+                "provider": "DigitalOcean"
+            },
+            "location": {
+                "city": "Amsterdam",
+                "region_code": "NH",
+                "area_code": null,
+                "longitude": 4.88969,
+                "country_name": "Netherlands",
+                "country_code": "NL",
+                "latitude": 52.37403
+            },
+            "product": "nginx",
+            "http": {
+                "status": 200,
+                "robots_hash": null,
+                "redirects": [],
+                "title_hash": 340298613,
+                "favicon": {
+                    "hash": 1061459480,
+                    "data": "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAABGdBTUEAALGPC/xhBQAAACBjSFJN\nAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABtlBMVEUSS2EQSWAPSV8VTWMU\nTGIRSmAQSmA2ZnlukZ6ZsbupvsalusOHpK9TfIwhV2sQSV8RS2EvYXSPqrTg5+r8/f3////09vfB\n0NZfhpUYUGVKdobK19z+/v7y9faTrbcjWG1JdYbZ4ualusIiV2suYHTI1tv2+Pm/z9SGo655maad\ntb7b5Of9/v77/PyMqLMWTmQTTGL+/v/q7/F1lqMgVWoPSF81Zniftr/3+frt8fNSfIw0ZXjd5ej4\n+fp2l6QbUmeMp7L5+vuvwsoaUWdojJrD0dceVGno7vA/bX+Rq7WOqbRCcIHo7e/8/P1njJoTS2Gi\nuMEaUWa6ytGBoKuasryswMcXT2SkusKDoa16mqbl6+5Cb4EZUGa3yM9tkJ5Gc4SuwslDcILn7e/s\n8fJEcYMRSmGxxMubs7wkWW0qXXG2x865ytAdVGlPeYr7/P24yc9QeoscU2hIdIXx9fZbg5IUTWOB\nn6v4+vrv8/XG09muwcm/ztT9/f2Wr7kZUGWSrLanvMQlWW0cUmh8m6fx9PaVrrimu8Tk6u36/Pz9\n/f5cg5IYT2U5aHtiiJd9nKiAn6prj51EcYKmBiBjAAAAAWJLR0QV5dj5owAAAAd0SU1FB+gFCgg6\nEKeTw/4AAAFiSURBVDjLY2AYaoCRiYGZhZGJFYc0Gws7BycXNw8vH78AVnlBIWERUSAQE5eQxGII\nq5S0jCgUyMrJs2FYr6AoigAiSspoZrCpqALF1dQ1NLW0dYAsXT19VAUGeoaiokbGJvymBmbmFkAV\nllZMKBZY24iK2toxgMzlt3dwBKpwckb2CpOLrqioKx/EXjY3LqACdw9kI1g9gUJeMHcxefuIivr6\nmSIp8A8AKtBghPIEAoOA3GB+JAUCIUCR0DC4k8OB3AhkBUyRQJGoaKitAjGxoqI6cchWMMVbAlUk\n8EEsMU1MEhVNTkF2ZKp9Gih00jNMWRlSTTOzgJzsHJSwZMo1Agrm5ReYMBcW5QPDsrgEJaAYGErL\nykGRUFFZVQ1SWlNbhxblrIX1tkiR1dCIEZ2sTc1RMPmW1gwMeaAKg/i29g5R0U7LoK5u7KmOP6yn\nt69/wsQc7EkOHKumTPymOBPt4AUAS9076d/h5DgAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjQtMDUt\nMTBUMDg6NTg6MTYrMDA6MDB+6Ll0AAAAJXRFWHRkYXRlOm1vZGlmeQAyMDI0LTA1LTEwVDA4OjU4\nOjE2KzAwOjAwD7UByAAAAFd6VFh0UmF3IHByb2ZpbGUgdHlwZSBpcHRjAAB4nOPyDAhxVigoyk/L\nzEnlUgADIwsuYwsTIxNLkxQDEyBEgDTDZAMjs1Qgy9jUyMTMxBzEB8uASKBKLgDqFxF08kI1lQAA\nAAAABJRU5ErkJggg==\n",
+                    "location": "https://sclowy.com:443/favicon-32x32.png"
+                },
+                "securitytxt": null,
+                "title": "Home - SC Lowy",
+                "sitemap_hash": null,
+                "html_hash": 1550773271,
+                "robots": null,
+                "server": "nginx",
+                "headers_hash": 926009531,
+                "host": "sclowy.com",
+                "location": "/",
+                "components": {
+                    "jQuery": {
+                        "categories": [
+                            "JavaScript libraries"
+                        ]
+                    },
+                    "Font Awesome": {
+                        "categories": [
+                            "Font scripts"
+                        ]
+                    },
+                    "Site Kit": {
+                        "categories": [
+                            "Analytics",
+                            "WordPress plugins"
+                        ],
+                        "versions": [
+                            "1.126.0"
+                        ]
+                    },
+                    "jQuery Migrate": {
+                        "categories": [
+                            "JavaScript libraries"
+                        ],
+                        "versions": [
+                            "3.4.1"
+                        ]
+                    },
+                    "Google Analytics": {
+                        "categories": [
+                            "Analytics"
+                        ]
+                    },
+                    "Google Tag Manager": {
+                        "categories": [
+                            "Tag managers"
+                        ]
+                    },
+                    "WordPress": {
+                        "categories": [
+                            "CMS",
+                            "Blogs"
+                        ]
+                    },
+                    "MySQL": {
+                        "categories": [
+                            "Databases"
+                        ]
+                    },
+                    "AddToAny": {
+                        "categories": [
+                            "Widgets"
+                        ]
+                    },
+                    "Yoast SEO": {
+                        "categories": [
+                            "SEO",
+                            "WordPress plugins"
+                        ],
+                        "versions": [
+                            "20.13"
+                        ]
+                    },
+                    "PHP": {
+                        "categories": [
+                            "Programming languages"
+                        ]
+                    }
+                },
+                "securitytxt_hash": null,
+                "dom_hash": 1321807484,
+                "sitemap": null,
+                "server_hash": -1340961475
+            },
+            "tags": [
+                "cloud"
+            ],
+            "timestamp": "2025-03-23T21:26:22.802009",
+            "ssl": {
+                "chain_sha256": [
+                    "9638ece8271f2ba947ef9af1e5195e292d472a9707e2dbdb3950ee22226228c0",
+                    "76e9e288aafc0e37f4390cbf946aad997d5c1c901b3ce513d3d8fadbabe2ab85"
+                ],
+                "jarm": "00000000000000000000000000000000000000000000000000000000000000",
+                "tlsext": [],
+                "chain": [
+                    "-----BEGIN CERTIFICATE-----\nMIIDojCCAyigAwIBAgISA43ZFXK50RRl++iBZ6djOrO7MAoGCCqGSM49BAMDMDIx\nCzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1MZXQncyBFbmNyeXB0MQswCQYDVQQDEwJF\nNjAeFw0yNTAyMTgxMjE0NTBaFw0yNTA1MTkxMjE0NDlaMBUxEzARBgNVBAMTCnNj\nbG93eS5jb20wdjAQBgcqhkjOPQIBBgUrgQQAIgNiAAR9xHrZpRWkmzD878d6hLkh\nmfZLewbVcUGInTTBYEQ6YkHNWPfkqFy+EWsK+5e9/OPIgQY84YNzjeXGWkrahmp0\nUuNq9D1tuQKDdj6BnsdphEl07hBvzZYiKUXupJ2Q7uOjggIcMIICGDAOBgNVHQ8B\nAf8EBAMCB4AwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAwGA1UdEwEB\n/wQCMAAwHQYDVR0gBAwwCjAIBgZngQwBAgEwJwYDVR0fBCAwHjAcoBqgGIYWaHR0cDovL3gxLmMubGVu\nY3Iub3JnLzANBgkqhkiG9w0BAQsFAAOCAgEAfYt7SiA1sgWGCIpunk46r4AExIRc\nMxkKgUhNlrrv1B21hOaXN/5miE+LOTbrcmU/M9yvC6MVY730GNFoL8IhJ8j8vrOL\npMY22OP6baS1k9YMrtDTlwJHoGby04ThTUeBDksS9RiuHvicZqBedQdIF65pZuhp\neDcGBcLiYasQr/EO5gxxtLyTmgsHSOVSBcFOn9lgv7LECPq9i7mfH3mpxgrRKSxH\npOoZ0KXMcB+hHuvlklHntvcI0mMMQ0mhYj6qtMFStkF1RpCG3IPdIwpVCQqu8GV7\ns8ubknRzs+3C/Bm19RFOoiPpDkwvyNfvmQ14XkyqqKK5oZ8zhD32kFRQkxa8uZSu\nh4aTImFxknu39waBxIRXE4jKxlAmQc4QjFZoq1KmQqQg0J/1JF8RlFvJas1VcjLv\nYlvUB2t6npO6oQjB3l+PNf0DpQH7iUx3Wz5AjQCi6L25FjyE06q6BZ/QlmtYdl/8\nZYao4SRqPEs/6cAiF+Qf5zg2UkaWtDphl1LKMuTNLotvsX99HP69V2faNyegodQ0\nLyTApr/vT01YPE46vNsDLgK+4cL6TrzC/a4WcmF5SRJ938zrv/duJHLXQIku5v0+\nEwOy59Hdm0PT/Er/84dDV0CSjdR/2XuZM3kpysSKLgD1cKiDA+IRguODCxfO9cyY\nIg46v9mFmBvyH04=\n-----END CERTIFICATE-----\n",
+                    "-----BEGIN CERTIFICATE-----\nMIIEVzCCAj+gAwIBAgIRALBXPpFzlydw27SHyzpFKzgwDQYJKoZIhvcNAQELBQAw\nTzELMAkGA1UEBhMCVVMxKTAnBgNVBAoTIEludGVybmV0IFNlY3VyaXR5IFJlc2Vh\ncmNoIEdyb3VwMRUwEwYDVQQDEwxJU1JHIFJvb3QgWDEwHhcNMjQwMzEzMDAwMDAw\nWhcNMjcwMzEyMjM1OTU5WjAyMQswCQYDVQQGEwJVUzEWMBQGA1UEChMNTGV0J3Mg\nRW5jcnlwdDELMAkGA1UEAxMCRTYwdjAQBgcqhkjOPQIBBgUrgQQAIgNiAATZ8Z5G\nh/ghcWCoJuuj+rnq2h25EqfUJtlRFLFhfHWWvyILOR/VvtEKRqotPEoJhC6+QJVV\n6RlAN2Z17TJOdwRJ+HB7wxjnzvdxEP6sdNgA1O1tHHMWMxCcOrLqbGL0vbijgfgw\ngfUwDgYDVR0PAQH/BAQDAgGGMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcD\nATASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdDgQWBBSTJ0aYA6lRaI6Y1sRCSNsj\nv1iU0jAfBgNVHSMEGDAWgBR5tFnme7bl5AFzgAiIyBpY9umbbjAyBggrBgEFBQcB\nAQQmMCQwIgYIKwYBBQUHMAKGFmh0dHA6Ly94MS5pLmxlbmNyLm9yZy8wEwYDVR0g\nBAwwCjAIBgZngQwBAgEwJwYDVR0fBCAwHjAcoBqgGIYWaHR0cDovL3gxLmMubGVu\nY3Iub3JnLzANBgkqhkiG9w0BAQsFAAOCAgEAfYt7SiA1sgWGCIpunk46r4AExIRc\nMxkKgUhNlrrv1B21hOaXN/5miE+LOTbrcmU/M9yvC6MVY730GNFoL8IhJ8j8vrOL\npMY22OP6baS1k9YMrtDTlwJHoGby04ThTUeBDksS9RiuHvicZqBedQdIF65pZuhp\neDcGBcLiYasQr/EO5gxxtLyTmgsHSOVSBcFOn9lgv7LECPq9i7mfH3mpxgrRKSxH\npOoZ0KXMcB+hHuvlklHntvcI0mMMQ0mhYj6qtMFStkF1RpCG3IPdIwpVCQqu8GV7\ns8ubknRzs+3C/Bm19RFOoiPpDkwvyNfvmQ14XkyqqKK5oZ8zhD32kFRQkxa8uZSu\nh4aTImFxknu39waBxIRXE4jKxlAmQc4QjFZoq1KmQqQg0J/1JF8RlFvJas1VcjLv\nYlvUB2t6npO6oQjB3l+PNf0DpQH7iUx3Wz5AjQCi6L25FjyE06q6BZ/QlmtYdl/8\nZYao4SRqPEs/6cAiF+Qf5zg2UkaWtDphl1LKMuTNLotvsX99HP69V2faNyegodQ0\nLyTApr/vT01YPE46vNsDLgK+4cL6TrzC/a4WcmF5SRJ938zrv/duJHLXQIku5v0+\nEwOy59Hdm0PT/Er/84dDV0CSjdR/2XuZM3kpysSKLgD1cKiDA+IRguODCxfO9cyY\nIg46v9mFmBvyH04=\n-----END CERTIFICATE-----\n"
+                ],
+                "versions": [
+                    "-TLSv1",
+                    "-SSLv2",
+                    "-SSLv3",
+                    "-TLSv1.1",
+                    "TLSv1.2",
+                    "TLSv1.3"
+                ],
+                "acceptable_cas": [],
+                "ja3s": "93546012d50bbfdd5a94bc6b31fcafea",
+                "cert": {
+                    "sig_alg": "ecdsa-with-SHA384",
+                    "issued": "20250218121450Z",
+                    "expires": "20250519121449Z",
+                    "expired": false,
+                    "version": 2,
+                    "extensions": [
+                        {
+                            "critical": true,
+                            "data": "\\x03\\x02\\x07\\x80",
+                            "name": "keyUsage"
+                        },
+                        {
+                            "data": "0\\x14\\x06\\x08+\\x06\\x01\\x05\\x05\\x07\\x03\\x01\\x06\\x08+\\x06\\x01\\x05\\x05\\x07\\x03\\x02",
+                            "name": "extendedKeyUsage"
+                        },
+                        {
+                            "critical": true,
+                            "data": "0\\x00",
+                            "name": "basicConstraints"
+                        },
+                        {
+                            "data": "\\x04\\x14\\xdc\\x95\\x8d\\xeb\\xf6\\xc9\\xd9\\x8a\\xd9\\xbd\\xcb\\xf2\\x90F\\xf11\\x8f\\xc8\\xf1/",
+                            "name": "subjectKeyIdentifier"
+                        },
+                        {
+                            "data": "0\\x16\\x80\\x14\\x93\\'F\\x98\\x03\\xa9Qh\\x8e\\x98\\xd6\\xc4BH\\xdb#\\xbfX\\x94\\xd2",
+                            "name": "authorityKeyIdentifier"
+                        },
+                        {
+                            "data": "0G0!\\x06\\x08+\\x06\\x01\\x05\\x05\\x070\\x01\\x86\\x15http://e6.o.lencr.org0\"\\x06\\x08+\\x06\\x01\\x05\\x05\\x070\\x02\\x86\\x16http://e6.i.lencr.org/",
+                            "name": "authorityInfoAccess"
+                        },
+                        {
+                            "data": "0\\x1c\\x82\\nsclowy.com\\x82\\x0ewww.sclowy.com",
+                            "name": "subjectAltName"
+                        },
+                        {
+                            "data": "0\\n0\\x08\\x06\\x06g\\x81\\x0c\\x01\\x02\\x01",
+                            "name": "certificatePolicies"
+                        },
+                        {
+                            "data": "\\x04\\x81\\xf2\\x00\\xf0\\x00v\\x00\\xa2\\xe3\\n\\xe4E\\xef\\xbd\\xad\\x9b~8\\xedGgwS\\xd7\\x82[\\x84\\x94\\xd7+^\\x1b,\\xc4\\xb9P\\xa4G\\xe7\\x00\\x00\\x01\\x95\\x191\\x10\\xe2\\x00\\x00\\x04\\x03\\x00G0E\\x02!\\x00\\xfe\\xed\\xb8\\xd1\\xd3 \\xfc\\xefM\\xae\\xb5LG\\xae\\xafX\\xc1\\x02\\\\\\x81iH\\xc6D3\\x15\\x82;\\x92o ?\\x02 \\x17\\x99 0\\x8c\\xdd\\xa1\\x00L\\x01\\x8d5\\x90w\\xfc\\x9fa\\x84-\\x08\\r\\xd6m,]\\x06:2\\x9d\\xed\\xe7\\xf6\\x00v\\x00\\xcc\\xfb\\x0fj\\x85q\\te\\xfe\\x95\\x9bS\\xce\\xe9\\xb2|\"\\xe9\\x85\\\\\\r\\x97\\x8d\\xb6\\xa9~T\\xc0\\xfeL\\r\\xb0\\x00\\x00\\x01\\x95\\x191\\x10\\xef\\x00\\x00\\x04\\x03\\x00G0E\\x02 m\\xf8\\xc6_\\x92\\xf9\\x82\\x88\\x98-\\x98\\xd9L}\\x97\\xa1\\x06\\\\\\xb4\\r\\x15ZF\\xfd\\xde\\xc1\\xe3\\xb4\\xb1\\x9cC\\xea\\x02!\\x00\\xd5)n\\'\\x82\\xe6\\xb9\\xf7i\\xb1\"n\\x8c\\x88\\xdd\\'\\xea|M&\\x9c\\x8c\\xd7R\\x1c\\xf8e\\x9a@\\xb2\\xef\\x02",
+                            "name": "ct_precert_scts"
+                        }
+                    ],
+                    "fingerprint": {
+                        "sha256": "9638ece8271f2ba947ef9af1e5195e292d472a9707e2dbdb3950ee22226228c0",
+                        "sha1": "0e9ccb1d44c3abe1ac7e2aedfaea99e4c5aa5b0b"
+                    },
+                    "serial": 309605225371369031172612128943112984376251,
+                    "subject": {
+                        "CN": "sclowy.com"
+                    },
+                    "pubkey": {
+                        "type": "dsa",
+                        "bits": 384
+                    },
+                    "issuer": {
+                        "C": "US",
+                        "CN": "E6",
+                        "O": "Let's Encrypt"
+                    }
+                },
+                "cipher": {
+                    "version": "TLSv1.3",
+                    "bits": 256,
+                    "name": "TLS_AES_256_GCM_SHA384"
+                },
+                "trust": {
+                    "revoked": false,
+                    "browser": null
+                },
+                "handshake_states": [
+                    "before SSL initialization",
+                    "SSLv3/TLS write client hello",
+                    "SSLv3/TLS read server hello",
+                    "TLSv1.3 read encrypted extensions",
+                    "SSLv3/TLS read server certificate",
+                    "TLSv1.3 read server certificate verify",
+                    "SSLv3/TLS read finished",
+                    "SSLv3/TLS write change cipher spec",
+                    "SSLv3/TLS write finished",
+                    "SSL negotiation finished successfully"
+                ],
+                "alpn": [],
+                "ocsp": {}
+            },
+            "hostnames": [
+                "sclowy.com",
+                "www.sclowy.com"
+            ],
+            "org": "DigitalOcean, LLC",
+            "data": "HTTP/1.1 200 OK\r\nServer: nginx\r\nDate: Sun, 23 Mar 2025 21:26:19 GMT\r\nContent-Type: text/html; charset=UTF-8\r\nTransfer-Encoding: chunked\r\nConnection: keep-alive\r\nVary: Accept-Encoding\r\nLink: <https://sclowy.com/wp-json/>; rel=\"https://api.w.org/\"\r\nLink: <https://sclowy.com/wp-json/wp/v2/pages/9>; rel=\"alternate\"; type=\"application/json\"\r\nLink: <https://sclowy.com/>; rel=shortlink\r\nX-Frame-Options: SAMEORIGIN\r\nX-XSS-Protection: 1; mode=block\r\nX-Content-Type-Options: nosniff\r\n\r\n",
+            "asn": "AS14061",
+            "cpe23": [
+                "cpe:2.3:a:f5:nginx",
+                "cpe:2.3:a:jquery:jquery",
+                "cpe:2.3:a:mysql:mysql",
+                "cpe:2.3:a:php:php",
+                "cpe:2.3:a:wordpress:wordpress"
+            ],
+            "isp": "DigitalOcean, LLC",
+            "cpe": [
+                "cpe:/a:f5:nginx",
+                "cpe:/a:jquery:jquery",
+                "cpe:/a:mysql:mysql",
+                "cpe:/a:php:php",
+                "cpe:/a:wordpress:wordpress"
+            ],
+            "domains": [
+                "sclowy.com"
+            ],
+            "ip_str": "159.65.201.6",
+            "os": null,
+            "_shodan": {
+                "region": "na",
+                "module": "https",
+                "ptr": true,
+                "options": {
+                    "hostname": "sclowy.com",
+                    "scan": "ifhlHnQN72JVQhif"
+                },
+                "id": "ce32fdde-4724-45dc-bad3-658dcf606726",
+                "crawler": "8c108d59c81b65bba32b3225a760bb40705b85da"
+            },
+            "opts": {
+                "vulns": [],
+                "heartbleed": "2025/03/23 21:26:43 159.65.201.6:443 - ERROR: remote error: alert(112)\n"
+            }
+        }
+    ],
+    "asn": "AS14061",
+    "ip_str": "159.65.201.6"
+  }
+};
+
+// Include all data leaks
+mockData.dataLeaksCompliance = [
+  ...mockData.dataLeaksCompliance,
+  {
+    id: "7597891868",
+    email: "peter.tolhurst@sclowy.com",
+    ip_address: "",
+    username: "",
+    password: "Charlotte1",
+    hashed_password: "",
+    name: "",
+    vin: "",
+    address: "",
+    phone: "",
+    database_name: "maritimecsr.com"
+  },
+  {
+    id: "15098452406",
+    email: "austin.cam@sclowy.com",
+    ip_address: "",
+    username: "",
+    password: "ef4ee752",
+    hashed_password: "",
+    name: "",
+    vin: "",
+    address: "",
+    phone: "",
+    database_name: "Collections"
+  },
+  {
+    id: "16478160364",
+    email: "jamie.tadelis@sclowy.com",
+    ip_address: "",
+    username: "",
+    password: "jamiehal",
+    hashed_password: "",
+    name: "",
+    vin: "",
+    address: "",
+    phone: "",
+    database_name: "Collections"
+  },
+  {
+    id: "16480124649",
+    email: "jan.zarzycki@sclowy.com",
+    ip_address: "",
+    username: "",
+    password: "Pa55word",
+    hashed_password: "",
+    name: "",
+    vin: "",
+    address: "",
+    phone: "",
+    database_name: "Collections"
+  },
+  {
+    id: "2491089211",
+    email: "jamie.tadelis@sclowy.com",
+    ip_address: "",
+    username: "",
+    password: "",
+    hashed_password: "45923aa7998f3176d85ee7ff0a6d19e6e751e6cd",
+    name: "",
+    vin: "",
+    address: "",
+    phone: "",
+    database_name: "LinkedIn"
+  }
+];
+
+const Index = () => {
+  const navigate = useNavigate();
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-2">
-          <Button 
-            variant="ghost" 
-            size="sm"
-            onClick={() => navigate("/")}
-            className="text-gray-600"
-          >
-            <ChevronLeft className="h-4 w-4 mr-1" />
-            Back to Home
-          </Button>
-        </div>
-        <div className="flex gap-2">
-          <Button 
-            variant="outline" 
-            onClick={() => navigate("/intelligent-mapping")}
-            className="flex items-center gap-1"
-          >
-            <Brain className="h-4 w-4" />
-            <span className="hidden sm:inline">Intelligent</span> Mapping
-          </Button>
-          <Button 
-            variant="outline" 
-            onClick={() => navigate("/executive-view")}
-            className="flex items-center gap-1"
-          >
-            <BarChart3 className="h-4 w-4" />
-            <span className="hidden sm:inline">Intelligence</span> Report
-          </Button>
-        </div>
-      </div>
-
-      <div className="flex items-center mb-6">
-        <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
-          <Database className="h-5 w-5 text-blue-600" />
-        </div>
-        <h1 className="text-2xl font-bold">Processed Data</h1>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="ghost" size="icon" className="ml-2">
-              <Info className="h-4 w-4" />
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>About Processed Data</DialogTitle>
-              <DialogDescription>
-                This view presents raw intelligence data collected from various sources without advanced analysis.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="mt-4">
-              <p>This view shows:</p>
-              <ul className="list-disc pl-5 mt-2 space-y-1">
-                <li>Infrastructure details and open ports</li>
-                <li>Technologies used across assets</li>
-                <li>Data leaks and potential vulnerabilities</li>
-                <li>Contact information found in public sources</li>
-              </ul>
-            </div>
-          </DialogContent>
-        </Dialog>
-      </div>
-
-      <div className="bg-white border border-gray-200 rounded-lg p-6 mb-6 shadow-sm">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center">
-            <Building className="h-5 w-5 mr-2 text-osint-blue" />
-            <h2 className="text-xl font-semibold">Organization Overview</h2>
-          </div>
-          <Badge 
-            variant={securityAssessment.score >= 70 ? "success" : securityAssessment.score >= 50 ? "warning" : "destructive"}
-            className="text-xs"
-          >
-            Security Rating: {securityAssessment.label}
-          </Badge>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-            <div className="flex items-center mb-2">
-              <MapPin className="h-4 w-4 text-gray-600 mr-2" />
-              <h3 className="font-medium text-gray-800">Location & Jurisdiction</h3>
-            </div>
-            <p className="text-gray-700">Primary: Hong Kong, SAR China</p>
-            <p className="text-sm text-gray-500 mt-1">Financial Services Authority, HK</p>
-            <p className="text-xs text-gray-500 mt-2">Secondary Jurisdictions:</p>
-            <ul className="text-xs text-gray-500 list-disc pl-4 mt-1">
-              <li>Singapore (Monetary Authority)</li>
-              <li>United Kingdom (FCA)</li>
-              <li>United States (SEC, FINRA)</li>
-            </ul>
-          </div>
-          
-          <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-            <div className="flex items-center mb-2">
-              <Users className="h-4 w-4 text-gray-600 mr-2" />
-              <h3 className="font-medium text-gray-800">Personnel</h3>
-            </div>
-            <p className="text-gray-700">{data.organizationStructure[0]} Employees</p>
-            <p className="text-sm text-gray-500 mt-1">Across 9 global offices</p>
-            <div className="mt-2">
-              <p className="text-xs text-gray-500">Executive Team: 12 members</p>
-              <p className="text-xs text-gray-500">Board: 8 directors (3 independent)</p>
-            </div>
-          </div>
-          
-          <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-            <div className="flex items-center mb-2">
-              <Globe className="h-4 w-4 text-gray-600 mr-2" />
-              <h3 className="font-medium text-gray-800">Global Presence</h3>
-            </div>
-            <p className="text-gray-700">9 Office Locations</p>
-            <div className="text-xs text-gray-500 mt-2 space-y-1">
-              <p>APAC: Hong Kong (HQ), Singapore, Tokyo, Sydney</p>
-              <p>EMEA: London, Frankfurt, Dubai</p>
-              <p>Americas: New York, San Francisco</p>
-            </div>
-          </div>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-            <div className="flex items-center mb-2">
-              <Briefcase className="h-4 w-4 text-gray-600 mr-2" />
-              <h3 className="font-medium text-gray-800">Executive Intelligence</h3>
-            </div>
-            <div className="text-sm text-gray-700">
-              <p className="font-medium">CEO: Michael Chen</p>
-              <p className="text-xs text-gray-500 mt-1">Former JP Morgan executive, 15+ years in investment banking</p>
-              
-              <p className="font-medium mt-2">CIO: Sarah Williams</p>
-              <p className="text-xs text-gray-500 mt-1">Ex-Goldman Sachs, specializes in algorithmic trading systems</p>
-              
-              <p className="font-medium mt-2">CISO: Robert Tanaka</p>
-              <p className="text-xs text-gray-500 mt-1">Previous role at Citigroup, cybersecurity background</p>
-            </div>
-          </div>
-          
-          <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-            <div className="flex items-center mb-2">
-              <Shield className="h-4 w-4 text-gray-600 mr-2" />
-              <h3 className="font-medium text-gray-800">Risk Profile</h3>
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <p className="text-sm text-gray-700">Cyber Exposure:</p>
-                <Badge variant={securityAssessment.score >= 70 ? "success" : securityAssessment.score >= 50 ? "warning" : "destructive"}>
-                  {securityAssessment.label}
-                </Badge>
-              </div>
-              <div className="flex items-center justify-between">
-                <p className="text-sm text-gray-700">Regulatory Compliance:</p>
-                <Badge variant="info">Moderate Risk</Badge>
-              </div>
-              <div className="flex items-center justify-between">
-                <p className="text-sm text-gray-700">Reputation Monitor:</p>
-                <Badge variant="success">Low Risk</Badge>
-              </div>
-              <div className="flex items-center justify-between">
-                <p className="text-sm text-gray-700">Competitor Intelligence:</p>
-                <Badge variant="info">43 Tracked Entities</Badge>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div className="mb-6">
-          <div className="flex items-center mb-2">
-            <Info className="h-4 w-4 text-gray-600 mr-2" />
-            <h3 className="font-medium text-gray-800">Organization Highlights</h3>
-          </div>
-          <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-            <p className="text-gray-700">{data.organizationDescription[0]}</p>
-            <div className="mt-3 space-y-1">
-              <p className="text-sm text-gray-600 flex items-center">
-                <AlertTriangle className="h-3 w-3 text-amber-500 mr-1" />
-                <span>Executive insight: Potential M&A activity detected from public filings and press references</span>
-              </p>
-              <p className="text-sm text-gray-600 flex items-center">
-                <AlertTriangle className="h-3 w-3 text-amber-500 mr-1" />
-                <span>Strategic indicators suggest expansion into cryptocurrency trading services</span>
-              </p>
-              <p className="text-sm text-gray-600 flex items-center">
-                <AlertTriangle className="h-3 w-3 text-amber-500 mr-1" />
-                <span>Regulatory inquiries ongoing in Singapore operations (MAS documentation)</span>
-              </p>
-            </div>
-          </div>
-        </div>
-        
-        <div>
-          <div className="flex items-center mb-4">
-            <Newspaper className="h-5 w-5 mr-2 text-osint-blue" />
-            <h2 className="text-xl font-semibold">Recent News & Media Intelligence</h2>
+    <div className="min-h-screen">
+      <div className="container mx-auto p-4">
+        <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-4 mb-6">
+          <h2 className="text-lg font-medium text-yellow-800 mb-2">Legacy Dashboard View</h2>
+          <p className="text-yellow-700 mb-3">
+            This is the legacy single-page dashboard. We recommend using our new multi-page experience for better navigation and organization.
+          </p>
+          <div className="flex gap-2">
             <Button 
-              variant="ghost" 
-              size="icon" 
-              className="ml-2" 
-              onClick={() => showExplanation(
-                "About News Intelligence", 
-                "News intelligence provides insights into recent media coverage, market perception, and potential reputation impacts.",
-                <div className="space-y-4">
-                  <p>News intelligence monitoring helps executives:</p>
-                  <ul className="list-disc pl-5 space-y-2">
-                    <li>Track company mentions across global publications</li>
-                    <li>Analyze sentiment trends and reputation signals</li>
-                    <li>Identify emerging risks and opportunities</li>
-                    <li>Monitor competitor activities and market movements</li>
-                    <li>Support strategic decision-making with timely information</li>
-                  </ul>
-                  <p className="text-sm text-gray-500 mt-4">Data sources include major financial publications, industry news, regulatory filings, press releases, and social media monitoring.</p>
-                </div>
-              )}
+              onClick={() => navigate("/")}
+              variant="outline"
+              className="border-yellow-300 text-yellow-700"
             >
-              <Info className="h-4 w-4" />
-            </Button>
-          </div>
-          
-          <div className="space-y-4">
-            {recentNews.map((item, index) => (
-              <div key={index} className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="font-medium text-gray-800">{item.title}</h3>
-                    <div className="flex items-center text-sm text-gray-500 mt-1">
-                      <span>{item.source}</span>
-                      <span className="mx-2">•</span>
-                      <span>{new Date(item.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Badge 
-                      variant={item.sentiment === 'positive' ? "success" : item.sentiment === 'negative' ? "destructive" : "default"}
-                      className="text-xs"
-                    >
-                      {item.sentiment.charAt(0).toUpperCase() + item.sentiment.slice(1)}
-                    </Badge>
-                    <Badge variant="outline" className="text-xs">
-                      Relevance: {Math.round(item.relevance * 100)}%
-                    </Badge>
-                  </div>
-                </div>
-                
-                <p className="text-gray-700 mt-2">{item.summary}</p>
-                
-                <div className="mt-3 flex justify-between items-center">
-                  <div className="flex flex-wrap gap-1">
-                    {item.tags.map((tag, tagIndex) => (
-                      <Badge key={tagIndex} variant="secondary" className="text-xs">
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                  <Button size="sm" variant="ghost" className="text-xs flex items-center" asChild>
-                    <a href={item.url} target="_blank" rel="noopener noreferrer">
-                      View Source <ExternalLink className="h-3 w-3 ml-1" />
-                    </a>
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
-          
-          <div className="mt-4 flex justify-between items-center">
-            <div className="text-sm text-gray-500">
-              <p>Intelligence gathered from 50+ global news sources, financial publications, and industry reports</p>
-            </div>
-            <Button size="sm" variant="outline" className="text-xs">
-              View Full Media Analysis
+              Go to New Dashboard
             </Button>
           </div>
         </div>
-        
-        <div>
-          <h3 className="font-medium text-gray-800 mb-2">Intelligence Sources</h3>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Source</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Last Updated</TableHead>
-                <TableHead>Reliability</TableHead>
-                <TableHead>Executive Value</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              <TableRow>
-                <TableCell>Company Website</TableCell>
-                <TableCell>Primary</TableCell>
-                <TableCell>2023-11-15</TableCell>
-                <TableCell><Badge className="bg-green-100 text-green-800 hover:bg-green-200">High</Badge></TableCell>
-                <TableCell>Medium</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Bloomberg Terminal</TableCell>
-                <TableCell>Financial</TableCell>
-                <TableCell>2023-12-01</TableCell>
-                <TableCell><Badge className="bg-green-100 text-green-800 hover:bg-green-200">High</Badge></TableCell>
-                <TableCell>High</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>SEC Filings</TableCell>
-                <TableCell>Regulatory</TableCell>
-                <TableCell>2023-10-22</TableCell>
-                <TableCell><Badge className="bg-green-100 text-green-800 hover:bg-green-200">High</Badge></TableCell>
-                <TableCell>High</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>LinkedIn</TableCell>
-                <TableCell>Social</TableCell>
-                <TableCell>2023-12-10</TableCell>
-                <TableCell><Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-200">Medium</Badge></TableCell>
-                <TableCell>Medium</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Internal Memo Leaks</TableCell>
-                <TableCell>Confidential</TableCell>
-                <TableCell>2023-09-05</TableCell>
-                <TableCell><Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-200">Medium</Badge></TableCell>
-                <TableCell>Very High</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Dark Web Monitoring</TableCell>
-                <TableCell>Threat Intel</TableCell>
-                <TableCell>2023-12-15</TableCell>
-                <TableCell><Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-200">Medium</Badge></TableCell>
-                <TableCell>High</TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </div>
+        <Dashboard data={mockData} />
       </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <ErrorBoundary>
-          <div>
-            <InfrastructurePanel data={data} />
-            {data.shodanData && <ShodanPanel data={data.shodanData} />}
-            <TechStackPanel data={data} />
-          </div>
-        </ErrorBoundary>
-        
-        <ErrorBoundary>
-          <div>
-            <SocialIntelPanel data={data} />
-            <DataLeaksPanel data={data} />
-            <FileSearchPanel data={data} />
-            <ContactInformationPanel data={data} />
-          </div>
-        </ErrorBoundary>
-      </div>
-      
-      <footer className="mt-8 text-center text-sm text-muted-foreground">
-        <p>Processed data from multiple intelligence sources. For security assessment purposes only.</p>
-      </footer>
-
-      <ExplanationDialog 
-        open={explanationOpen}
-        onClose={() => setExplanationOpen(false)}
-        title={explanationContent.title}
-        description={explanationContent.description || ""}
-      >
-        {explanationContent.content}
-      </ExplanationDialog>
     </div>
   );
 };
 
-export default ExtractedData;
+export default Index;

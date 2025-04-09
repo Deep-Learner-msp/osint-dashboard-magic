@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { OsintData, NewsItem } from "@/types/data";
+import { OsintData } from "@/types/data";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft, Database, Brain, BarChart3, Info, MapPin, Users, Building, Globe, Briefcase, Shield, AlertTriangle, ExternalLink, Newspaper } from "lucide-react";
+import { ChevronLeft, Database, Brain, BarChart3, Info, MapPin, Users, Building, Globe, Briefcase, Shield, AlertTriangle } from "lucide-react";
 import InfrastructurePanel from "@/components/InfrastructurePanel";
 import TechStackPanel from "@/components/TechStackPanel";
 import DataLeaksPanel from "@/components/DataLeaksPanel";
@@ -44,59 +44,6 @@ const ExtractedData: React.FC<ExtractedDataProps> = ({ data }) => {
   };
 
   const securityAssessment = getSecurityAssessment(data);
-
-  const recentNews: NewsItem[] = data.recentNews || [
-    {
-      title: "TradeFi Global Expands Cryptocurrency Trading Services",
-      date: "2023-12-10",
-      source: "Financial Times",
-      url: "#",
-      summary: "TradeFi Global announced plans to expand its cryptocurrency trading services, adding support for NFTs and DeFi protocols starting Q1 2024.",
-      sentiment: "positive",
-      relevance: 0.95,
-      tags: ["cryptocurrency", "expansion", "strategic", "trading"]
-    },
-    {
-      title: "Regulatory Inquiry into TradeFi's Singapore Operations",
-      date: "2023-11-28",
-      source: "Bloomberg",
-      url: "#",
-      summary: "The Monetary Authority of Singapore (MAS) has opened an inquiry into TradeFi Global's compliance procedures following a series of high-volume transactions.",
-      sentiment: "negative",
-      relevance: 0.89,
-      tags: ["regulatory", "compliance", "risk", "singapore"]
-    },
-    {
-      title: "TradeFi in Advanced Talks to Acquire Asian Fintech Startup",
-      date: "2023-12-05",
-      source: "Reuters",
-      url: "#",
-      summary: "Sources close to the matter reveal TradeFi is in advanced negotiations to acquire a Singapore-based fintech startup specializing in AI-driven trading algorithms.",
-      sentiment: "positive",
-      relevance: 0.92,
-      tags: ["acquisition", "M&A", "fintech", "AI"]
-    },
-    {
-      title: "Executive Shuffle: TradeFi Appoints New CTO from Google",
-      date: "2023-11-15",
-      source: "Wall Street Journal",
-      url: "#",
-      summary: "TradeFi Global has appointed Dr. Lisa Xu, former Google Cloud engineering director, as its new Chief Technology Officer to lead its digital transformation efforts.",
-      sentiment: "positive",
-      relevance: 0.88,
-      tags: ["executive", "leadership", "technology", "digital transformation"]
-    },
-    {
-      title: "Data Breach Investigation at TradeFi Subsidiary",
-      date: "2023-12-02",
-      source: "CyberSecurity Today",
-      url: "#",
-      summary: "A TradeFi subsidiary is investigating a potential data breach after unusual activity was detected in their client portal system. No confirmation of compromised data yet.",
-      sentiment: "negative",
-      relevance: 0.97,
-      tags: ["security", "breach", "risk", "data protection"]
-    }
-  ];
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -287,89 +234,6 @@ const ExtractedData: React.FC<ExtractedDataProps> = ({ data }) => {
                 <span>Regulatory inquiries ongoing in Singapore operations (MAS documentation)</span>
               </p>
             </div>
-          </div>
-        </div>
-        
-        <div>
-          <div className="flex items-center mb-4">
-            <Newspaper className="h-5 w-5 mr-2 text-osint-blue" />
-            <h2 className="text-xl font-semibold">Recent News & Media Intelligence</h2>
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="ml-2" 
-              onClick={() => showExplanation(
-                "About News Intelligence", 
-                "News intelligence provides insights into recent media coverage, market perception, and potential reputation impacts.",
-                <div className="space-y-4">
-                  <p>News intelligence monitoring helps executives:</p>
-                  <ul className="list-disc pl-5 space-y-2">
-                    <li>Track company mentions across global publications</li>
-                    <li>Analyze sentiment trends and reputation signals</li>
-                    <li>Identify emerging risks and opportunities</li>
-                    <li>Monitor competitor activities and market movements</li>
-                    <li>Support strategic decision-making with timely information</li>
-                  </ul>
-                  <p className="text-sm text-gray-500 mt-4">Data sources include major financial publications, industry news, regulatory filings, press releases, and social media monitoring.</p>
-                </div>
-              )}
-            >
-              <Info className="h-4 w-4" />
-            </Button>
-          </div>
-          
-          <div className="space-y-4">
-            {recentNews.map((item, index) => (
-              <div key={index} className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="font-medium text-gray-800">{item.title}</h3>
-                    <div className="flex items-center text-sm text-gray-500 mt-1">
-                      <span>{item.source}</span>
-                      <span className="mx-2">•</span>
-                      <span>{new Date(item.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Badge 
-                      variant={item.sentiment === 'positive' ? "success" : item.sentiment === 'negative' ? "destructive" : "default"}
-                      className="text-xs"
-                    >
-                      {item.sentiment.charAt(0).toUpperCase() + item.sentiment.slice(1)}
-                    </Badge>
-                    <Badge variant="outline" className="text-xs">
-                      Relevance: {Math.round(item.relevance * 100)}%
-                    </Badge>
-                  </div>
-                </div>
-                
-                <p className="text-gray-700 mt-2">{item.summary}</p>
-                
-                <div className="mt-3 flex justify-between items-center">
-                  <div className="flex flex-wrap gap-1">
-                    {item.tags.map((tag, tagIndex) => (
-                      <Badge key={tagIndex} variant="secondary" className="text-xs">
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                  <Button size="sm" variant="ghost" className="text-xs flex items-center" asChild>
-                    <a href={item.url} target="_blank" rel="noopener noreferrer">
-                      View Source <ExternalLink className="h-3 w-3 ml-1" />
-                    </a>
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
-          
-          <div className="mt-4 flex justify-between items-center">
-            <div className="text-sm text-gray-500">
-              <p>Intelligence gathered from 50+ global news sources, financial publications, and industry reports</p>
-            </div>
-            <Button size="sm" variant="outline" className="text-xs">
-              View Full Media Analysis
-            </Button>
           </div>
         </div>
         
