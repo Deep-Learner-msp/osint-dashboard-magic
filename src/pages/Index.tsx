@@ -166,7 +166,6 @@ export const mockData: OsintData = {
     "org": "DigitalOcean, LLC",
     "data": [
         {
-            "ip": 2671888646,
             "port": 22,
             "transport": "tcp",
             "version": "8.2p1 Ubuntu 4ubuntu0.12",
@@ -276,8 +275,6 @@ export const mockData: OsintData = {
             "opts": {}
         },
         {
-            "ip": 2671888646,
-            "hash": -2116735968,
             "port": 80,
             "transport": "tcp",
             "cloud": {
@@ -315,6 +312,7 @@ export const mockData: OsintData = {
                 "sitemap": null,
                 "server_hash": -1340961475
             },
+            "hash": -2116735968,
             "tags": [
                 "cloud"
             ],
@@ -344,8 +342,6 @@ export const mockData: OsintData = {
             "opts": {}
         },
         {
-            "ip": 2671888646,
-            "hash": 1450505649,
             "port": 443,
             "transport": "tcp",
             "cloud": {
@@ -370,7 +366,7 @@ export const mockData: OsintData = {
                 "title_hash": 340298613,
                 "favicon": {
                     "hash": 1061459480,
-                    "data": "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAABGdBTUEAALGPC/xhBQAAACBjSFJN\nAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABtlBMVEUSS2EQSWAPSV8VTWMU\nTGIRSmAQSmA2ZnlukZ6ZsbupvsalusOHpK9TfIwhV2sQSV8RS2EvYXSPqrTg5+r8/f3////09vfB\n0NZfhpUYUGVKdobK19z+/v7y9faTrbcjWG1JdYbZ4ualusIiV2suYHTI1tv2+Pm/z9SGo655maad\ntb7b5Of9/v77/PyMqLMWTmQTTGL+/v/q7/F1lqMgVWoPSF81Zniftr/3+frt8fNSfIw0ZXjd5ej4\n+fp2l6QbUmeMp7L5+vuvwsoaUWdojJrD0dceVGno7vA/bX+Rq7WOqbRCcIHo7e/8/P1njJoTS2Gi\nuMEaUWa6ytGBoKuasryswMcXT2SkusKDoa16mqbl6+5Cb4EZUGa3yM9tkJ5Gc4SuwslDcILn7e/s\n8fJEcYMRSmGxxMubs7wkWW0qXXG2x865ytAdVGlPeYr7/P24yc9QeoscU2hIdIXx9fZbg5IUTWOB\nn6v4+vrv8/XG09muwcm/ztT9/f2Wr7kZUGWSrLanvMQlWW0cUmh8m6fx9PaVrrimu8Tk6u36/Pz9\n/f5cg5IYT2U5aHtiiJd9nKiAn6prj51EcYKmBiBjAAAAAWJLR0QV5dj5owAAAAd0SU1FB+gFCgg6\nEKeTw/4AAAFiSURBVDjLY2AYaoCRiYGZhZGJFYc0Gws7BycXNw8vH78AVnlBIWERUSAQE5eQxGII\nq5S0jCgUyMrJs2FYr6AoigAiSspoZrCpqALF1dQ1NLW0dYAsXT19VAUGeoaiokbGJvymBmbmFkAV\nllZMKBZY24iK2toxgMzlt3dwBKpwckb2CpOLrqioKx/EXjY3LqACdw9kI1g9gUJeMHcxefuIivr6\nmSIp8A8AKtBghPIEAoOA3GB+JAUCIUCR0DC4k8OB3AhkBUyRQJGoaKitAjGxoqI6cchWMMVbAlUk\n8EEsMU1MEhVNTkF2ZKp9Gih00jNMWRlSTTOzgJzsHJSwZMo1Agrm5ReYMBcW5QPDsrgEJaAYGErL\nykGRUFFZVQ1SWlNbhxblrIX1tkiR1dCIEZ2sTc1RMPmW1gwMeaAKg/i29g5R0U7LoK5u7KmOP6yn\nt69/wsQc7EkOHKumTPymOBPt4AUAS9076d/h5DgAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjQtMDUt\nMTBUMDg6NTg6MTYrMDA6MDB+6Ll0AAAAJXRFWHRkYXRlOm1vZGlmeQAyMDI0LTA1LTEwVDA4OjU4\nOjE2KzAwOjAwD7UByAAAAFd6VFh0UmF3IHByb2ZpbGUgdHlwZSBpcHRjAAB4nOPyDAhxVigoyk/L\nzEnlUgADIwsuYwsTIxNLkxQDEyBEgDTDZAMjs1Qgy9jUyMTMxBzEB8uASKBKLgDqFxF08kI1lQAA\nAAAABJRU5ErkJggg==\n",
+                    "data": "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAABGdBTUEAALGPC/xhBQAAACBjSFJN\nAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABtlBMVEUSS2EQSWAPSV8VTWMU\nTGIRSmAQSmA2ZnlukZ6ZsbupvsalusOHpK9TfIwhV2sQSV8RS2EvYXSPqrTg5+r8/f3////09vfB\n0NZfhpUYUGVKdobK19z+/v7y9faTrbcjWG1JdYbZ4ualusIiV2suYHTI1tv2+Pm/z9SGo655maad\ntb7b5Of9/v77/PyMqLMWTmQTTGL+/v/q7/F1lqMgVWoPSF81Zniftr/3+frt8fNSfIw0ZXjd5ej4\n+fp2l6QbUmeMp7L5+vuvwsoaUWdojJrD0dceVGno7vA/bX+Rq7WOqbRCcIHo7e/8/P1njJoTS2Gi\nuMEaUWa6ytGBoKuasryswMcXT2SkusKDoa16mqbl6+5Cb4EZUGa3yM9tkJ5Gc4SuwslDcILn7e/s\n8fJEcYMRSmGxxMubs7wkWW0qXXG2x865ytAdVGlPeYr7/P24yc9QeoscU2hIdIXx9fZbg5IUTWOB\nn6v4+vrv8/XG09muwcm/ztT9/f2Wr7kZUGWSrLanvMQlWW0cUmh8m6fx9PaVrrimu8Tk6u36/Pz9\n/f5cg5IYT2U5aHtiiJd9nKiAn6prj51EcYKmBiBjAAAAAWJLR0QV5dj5owAAAAd0SU1FB+gFCgg6\nEKeTw/4AAAFiSURBVDjLY2AYaoCRiYGZhZGJFYc0Gws7BycXNw8vH78AVnlBIWERUSAQE5eQxGII\nq5S0jCgUyMrJs2FYr6AoigAiSspoZrCpqALF1dQ1NLW0dYAsXT19VAUGeoaiokbGJvzmBmbmFkAV\nllZMKBZY24iK2toxgMzlt3dwBKpwckb2CpOLrqioKx/EXjY3LqACdw9kI1g9gUJeMHcxefuIivr6\nmSIp8A8AKtBghPIEAoOA3GB+JAUCIUCR0DC4k8OB3AhkBUyRQJGoaKitAjGxoqI6cchWMMVbAlUk\n8EEsMU1MEhVNTkF2ZKp9Gih00jNMWRlSTTOzgJzsHJSwZMo1Agrm5ReYMBcW5QPDsrgEJaAYGErL\nykGRUFFZVQ1SWlNbhxblrIX1tkiR1dCIEZ2sTc1RMPmW1gwMeaAKg/i29g5R0U7LoK5u7KmOP6yn\nt69/wsQc7EkOHKumTPymOBPt4AUAS9076d/h5DgAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjQtMDUt\nMTBUMDg6NTg6MTYrMDA6MDB+6Ll0AAAAJXRFWHRkYXRlOm1vZGlmeQAyMDI0LTA1LTEwVDA4OjU4\nOjE2KzAwOjAwD7UByAAAAFd6VFh0UmF3IHByb2ZpbGUgdHlwZSBpcHRjAAB4nOPyDAhxVigoyk/L\nzEnlUgADIwsuYwsTIxNLkxQDEyBEgDTDZAMjs1Qgy9jUyMTMxBzEB8uASKBKLgDqFxF08kI1lQAA\nAAAABJRU5ErkJggg==\n",
                     "location": "https://sclowy.com:443/favicon-32x32.png"
                 },
                 "securitytxt": null,
@@ -456,6 +452,7 @@ export const mockData: OsintData = {
                 "sitemap": null,
                 "server_hash": -1340961475
             },
+            "hash": 1450505649,
             "tags": [
                 "cloud"
             ],
@@ -468,251 +465,4 @@ export const mockData: OsintData = {
                 "jarm": "00000000000000000000000000000000000000000000000000000000000000",
                 "tlsext": [],
                 "chain": [
-                    "-----BEGIN CERTIFICATE-----\nMIIDojCCAyigAwIBAgISA43ZFXK50RRl++iBZ6djOrO7MAoGCCqGSM49BAMDMDIx\nCzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1MZXQncyBFbmNyeXB0MQswCQYDVQQDEwJF\nNjAeFw0yNTAyMTgxMjE0NTBaFw0yNTA1MTkxMjE0NDlaMBUxEzARBgNVBAMTCnNj\nbG93eS5jb20wdjAQBgcqhkjOPQIBBgUrgQQAIgNiAAR9xHrZpRWkmzD878d6hLkh\nmfZLewbVcUGInTTBYEQ6YkHNWPfkqFy+EWsK+5e9/OPIgQY84YNzjeXGWkrahmp0\nUuNq9D1tuQKDdj6BnsdphEl07hBvzZYiKUXupJ2Q7uOjggIcMIICGDAOBgNVHQ8B\nAf8EBAMCB4AwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAwGA1UdEwEB\n/wQCMAAwHQYDVR0gBAwwCjAIBgZngQwBAgEwJwYDVR0fBCAwHjAcoBqgGIYWaHR0cDovL3gxLmMubGVu\nY3Iub3JnLzANBgkqhkiG9w0BAQsFAAOCAgEAfYt7SiA1sgWGCIpunk46r4AExIRc\nMxkKgUhNlrrv1B21hOaXN/5miE+LOTbrcmU/M9yvC6MVY730GNFoL8IhJ8j8vrOL\npMY22OP6baS1k9YMrtDTlwJHoGby04ThTUeBDksS9RiuHvicZqBedQdIF65pZuhp\neDcGBcLiYasQr/EO5gxxtLyTmgsHSOVSBcFOn9lgv7LECPq9i7mfH3mpxgrRKSxH\npOoZ0KXMcB+hHuvlklHntvcI0mMMQ0mhYj6qtMFStkF1RpCG3IPdIwpVCQqu8GV7\ns8ubknRzs+3C/Bm19RFOoiPpDkwvyNfvmQ14XkyqqKK5oZ8zhD32kFRQkxa8uZSu\nh4aTImFxknu39waBxIRXE4jKxlAmQc4QjFZoq1KmQqQg0J/1JF8RlFvJas1VcjLv\nYlvUB2t6npO6oQjB3l+PNf0DpQH7iUx3Wz5AjQCi6L25FjyE06q6BZ/QlmtYdl/8\nZYao4SRqPEs/6cAiF+Qf5zg2UkaWtDphl1LKMuTNLotvsX99HP69V2faNyegodQ0\nLyTApr/vT01YPE46vNsDLgK+4cL6TrzC/a4WcmF5SRJ938zrv/duJHLXQIku5v0+\nEwOy59Hdm0PT/Er/84dDV0CSjdR/2XuZM3kpysSKLgD1cKiDA+IRguODCxfO9cyY\nIg46v9mFmBvyH04=\n-----END CERTIFICATE-----\n",
-                    "-----BEGIN CERTIFICATE-----\nMIIEVzCCAj+gAwIBAgIRALBXPpFzlydw27SHyzpFKzgwDQYJKoZIhvcNAQELBQAw\nTzELMAkGA1UEBhMCVVMxKTAnBgNVBAoTIEludGVybmV0IFNlY3VyaXR5IFJlc2Vh\ncmNoIEdyb3VwMRUwEwYDVQQDEwxJU1JHIFJvb3QgWDEwHhcNMjQwMzEzMDAwMDAw\nWhcNMjcwMzEyMjM1OTU5WjAyMQswCQYDVQQGEwJVUzEWMBQGA1UEChMNTGV0J3Mg\nRW5jcnlwdDELMAkGA1UEAxMCRTYwdjAQBgcqhkjOPQIBBgUrgQQAIgNiAATZ8Z5G\nh/ghcWCoJuuj+rnq2h25EqfUJtlRFLFhfHWWvyILOR/VvtEKRqotPEoJhC6+QJVV\n6RlAN2Z17TJOdwRJ+HB7wxjnzvdxEP6sdNgA1O1tHHMWMxCcOrLqbGL0vbijgfgw\ngfUwDgYDVR0PAQH/BAQDAgGGMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcD\nATASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdDgQWBBSTJ0aYA6lRaI6Y1sRCSNsj\nv1iU0jAfBgNVHSMEGDAWgBR5tFnme7bl5AFzgAiIyBpY9umbbjAyBggrBgEFBQcB\nAQQmMCQwIgYIKwYBBQUHMAKGFmh0dHA6Ly94MS5pLmxlbmNyLm9yZy8wEwYDVR0g\nBAwwCjAIBgZngQwBAgEwJwYDVR0fBCAwHjAcoBqgGIYWaHR0cDovL3gxLmMubGVu\nY3Iub3JnLzANBgkqhkiG9w0BAQsFAAOCAgEAfYt7SiA1sgWGCIpunk46r4AExIRc\nMxkKgUhNlrrv1B21hOaXN/5miE+LOTbrcmU/M9yvC6MVY730GNFoL8IhJ8j8vrOL\npMY22OP6baS1k9YMrtDTlwJHoGby04ThTUeBDksS9RiuHvicZqBedQdIF65pZuhp\neDcGBcLiYasQr/EO5gxxtLyTmgsHSOVSBcFOn9lgv7LECPq9i7mfH3mpxgrRKSxH\npOoZ0KXMcB+hHuvlklHntvcI0mMMQ0mhYj6qtMFStkF1RpCG3IPdIwpVCQqu8GV7\ns8ubknRzs+3C/Bm19RFOoiPpDkwvyNfvmQ14XkyqqKK5oZ8zhD32kFRQkxa8uZSu\nh4aTImFxknu39waBxIRXE4jKxlAmQc4QjFZoq1KmQqQg0J/1JF8RlFvJas1VcjLv\nYlvUB2t6npO6oQjB3l+PNf0DpQH7iUx3Wz5AjQCi6L25FjyE06q6BZ/QlmtYdl/8\nZYao4SRqPEs/6cAiF+Qf5zg2UkaWtDphl1LKMuTNLotvsX99HP69V2faNyegodQ0\nLyTApr/vT01YPE46vNsDLgK+4cL6TrzC/a4WcmF5SRJ938zrv/duJHLXQIku5v0+\nEwOy59Hdm0PT/Er/84dDV0CSjdR/2XuZM3kpysSKLgD1cKiDA+IRguODCxfO9cyY\nIg46v9mFmBvyH04=\n-----END CERTIFICATE-----\n"
-                ],
-                "versions": [
-                    "-TLSv1",
-                    "-SSLv2",
-                    "-SSLv3",
-                    "-TLSv1.1",
-                    "TLSv1.2",
-                    "TLSv1.3"
-                ],
-                "acceptable_cas": [],
-                "ja3s": "93546012d50bbfdd5a94bc6b31fcafea",
-                "cert": {
-                    "sig_alg": "ecdsa-with-SHA384",
-                    "issued": "20250218121450Z",
-                    "expires": "20250519121449Z",
-                    "expired": false,
-                    "version": 2,
-                    "extensions": [
-                        {
-                            "critical": true,
-                            "data": "\\x03\\x02\\x07\\x80",
-                            "name": "keyUsage"
-                        },
-                        {
-                            "data": "0\\x14\\x06\\x08+\\x06\\x01\\x05\\x05\\x07\\x03\\x01\\x06\\x08+\\x06\\x01\\x05\\x05\\x07\\x03\\x02",
-                            "name": "extendedKeyUsage"
-                        },
-                        {
-                            "critical": true,
-                            "data": "0\\x00",
-                            "name": "basicConstraints"
-                        },
-                        {
-                            "data": "\\x04\\x14\\xdc\\x95\\x8d\\xeb\\xf6\\xc9\\xd9\\x8a\\xd9\\xbd\\xcb\\xf2\\x90F\\xf11\\x8f\\xc8\\xf1/",
-                            "name": "subjectKeyIdentifier"
-                        },
-                        {
-                            "data": "0\\x16\\x80\\x14\\x93\\'F\\x98\\x03\\xa9Qh\\x8e\\x98\\xd6\\xc4BH\\xdb#\\xbfX\\x94\\xd2",
-                            "name": "authorityKeyIdentifier"
-                        },
-                        {
-                            "data": "0G0!\\x06\\x08+\\x06\\x01\\x05\\x05\\x070\\x01\\x86\\x15http://e6.o.lencr.org0\"\\x06\\x08+\\x06\\x01\\x05\\x05\\x070\\x02\\x86\\x16http://e6.i.lencr.org/",
-                            "name": "authorityInfoAccess"
-                        },
-                        {
-                            "data": "0\\x1c\\x82\\nsclowy.com\\x82\\x0ewww.sclowy.com",
-                            "name": "subjectAltName"
-                        },
-                        {
-                            "data": "0\\n0\\x08\\x06\\x06g\\x81\\x0c\\x01\\x02\\x01",
-                            "name": "certificatePolicies"
-                        },
-                        {
-                            "data": "\\x04\\x81\\xf2\\x00\\xf0\\x00v\\x00\\xa2\\xe3\\n\\xe4E\\xef\\xbd\\xad\\x9b~8\\xedGgwS\\xd7\\x82[\\x84\\x94\\xd7+^\\x1b,\\xc4\\xb9P\\xa4G\\xe7\\x00\\x00\\x01\\x95\\x191\\x10\\xe2\\x00\\x00\\x04\\x03\\x00G0E\\x02!\\x00\\xfe\\xed\\xb8\\xd1\\xd3 \\xfc\\xefM\\xae\\xb5LG\\xae\\xafX\\xc1\\x02\\\\\\x81iH\\xc6D3\\x15\\x82;\\x92o ?\\x02 \\x17\\x99 0\\x8c\\xdd\\xa1\\x00L\\x01\\x8d5\\x90w\\xfc\\x9fa\\x84-\\x08\\r\\xd6m,]\\x06:2\\x9d\\xed\\xe7\\xf6\\x00v\\x00\\xcc\\xfb\\x0fj\\x85q\\te\\xfe\\x95\\x9bS\\xce\\xe9\\xb2|\"\\xe9\\x85\\\\\\r\\x97\\x8d\\xb6\\xa9~T\\xc0\\xfeL\\r\\xb0\\x00\\x00\\x01\\x95\\x191\\x10\\xef\\x00\\x00\\x04\\x03\\x00G0E\\x02 m\\xf8\\xc6_\\x92\\xf9\\x82\\x88\\x98-\\x98\\xd9L}\\x97\\xa1\\x06\\\\\\xb4\\r\\x15ZF\\xfd\\xde\\xc1\\xe3\\xb4\\xb1\\x9cC\\xea\\x02!\\x00\\xd5)n\\'\\x82\\xe6\\xb9\\xf7i\\xb1\"n\\x8c\\x88\\xdd\\'\\xea|M&\\x9c\\x8c\\xd7R\\x1c\\xf8e\\x9a@\\xb2\\xef\\x02",
-                            "name": "ct_precert_scts"
-                        }
-                    ],
-                    "fingerprint": {
-                        "sha256": "9638ece8271f2ba947ef9af1e5195e292d472a9707e2dbdb3950ee22226228c0",
-                        "sha1": "0e9ccb1d44c3abe1ac7e2aedfaea99e4c5aa5b0b"
-                    },
-                    "serial": 309605225371369031172612128943112984376251,
-                    "subject": {
-                        "CN": "sclowy.com"
-                    },
-                    "pubkey": {
-                        "type": "dsa",
-                        "bits": 384
-                    },
-                    "issuer": {
-                        "C": "US",
-                        "CN": "E6",
-                        "O": "Let's Encrypt"
-                    }
-                },
-                "cipher": {
-                    "version": "TLSv1.3",
-                    "bits": 256,
-                    "name": "TLS_AES_256_GCM_SHA384"
-                },
-                "trust": {
-                    "revoked": false,
-                    "browser": null
-                },
-                "handshake_states": [
-                    "before SSL initialization",
-                    "SSLv3/TLS write client hello",
-                    "SSLv3/TLS read server hello",
-                    "TLSv1.3 read encrypted extensions",
-                    "SSLv3/TLS read server certificate",
-                    "TLSv1.3 read server certificate verify",
-                    "SSLv3/TLS read finished",
-                    "SSLv3/TLS write change cipher spec",
-                    "SSLv3/TLS write finished",
-                    "SSL negotiation finished successfully"
-                ],
-                "alpn": [],
-                "ocsp": {}
-            },
-            "hostnames": [
-                "sclowy.com",
-                "www.sclowy.com"
-            ],
-            "org": "DigitalOcean, LLC",
-            "data": "HTTP/1.1 200 OK\r\nServer: nginx\r\nDate: Sun, 23 Mar 2025 21:26:19 GMT\r\nContent-Type: text/html; charset=UTF-8\r\nTransfer-Encoding: chunked\r\nConnection: keep-alive\r\nVary: Accept-Encoding\r\nLink: <https://sclowy.com/wp-json/>; rel=\"https://api.w.org/\"\r\nLink: <https://sclowy.com/wp-json/wp/v2/pages/9>; rel=\"alternate\"; type=\"application/json\"\r\nLink: <https://sclowy.com/>; rel=shortlink\r\nX-Frame-Options: SAMEORIGIN\r\nX-XSS-Protection: 1; mode=block\r\nX-Content-Type-Options: nosniff\r\n\r\n",
-            "asn": "AS14061",
-            "cpe23": [
-                "cpe:2.3:a:f5:nginx",
-                "cpe:2.3:a:jquery:jquery",
-                "cpe:2.3:a:mysql:mysql",
-                "cpe:2.3:a:php:php",
-                "cpe:2.3:a:wordpress:wordpress"
-            ],
-            "isp": "DigitalOcean, LLC",
-            "cpe": [
-                "cpe:/a:f5:nginx",
-                "cpe:/a:jquery:jquery",
-                "cpe:/a:mysql:mysql",
-                "cpe:/a:php:php",
-                "cpe:/a:wordpress:wordpress"
-            ],
-            "domains": [
-                "sclowy.com"
-            ],
-            "ip_str": "159.65.201.6",
-            "os": null,
-            "_shodan": {
-                "region": "na",
-                "module": "https",
-                "ptr": true,
-                "options": {
-                    "hostname": "sclowy.com",
-                    "scan": "ifhlHnQN72JVQhif"
-                },
-                "id": "ce32fdde-4724-45dc-bad3-658dcf606726",
-                "crawler": "8c108d59c81b65bba32b3225a760bb40705b85da"
-            },
-            "opts": {
-                "vulns": [],
-                "heartbleed": "2025/03/23 21:26:43 159.65.201.6:443 - ERROR: remote error: alert(112)\n"
-            }
-        }
-    ],
-    "asn": "AS14061",
-    "ip_str": "159.65.201.6"
-  }
-};
-
-// Include all data leaks
-mockData.dataLeaksCompliance = [
-  ...mockData.dataLeaksCompliance,
-  {
-    id: "7597891868",
-    email: "peter.tolhurst@sclowy.com",
-    ip_address: "",
-    username: "",
-    password: "Charlotte1",
-    hashed_password: "",
-    name: "",
-    vin: "",
-    address: "",
-    phone: "",
-    database_name: "maritimecsr.com"
-  },
-  {
-    id: "15098452406",
-    email: "austin.cam@sclowy.com",
-    ip_address: "",
-    username: "",
-    password: "ef4ee752",
-    hashed_password: "",
-    name: "",
-    vin: "",
-    address: "",
-    phone: "",
-    database_name: "Collections"
-  },
-  {
-    id: "16478160364",
-    email: "jamie.tadelis@sclowy.com",
-    ip_address: "",
-    username: "",
-    password: "jamiehal",
-    hashed_password: "",
-    name: "",
-    vin: "",
-    address: "",
-    phone: "",
-    database_name: "Collections"
-  },
-  {
-    id: "16480124649",
-    email: "jan.zarzycki@sclowy.com",
-    ip_address: "",
-    username: "",
-    password: "Pa55word",
-    hashed_password: "",
-    name: "",
-    vin: "",
-    address: "",
-    phone: "",
-    database_name: "Collections"
-  },
-  {
-    id: "2491089211",
-    email: "jamie.tadelis@sclowy.com",
-    ip_address: "",
-    username: "",
-    password: "",
-    hashed_password: "45923aa7998f3176d85ee7ff0a6d19e6e751e6cd",
-    name: "",
-    vin: "",
-    address: "",
-    phone: "",
-    database_name: "LinkedIn"
-  }
-];
-
-const Index = () => {
-  const navigate = useNavigate();
-
-  return (
-    <div className="min-h-screen">
-      <div className="container mx-auto p-4">
-        <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-4 mb-6">
-          <h2 className="text-lg font-medium text-yellow-800 mb-2">Legacy Dashboard View</h2>
-          <p className="text-yellow-700 mb-3">
-            This is the legacy single-page dashboard. We recommend using our new multi-page experience for better navigation and organization.
-          </p>
-          <div className="flex gap-2">
-            <Button 
-              onClick={() => navigate("/")}
-              variant="outline"
-              className="border-yellow-300 text-yellow-700"
-            >
-              Go to New Dashboard
-            </Button>
-          </div>
-        </div>
-        <Dashboard data={mockData} />
-      </div>
-    </div>
-  );
-};
-
-export default Index;
+                    "-----BEGIN CERTIFICATE-----\nMIIDojCCAyigAwIBAgISA43ZFXK50RRl++iBZ6djOrO7MAoGCCqGSM49BAMDMDIx\nCzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1MZXQncyBFbmNyeXB0MQswCQYDVQQDEwJF\nNjAeFw0yNTAyMTgxMjE0NTBaFw0yNTA1MTkxMjE0NDlaMBUxEzARBgNVBAMTCnNj\nbG93eS5jb20wdjAQBgcqhkjOPQIBBgUrgQQAIgNiAAR9xHrZpRWkmzD878d6hLkh\nmfZLewbVcUGInTTBYEQ6YkHNWPfkqFy+EWsK+5e9/OPIgQY84YNzjeXGWkrahmp0\nUuNq9D1tuQKDdj6BnsdphEl07hBvzZYiKUXupJ2Q7uOjggIcMIICGDAOBgNVHQ8B\nAf8EBAMCB4AwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAwGA1UdEwEB\n/wQCMAAwHQYDVR0gBAwwCjAIBgZngQwBAgEwJwYDVR0fBCAwHjAcoBqgGIYWaHR0cDovL3gxLmMubGVu\nY3Iub3JnLzANBgkqhkiG9w0BAQsFAAOCAgEAfYt7SiA1sgWGCIpunk46r4AExIRc\nMxkKgUhNlrrv1B21hOaXN/5miE+LOTbrcmU/M9yvC6MV

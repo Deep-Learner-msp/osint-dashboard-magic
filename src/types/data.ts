@@ -1,4 +1,3 @@
-
 export interface OsintData {
   openPorts: number[];
   qualysScan: {
@@ -224,47 +223,107 @@ export interface ApolloOrganizationData {
 
 // Shodan API Data Interface
 export interface ShodanData {
-  ip: number;
-  ip_str: string;
-  ports: number[];
-  hostnames: string[];
-  domains: string[];
-  country_code: string;
-  country_name: string;
   city: string;
   region_code: string;
-  os?: string;
+  os: string | null;
   tags: string[];
+  ip: number;
   isp: string;
-  area_code?: number;
+  area_code: string | null;
   longitude: number;
-  latitude: number;
   last_update: string;
+  ports: number[];
+  latitude: number;
+  hostnames: string[];
+  country_code: string;
+  country_name: string;
+  domains: string[];
   org: string;
-  asn: string;
   data: ShodanServiceData[];
+  asn: string;
+  ip_str: string;
 }
 
 export interface ShodanServiceData {
   port: number;
   transport: string;
   product?: string;
+  version?: string;
   http?: {
     status?: number;
     title?: string;
     server?: string;
+    robots_hash?: string | null;
+    title_hash?: number;
+    securitytxt?: string | null;
+    sitemap_hash?: string | null;
+    html_hash?: number;
+    robots?: string | null;
+    dom_hash?: number;
+    headers_hash?: number;
+    host?: string;
+    location?: string;
+    components?: Record<string, any>;
+    securitytxt_hash?: string | null;
+    server_hash?: number;
+    favicon?: {
+      hash: number;
+      data: string;
+      location: string;
+    };
   };
   ssl?: {
     cert: {
       subject: {
         CN: string;
+        C?: string;
+        O?: string;
       };
       expires: string;
       issuer: {
         CN: string;
+        C?: string;
+        O?: string;
       };
     };
   };
+  ip?: number;
+  cloud?: {
+    region: string;
+    service: string | null;
+    provider: string;
+  };
+  location?: {
+    city: string;
+    region_code: string;
+    area_code: string | null;
+    longitude: number;
+    country_name: string;
+    country_code: string;
+    latitude: number;
+  };
+  hash?: number;
+  tags?: string[];
+  timestamp?: string;
+  hostnames?: string[];
+  org?: string;
+  data?: string;
+  asn?: string;
+  cpe23?: string[];
+  isp?: string;
+  cpe?: string[];
+  domains?: string[];
+  ip_str?: string;
+  os?: string | null;
+  _shodan?: {
+    region: string;
+    module: string;
+    ptr: boolean;
+    id: string;
+    options: Record<string, any>;
+    crawler: string;
+  };
+  opts?: Record<string, any>;
 }
 
 // Bright Data LinkedIn Profile API Data Interface
