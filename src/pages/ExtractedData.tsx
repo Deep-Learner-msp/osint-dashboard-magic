@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { OsintData } from "@/types/data";
 import { Button } from "@/components/ui/button";
@@ -17,10 +18,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { getSecurityAssessment } from "@/utils/osint-helpers";
 
+// Export the props interface so it can be imported in App.tsx
 export interface ExtractedDataProps {
   data: OsintData;
 }
 
+// Explicitly type the component as React.FC<ExtractedDataProps>
 const ExtractedData: React.FC<ExtractedDataProps> = ({ data }) => {
   const navigate = useNavigate();
   const [explanationOpen, setExplanationOpen] = useState(false);
