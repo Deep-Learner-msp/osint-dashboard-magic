@@ -93,7 +93,7 @@ export interface ShodanSSLCert {
   issuer: {
     C?: string;
     CN: string;
-    O: string;
+    O?: string;
   };
 }
 
@@ -113,7 +113,7 @@ export interface ShodanSSLData {
   };
   trust: {
     revoked: boolean;
-    browser: any;
+    browser?: any;
   };
   handshake_states: string[];
   alpn: any[];
