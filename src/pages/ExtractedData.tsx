@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { OsintData } from "@/types/data";
 import { Button } from "@/components/ui/button";
@@ -23,6 +22,7 @@ export interface ExtractedDataProps {
   data: OsintData;
 }
 
+// Make sure to explicitly define the component as React.FC<ExtractedDataProps>
 const ExtractedData: React.FC<ExtractedDataProps> = ({ data }) => {
   const navigate = useNavigate();
   const [explanationOpen, setExplanationOpen] = useState(false);
