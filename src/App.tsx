@@ -24,12 +24,6 @@ const queryClient = new QueryClient({
 
 // Import mock data from Index.tsx
 import { mockData } from "./pages/Index";
-import { OsintData } from "./types/data";
-
-// Define DataProps interface to ensure all pages have proper typing
-interface DataProps {
-  data: OsintData;
-}
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -40,9 +34,9 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/dashboard" element={<Index data={mockData} />} />
-          <Route path="/data-discovery" element={<DataDiscovery data={mockData} />} />
-          <Route path="/correlated-intelligence" element={<CorrelatedIntelligence data={mockData} />} />
-          <Route path="/intelligence-reporting" element={<IntelligenceReporting data={mockData} />} />
+          <Route path="/data-discovery" element={<DataDiscovery />} />
+          <Route path="/correlated-intelligence" element={<CorrelatedIntelligence />} />
+          <Route path="/intelligence-reporting" element={<IntelligenceReporting />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
