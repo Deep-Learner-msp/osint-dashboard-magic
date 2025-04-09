@@ -10,6 +10,7 @@ import Landing from "./pages/Landing";
 import DataDiscovery from "./pages/DataDiscovery";
 import CorrelatedIntelligence from "./pages/CorrelatedIntelligence";
 import IntelligenceReporting from "./pages/IntelligenceReporting";
+import IntelligentMapping from "./pages/IntelligentMapping";
 
 // Create a client
 const queryClient = new QueryClient({
@@ -24,7 +25,6 @@ const queryClient = new QueryClient({
 
 // Import mock data from Index.tsx
 import { mockData } from "./pages/Index";
-import IntelligentMapping from "./pages/IntelligentMapping";
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
