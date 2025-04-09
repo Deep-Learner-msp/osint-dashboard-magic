@@ -13,6 +13,7 @@ export interface DataLeak {
   address: string;
   phone: string;
   database_name: string;
+  leak_date?: string; // Added leak_date property as optional
 }
 
 export interface QualysScan {
@@ -40,6 +41,25 @@ export interface NewsItem {
   tags: string[];
 }
 
+// Add biasDistribution interface
+export interface BiasDistribution {
+  personnel: {
+    leftLeaning: number;
+    center: number;
+    rightLeaning: number;
+  };
+  media: {
+    leftLeaning: number;
+    center: number;
+    rightLeaning: number;
+  };
+  product: {
+    leftLeaning: number;
+    center: number;
+    rightLeaning: number;
+  };
+}
+
 export interface OsintData {
   openPorts: number[];
   qualysScan: QualysScan;
@@ -58,6 +78,7 @@ export interface OsintData {
   financialData: number[];
   recentNews?: NewsItem[];
   shodanData?: ShodanData; // Using the imported ShodanData type
+  biasDistribution?: BiasDistribution; // Added biasDistribution property as optional
 }
 
 // Types for the OSINT Intelligence Platform API interactions

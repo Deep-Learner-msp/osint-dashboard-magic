@@ -10,10 +10,9 @@ import OsintReportPage from "./pages/OsintReportPage";
 import SearchPage from "./pages/SearchPage";
 import { ThemeProvider } from "./components/theme-provider";
 import { Toaster } from "./components/ui/toaster";
-import { OsintData } from "./types/data";
 
-// Import mockData from the Index page
-import { mockData } from "./pages/Index";
+// Import mockData from the dedicated file
+import { mockData } from "./data/mockData";
 
 function App() {
   return (
