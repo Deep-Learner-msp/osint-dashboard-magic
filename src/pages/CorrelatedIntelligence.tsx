@@ -25,6 +25,8 @@ import { getDataCompleteness } from "@/utils/osint-helpers";
 import ErrorBoundary from "@/components/ui/error-boundary";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
 import ThreatIntelligencePanel from "@/components/ThreatIntelligencePanel";
 import AttackVectorPanel from "@/components/AttackVectorPanel";
 import IpEnumerationPanel from "@/components/IpEnumerationPanel";
