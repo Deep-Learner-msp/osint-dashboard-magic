@@ -16,7 +16,7 @@ export interface IntelligentMappingProps {
   data: OsintData;
 }
 
-const IntelligentMapping: React.FC<IntelligentMappingProps> = ({ data }) => {
+const IntelligentMapping = ({ data }: IntelligentMappingProps) => {
   const navigate = useNavigate();
   const [mappingProgress, setMappingProgress] = useState(78);
   const [showAllConnections, setShowAllConnections] = useState(false);

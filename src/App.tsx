@@ -11,6 +11,7 @@ import DataDiscovery from "./pages/DataDiscovery";
 import CorrelatedIntelligence from "./pages/CorrelatedIntelligence";
 import IntelligenceReporting from "./pages/IntelligenceReporting";
 import IntelligentMapping from "./pages/IntelligentMapping";
+import ExtractedData from "./pages/ExtractedData"; // Add the import for ExtractedData
 
 // Create a client
 const queryClient = new QueryClient({
@@ -39,6 +40,7 @@ const App = () => (
           <Route path="/correlated-intelligence" element={<CorrelatedIntelligence data={mockData} />} />
           <Route path="/intelligence-reporting" element={<IntelligenceReporting data={mockData} />} />
           <Route path="/intelligent-mapping" element={<IntelligentMapping data={mockData} />} />
+          <Route path="/extracted-data" element={<ExtractedData data={mockData} />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
