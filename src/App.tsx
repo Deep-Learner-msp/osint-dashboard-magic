@@ -11,7 +11,7 @@ import DataDiscovery from "./pages/DataDiscovery";
 import CorrelatedIntelligence from "./pages/CorrelatedIntelligence";
 import IntelligenceReporting from "./pages/IntelligenceReporting";
 import IntelligentMapping from "./pages/IntelligentMapping";
-import ExtractedData from "./pages/ExtractedData"; // Add the import for ExtractedData
+import ExtractedData, { ExtractedDataProps } from "./pages/ExtractedData"; // Import both the component and its props
 
 // Create a client
 const queryClient = new QueryClient({
