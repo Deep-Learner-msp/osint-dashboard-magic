@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { OsintData } from "@/types/data";
 import { Button } from "@/components/ui/button";
@@ -11,7 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import { Progress } from "@/components/ui/progress";
 import ErrorBoundary from "@/components/ui/error-boundary";
 
-interface IntelligentMappingProps {
+export interface IntelligentMappingProps {
   data: OsintData;
 }
 
@@ -20,7 +19,6 @@ const IntelligentMapping: React.FC<IntelligentMappingProps> = ({ data }) => {
   const [mappingProgress, setMappingProgress] = useState(78);
   const [showAllConnections, setShowAllConnections] = useState(false);
   
-  // For demo purposes - simulating intelligence mapping progress
   React.useEffect(() => {
     const timer = setInterval(() => {
       setMappingProgress((prev) => {
