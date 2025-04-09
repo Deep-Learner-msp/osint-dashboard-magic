@@ -142,7 +142,6 @@ const IntelligentMapping: React.FC<IntelligentMappingProps> = ({ data }) => {
         </AlertDescription>
       </Alert>
       
-      {/* Intelligence Coverage indicator */}
       <div className="mb-6 bg-white p-4 rounded-lg border shadow-sm">
         <div className="flex justify-between items-center mb-2">
           <div className="text-sm font-medium">Intelligence Coverage</div>
@@ -216,7 +215,6 @@ const IntelligentMapping: React.FC<IntelligentMappingProps> = ({ data }) => {
           </TabsTrigger>
         </TabsList>
         
-        {/* Data Discovery Tab */}
         <TabsContent value="data-discovery" className="space-y-4">
           <Tabs defaultValue="surface-exposure" onValueChange={setActiveDiscoverySubTab}>
             <TabsList className="mb-4 flex flex-wrap">
@@ -316,7 +314,6 @@ const IntelligentMapping: React.FC<IntelligentMappingProps> = ({ data }) => {
                 </CardHeader>
                 <CardContent>
                   <ErrorBoundary>
-                    {/* This would be replaced with a more specific component for credential leaks */}
                     <div className="space-y-4">
                       <p className="text-sm text-muted-foreground mb-4">
                         Data from HIBP, DeHashed, and other breach sources showing exposed credentials and sensitive data
@@ -371,7 +368,6 @@ const IntelligentMapping: React.FC<IntelligentMappingProps> = ({ data }) => {
                 </CardHeader>
                 <CardContent>
                   <ErrorBoundary>
-                    {/* This would integrate with a technology stack component */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {data.technologies.map((tech, index) => (
                         <div key={index} className="bg-gray-50 p-3 rounded-lg border border-gray-100">
@@ -397,7 +393,6 @@ const IntelligentMapping: React.FC<IntelligentMappingProps> = ({ data }) => {
                 </CardHeader>
                 <CardContent>
                   <ErrorBoundary>
-                    {/* Replace with a more specific file discovery component */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <h3 className="text-sm font-medium mb-2">PDF Documents</h3>
@@ -450,7 +445,6 @@ const IntelligentMapping: React.FC<IntelligentMappingProps> = ({ data }) => {
                 </CardHeader>
                 <CardContent>
                   <ErrorBoundary>
-                    {/* This would be replaced with a more specific org overview component */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
                         <h3 className="font-medium text-gray-800 mb-2">Organisation Profile</h3>
@@ -502,7 +496,6 @@ const IntelligentMapping: React.FC<IntelligentMappingProps> = ({ data }) => {
                 </CardHeader>
                 <CardContent>
                   <ErrorBoundary>
-                    {/* This would be replaced with a more specific news component */}
                     <div className="space-y-4">
                       {data.recentNews && data.recentNews.map((item, index) => (
                         <div key={index} className="bg-gray-50 p-4 rounded-lg border border-gray-100">
@@ -536,7 +529,6 @@ const IntelligentMapping: React.FC<IntelligentMappingProps> = ({ data }) => {
           </Tabs>
         </TabsContent>
         
-        {/* Correlated Intelligence Tab */}
         <TabsContent value="correlated-intelligence" className="space-y-4">
           <Tabs defaultValue="vulnerability-intelligence" onValueChange={setActiveCorrelatedSubTab}>
             <TabsList className="mb-4">
@@ -624,7 +616,6 @@ const IntelligentMapping: React.FC<IntelligentMappingProps> = ({ data }) => {
                 </CardHeader>
                 <CardContent>
                   <ErrorBoundary>
-                    {/* This would be replaced with a more specific news narrative component */}
                     <div className="space-y-4">
                       <div className="h-64 mb-4">
                         <ResponsiveContainer width="100%" height="100%">
@@ -681,7 +672,6 @@ const IntelligentMapping: React.FC<IntelligentMappingProps> = ({ data }) => {
           </Tabs>
         </TabsContent>
         
-        {/* Intelligence Reporting Tab */}
         <TabsContent value="intelligence-reporting" className="space-y-4">
           <Tabs defaultValue="executive-summary" onValueChange={setActiveReportingSubTab}>
             <TabsList className="mb-4">
