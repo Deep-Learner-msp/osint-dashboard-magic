@@ -20,11 +20,12 @@ import { getSecurityAssessment } from "@/utils/osint-helpers";
 import { mockData } from "./Index";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-// Export the interface so it can be imported in App.tsx
+// Export interface for use in App.tsx
 export interface ExtractedDataProps {
   data?: OsintData;
 }
 
+// Explicitly type the component as a React Function Component accepting ExtractedDataProps
 const ExtractedData: React.FC<ExtractedDataProps> = ({ data = mockData }) => {
   const navigate = useNavigate();
   const [explanationOpen, setExplanationOpen] = useState(false);
