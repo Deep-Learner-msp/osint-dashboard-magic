@@ -23,7 +23,7 @@ export interface ExtractedDataProps {
   data?: OsintData;
 }
 
-const ExtractedData: React.FC<ExtractedDataProps> = (props) => {
+const ExtractedData: React.FC<ExtractedDataProps> = ({ data = mockData }) => {
   const navigate = useNavigate();
   const [explanationOpen, setExplanationOpen] = useState(false);
   const [explanationContent, setExplanationContent] = useState<{
@@ -35,9 +35,6 @@ const ExtractedData: React.FC<ExtractedDataProps> = (props) => {
     description: "",
     content: <div />
   });
-
-  // Use provided data or fallback to mockData
-  const data: OsintData = props.data || mockData;
 
   const showExplanation = (title: string, description: string, content: React.ReactNode) => {
     setExplanationContent({
