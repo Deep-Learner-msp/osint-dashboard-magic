@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { OsintData, NewsItem } from "@/types/data";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft, Database, Brain, BarChart3, Info, MapPin, Users, Building, Globe, Briefcase, Shield, AlertTriangle, ExternalLink, Newspaper } from "lucide-react";
+import { ChevronLeft, Database, Brain, BarChart3, Info, MapPin, Users, Building, Globe, Briefcase, Shield, AlertTriangle, ExternalLink, Newspaper, Code, Search, FileWarning } from "lucide-react";
 import InfrastructurePanel from "@/components/InfrastructurePanel";
 import TechStackPanel from "@/components/TechStackPanel";
 import DataLeaksPanel from "@/components/DataLeaksPanel";
@@ -17,6 +17,8 @@ import ExplanationDialog from "@/components/ui/ExplanationDialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { getSecurityAssessment } from "@/utils/osint-helpers";
+import StatCard from "@/components/ui/StatCard";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
 interface ExtractedDataProps {
   data: OsintData;
@@ -287,8 +289,93 @@ const ExtractedData: React.FC<ExtractedDataProps> = ({ data }) => {
                 <AlertTriangle className="h-3 w-3 text-amber-500 mr-1" />
                 <span>Regulatory inquiries ongoing in Singapore operations (MAS documentation)</span>
               </p>
+              <p className="text-sm text-gray-600 flex items-center">
+                <AlertTriangle className="h-3 w-3 text-amber-500 mr-1" />
+                <span>Key executive LinkedIn profiles reveal new hires from competitor firms, indicating strategic talent acquisition</span>
+              </p>
+              <p className="text-sm text-gray-600 flex items-center">
+                <AlertTriangle className="h-3 w-3 text-amber-500 mr-1" />
+                <span>Analysis of public financial data suggests preparation for significant capital raise in Q2 2025</span>
+              </p>
             </div>
           </div>
+        </div>
+        
+        {/* Website Analytics & Tracking Insight Card */}
+        <div className="mb-6">
+          <Card>
+            <CardHeader className="pb-2">
+              <div className="flex items-center">
+                <Search className="h-5 w-5 mr-2 text-osint-blue" />
+                <CardTitle className="text-xl">Website Analytics & Tracking Insight</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div>
+                  <p className="font-medium">Domain: sclowy.com</p>
+                </div>
+                
+                <div>
+                  <p className="font-medium flex items-center">
+                    <Code className="h-4 w-4 mr-2 text-osint-blue" /> Tech Stack:
+                  </p>
+                  <p className="text-sm ml-6">WordPress 6.0, PHP 7.4, Apache 2.4</p>
+                </div>
+                
+                <div>
+                  <p className="font-medium">🎯 Analytics IDs:</p>
+                  <ul className="text-sm ml-6 space-y-1">
+                    <li>GA ID: UA-12345678</li>
+                    <li>Facebook Pixel: FB-987654321</li>
+                    <li>Hotjar: HJ-000111222</li>
+                  </ul>
+                </div>
+                
+                <div>
+                  <p className="font-medium">🧠 Embedded Metadata:</p>
+                  <ul className="text-sm ml-6 space-y-1">
+                    <li>userRole: internal-dev</li>
+                    <li>experimentGroup: betaUI</li>
+                  </ul>
+                </div>
+                
+                <div>
+                  <p className="font-medium flex items-center">
+                    <AlertTriangle className="h-4 w-4 mr-2 text-amber-500" /> Linked Domains (same GA ID):
+                  </p>
+                  <ul className="text-sm ml-6 space-y-1">
+                    <li>malicious-typo-example.net</li>
+                    <li>phishing-mirror-example.org</li>
+                  </ul>
+                </div>
+                
+                <div>
+                  <p className="font-medium flex items-center">
+                    <FileWarning className="h-4 w-4 mr-2 text-red-500" /> Potential CVEs:
+                  </p>
+                  <ul className="text-sm ml-6 space-y-1">
+                    <li>CVE-2022-1329 (WordPress) – High</li>
+                    <li>CVE-2021-44224 (Apache) – Medium</li>
+                  </ul>
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <p className="font-medium">🧮 Risk Score:</p>
+                  <Badge variant="destructive" className="text-sm">7.8 / 10</Badge>
+                </div>
+                
+                <div className="bg-green-50 p-3 rounded-md border border-green-100 mt-4">
+                  <p className="font-medium flex items-center mb-1">
+                    <Check className="h-4 w-4 mr-2 text-green-600" /> Recommendation:
+                  </p>
+                  <p className="text-sm">
+                    Patch outdated components and flag suspicious domains for deeper review.
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
         
         <div>
