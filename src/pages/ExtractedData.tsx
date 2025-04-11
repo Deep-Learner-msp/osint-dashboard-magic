@@ -1,9 +1,8 @@
-
 import React, { useState } from "react";
 import { OsintData, NewsItem } from "@/types/data";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft, Database, Brain, BarChart3, Info, MapPin, Users, Building, Globe, Briefcase, Shield, AlertTriangle, ExternalLink, Newspaper, Code, Search, FileWarning } from "lucide-react";
+import { ChevronLeft, Database, Brain, BarChart3, Info, MapPin, Users, Building, Globe, Briefcase, Shield, AlertTriangle, ExternalLink, Newspaper, Code, Search, FileWarning, Check } from "lucide-react";
 import InfrastructurePanel from "@/components/InfrastructurePanel";
 import TechStackPanel from "@/components/TechStackPanel";
 import DataLeaksPanel from "@/components/DataLeaksPanel";
