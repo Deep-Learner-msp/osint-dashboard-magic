@@ -83,15 +83,17 @@ export interface ShodanSSLCert {
   serial: number;
   subject: {
     CN: string;
+    C?: string;
+    O?: string;
   };
   pubkey: {
     type: string;
     bits: number;
   };
   issuer: {
-    C: string;
+    C?: string;
     CN: string;
-    O: string;
+    O?: string;
   };
 }
 
@@ -111,7 +113,7 @@ export interface ShodanSSLData {
   };
   trust: {
     revoked: boolean;
-    browser: any;
+    browser?: any;
   };
   handshake_states: string[];
   alpn: any[];
@@ -119,26 +121,26 @@ export interface ShodanSSLData {
 }
 
 export interface ShodanServiceData {
-  ip: number;
+  ip?: number;
   hash?: number;
   port: number;
   transport: string;
-  cloud: ShodanCloud;
-  location: ShodanLocation;
-  product: string;
-  tags: string[];
-  timestamp: string;
-  hostnames: string[];
-  org: string;
-  data: string;
-  asn: string;
-  cpe23: string[];
-  isp: string;
-  cpe: string[];
-  domains: string[];
-  ip_str: string;
-  os: string | null;
-  _shodan: {
+  cloud?: ShodanCloud;
+  location?: ShodanLocation;
+  product?: string;
+  tags?: string[];
+  timestamp?: string;
+  hostnames?: string[];
+  org?: string;
+  data?: string;
+  asn?: string;
+  cpe23?: string[];
+  isp?: string;
+  cpe?: string[];
+  domains?: string[];
+  ip_str?: string;
+  os?: string | null;
+  _shodan?: {
     region: string;
     module: string;
     ptr: boolean;
@@ -146,12 +148,11 @@ export interface ShodanServiceData {
     options: Record<string, any>;
     crawler: string;
   };
-  opts: Record<string, any>;
+  opts?: Record<string, any>;
   http?: ShodanHttpData;
   ssh?: ShodanSSHData;
   ssl?: ShodanSSLData;
   info?: string;
-  // Adding the missing version property
   version?: string;
 }
 

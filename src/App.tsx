@@ -1,53 +1,39 @@
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
-import Landing from "./pages/Landing";
-import DataDiscovery from "./pages/DataDiscovery";
-import CorrelatedIntelligence from "./pages/CorrelatedIntelligence";
-import IntelligenceReporting from "./pages/IntelligenceReporting";
+import ExtractedData from "./pages/ExtractedData";
 import IntelligentMapping from "./pages/IntelligentMapping";
-import ExtractedData, { ExtractedDataProps } from "./pages/ExtractedData";
-import { OsintData } from "./types/data";
+import ExecutiveView from "./pages/ExecutiveView";
+import Settings from "./pages/Settings";
+import OsintReportPage from "./pages/OsintReportPage";
+import SearchPage from "./pages/SearchPage";
+import { ThemeProvider } from "./components/theme-provider";
+import { Toaster } from "./components/ui/toaster";
 
-// Create a client
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      retry: 1,
-      staleTime: 1000 * 60 * 5, // 5 minutes
-    },
-  },
-});
+// Import mockData from the dedicated file
+import { mockData } from "./data/mockData";
 
-// Import mock data from Index.tsx
-import { mockData } from "./pages/Index";
-
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner position="top-right" />
-      <BrowserRouter>
+function App() {
+  return (
+    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+      <Router>
         <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/dashboard" element={<Index data={mockData} />} />
-          <Route path="/data-discovery" element={<DataDiscovery data={mockData} />} />
-          <Route path="/correlated-intelligence" element={<CorrelatedIntelligence data={mockData} />} />
-          <Route path="/intelligence-reporting" element={<IntelligenceReporting data={mockData} />} />
-          <Route path="/intelligent-mapping" element={<IntelligentMapping data={mockData} />} />
-          <Route path="/extracted-data" element={<ExtractedData data={mockData} />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
+          <Route path="/" element={<Index data={mockData} />} />
+          <Route path="/search" element={<SearchPage />} />
+          <Route path="/data" element={<ExtractedData data={mockData} />} />
+          <Route
+            path="/intelligent-mapping"
+            element={<IntelligentMapping data={mockData} />}
+          />
+          <Route path="/executive-view" element={<ExecutiveView data={mockData} />} />
+          <Route path="/report" element={<OsintReportPage data={mockData} />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+      </Router>
+      <Toaster />
+    </ThemeProvider>
+  );
+}
 
 export default App;

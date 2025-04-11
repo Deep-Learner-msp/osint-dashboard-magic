@@ -1,9 +1,8 @@
-
 import React, { useState } from "react";
-import { OsintData } from "@/types/data";
+import { OsintData, NewsItem } from "@/types/data";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft, Database, Brain, BarChart3, Info, MapPin, Users, Building, Globe, Briefcase, Shield, AlertTriangle, Search, Code, Facebook, Activity, LinkIcon, AlertCircle } from "lucide-react";
+import { ChevronLeft, Database, Brain, BarChart3, Info, MapPin, Users, Building, Globe, Briefcase, Shield, AlertTriangle, ExternalLink, Newspaper } from "lucide-react";
 import InfrastructurePanel from "@/components/InfrastructurePanel";
 import TechStackPanel from "@/components/TechStackPanel";
 import DataLeaksPanel from "@/components/DataLeaksPanel";
@@ -17,16 +16,12 @@ import ExplanationDialog from "@/components/ui/ExplanationDialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { getSecurityAssessment } from "@/utils/osint-helpers";
-import { mockData } from "./Index";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-// Export interface for use in App.tsx
-export interface ExtractedDataProps {
-  data?: OsintData;
+interface ExtractedDataProps {
+  data: OsintData;
 }
 
-// Explicitly type the component as a React Function Component accepting ExtractedDataProps
-const ExtractedData: React.FC<ExtractedDataProps> = ({ data = mockData }) => {
+const ExtractedData: React.FC<ExtractedDataProps> = ({ data }) => {
   const navigate = useNavigate();
   const [explanationOpen, setExplanationOpen] = useState(false);
   const [explanationContent, setExplanationContent] = useState<{
@@ -49,6 +44,59 @@ const ExtractedData: React.FC<ExtractedDataProps> = ({ data = mockData }) => {
   };
 
   const securityAssessment = getSecurityAssessment(data);
+
+  const recentNews: NewsItem[] = data.recentNews || [
+    {
+      title: "TradeFi Global Expands Cryptocurrency Trading Services",
+      date: "2023-12-10",
+      source: "Financial Times",
+      url: "#",
+      summary: "TradeFi Global announced plans to expand its cryptocurrency trading services, adding support for NFTs and DeFi protocols starting Q1 2024.",
+      sentiment: "positive",
+      relevance: 0.95,
+      tags: ["cryptocurrency", "expansion", "strategic", "trading"]
+    },
+    {
+      title: "Regulatory Inquiry into TradeFi's Singapore Operations",
+      date: "2023-11-28",
+      source: "Bloomberg",
+      url: "#",
+      summary: "The Monetary Authority of Singapore (MAS) has opened an inquiry into TradeFi Global's compliance procedures following a series of high-volume transactions.",
+      sentiment: "negative",
+      relevance: 0.89,
+      tags: ["regulatory", "compliance", "risk", "singapore"]
+    },
+    {
+      title: "TradeFi in Advanced Talks to Acquire Asian Fintech Startup",
+      date: "2023-12-05",
+      source: "Reuters",
+      url: "#",
+      summary: "Sources close to the matter reveal TradeFi is in advanced negotiations to acquire a Singapore-based fintech startup specializing in AI-driven trading algorithms.",
+      sentiment: "positive",
+      relevance: 0.92,
+      tags: ["acquisition", "M&A", "fintech", "AI"]
+    },
+    {
+      title: "Executive Shuffle: TradeFi Appoints New CTO from Google",
+      date: "2023-11-15",
+      source: "Wall Street Journal",
+      url: "#",
+      summary: "TradeFi Global has appointed Dr. Lisa Xu, former Google Cloud engineering director, as its new Chief Technology Officer to lead its digital transformation efforts.",
+      sentiment: "positive",
+      relevance: 0.88,
+      tags: ["executive", "leadership", "technology", "digital transformation"]
+    },
+    {
+      title: "Data Breach Investigation at TradeFi Subsidiary",
+      date: "2023-12-02",
+      source: "CyberSecurity Today",
+      url: "#",
+      summary: "A TradeFi subsidiary is investigating a potential data breach after unusual activity was detected in their client portal system. No confirmation of compromised data yet.",
+      sentiment: "negative",
+      relevance: 0.97,
+      tags: ["security", "breach", "risk", "data protection"]
+    }
+  ];
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -224,11 +272,7 @@ const ExtractedData: React.FC<ExtractedDataProps> = ({ data = mockData }) => {
             <h3 className="font-medium text-gray-800">Organization Highlights</h3>
           </div>
           <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-            <ul className="list-disc pl-5 space-y-2 text-gray-700 mb-3">
-              <li>SC Lowy is a leading alternative asset manager with $1.6 billion in assets under management, specializing in opportunistic credit and private credit across global markets.</li>
-              <li>Founded in 2009, the firm operates from nine global offices with over 50 professionals, focusing on capital preservation through senior secured lending backed by hard assets.</li>
-            </ul>
-            
+            <p className="text-gray-700">{data.organizationDescription[0]}</p>
             <div className="mt-3 space-y-1">
               <p className="text-sm text-gray-600 flex items-center">
                 <AlertTriangle className="h-3 w-3 text-amber-500 mr-1" />
@@ -243,6 +287,89 @@ const ExtractedData: React.FC<ExtractedDataProps> = ({ data = mockData }) => {
                 <span>Regulatory inquiries ongoing in Singapore operations (MAS documentation)</span>
               </p>
             </div>
+          </div>
+        </div>
+        
+        <div>
+          <div className="flex items-center mb-4">
+            <Newspaper className="h-5 w-5 mr-2 text-osint-blue" />
+            <h2 className="text-xl font-semibold">Recent News & Media Intelligence</h2>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="ml-2" 
+              onClick={() => showExplanation(
+                "About News Intelligence", 
+                "News intelligence provides insights into recent media coverage, market perception, and potential reputation impacts.",
+                <div className="space-y-4">
+                  <p>News intelligence monitoring helps executives:</p>
+                  <ul className="list-disc pl-5 space-y-2">
+                    <li>Track company mentions across global publications</li>
+                    <li>Analyze sentiment trends and reputation signals</li>
+                    <li>Identify emerging risks and opportunities</li>
+                    <li>Monitor competitor activities and market movements</li>
+                    <li>Support strategic decision-making with timely information</li>
+                  </ul>
+                  <p className="text-sm text-gray-500 mt-4">Data sources include major financial publications, industry news, regulatory filings, press releases, and social media monitoring.</p>
+                </div>
+              )}
+            >
+              <Info className="h-4 w-4" />
+            </Button>
+          </div>
+          
+          <div className="space-y-4">
+            {recentNews.map((item, index) => (
+              <div key={index} className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="font-medium text-gray-800">{item.title}</h3>
+                    <div className="flex items-center text-sm text-gray-500 mt-1">
+                      <span>{item.source}</span>
+                      <span className="mx-2">•</span>
+                      <span>{new Date(item.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Badge 
+                      variant={item.sentiment === 'positive' ? "success" : item.sentiment === 'negative' ? "destructive" : "default"}
+                      className="text-xs"
+                    >
+                      {item.sentiment.charAt(0).toUpperCase() + item.sentiment.slice(1)}
+                    </Badge>
+                    <Badge variant="outline" className="text-xs">
+                      Relevance: {Math.round(item.relevance * 100)}%
+                    </Badge>
+                  </div>
+                </div>
+                
+                <p className="text-gray-700 mt-2">{item.summary}</p>
+                
+                <div className="mt-3 flex justify-between items-center">
+                  <div className="flex flex-wrap gap-1">
+                    {item.tags.map((tag, tagIndex) => (
+                      <Badge key={tagIndex} variant="secondary" className="text-xs">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                  <Button size="sm" variant="ghost" className="text-xs flex items-center" asChild>
+                    <a href={item.url} target="_blank" rel="noopener noreferrer">
+                      View Source <ExternalLink className="h-3 w-3 ml-1" />
+                    </a>
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          <div className="mt-4 flex justify-between items-center">
+            <div className="text-sm text-gray-500">
+              <p>Intelligence gathered from 50+ global news sources, financial publications, and industry reports</p>
+            </div>
+            <Button size="sm" variant="outline" className="text-xs">
+              View Full Media Analysis
+            </Button>
           </div>
         </div>
         
@@ -337,124 +464,6 @@ const ExtractedData: React.FC<ExtractedDataProps> = ({ data = mockData }) => {
       >
         {explanationContent.content}
       </ExplanationDialog>
-
-      <Card className="bg-white border border-gray-200 shadow-sm mb-6">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-lg flex items-center gap-2">
-            <Search className="h-5 w-5 text-blue-600" />
-            🔎 Website Analytics & Tracking Insight
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <Globe className="h-4 w-4 text-gray-700" />
-              <span className="font-medium">Domain:</span>
-              <span className="text-blue-600">sclowy.com</span>
-            </div>
-
-            <div>
-              <div className="flex items-center space-x-2 mb-2">
-                <Code className="h-4 w-4 text-gray-700" />
-                <span className="font-medium">🧱 Tech Stack:</span>
-              </div>
-              <div className="flex flex-wrap gap-2 ml-6">
-                <Badge variant="outline" className="bg-gray-50">WordPress 6.0</Badge>
-                <Badge variant="outline" className="bg-gray-50">PHP 7.4</Badge>
-                <Badge variant="outline" className="bg-gray-50">Apache 2.4</Badge>
-              </div>
-            </div>
-
-            <div>
-              <div className="flex items-center space-x-2 mb-2">
-                <Activity className="h-4 w-4 text-gray-700" />
-                <span className="font-medium">🎯 Analytics IDs:</span>
-              </div>
-              <div className="space-y-2 ml-6">
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm text-gray-600">GA ID:</span>
-                  <code className="bg-gray-100 px-2 py-0.5 rounded text-sm">UA-12345678</code>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm text-gray-600">Facebook Pixel:</span>
-                  <code className="bg-gray-100 px-2 py-0.5 rounded text-sm">FB-987654321</code>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm text-gray-600">Hotjar:</span>
-                  <code className="bg-gray-100 px-2 py-0.5 rounded text-sm">HJ-000111222</code>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <div className="flex items-center space-x-2 mb-2">
-                <Brain className="h-4 w-4 text-gray-700" />
-                <span className="font-medium">🧠 Embedded Metadata:</span>
-              </div>
-              <div className="space-y-2 ml-6 bg-gray-50 p-3 rounded-md">
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="text-sm text-gray-600">userRole:</div>
-                  <div className="text-sm font-mono">internal-dev</div>
-                  <div className="text-sm text-gray-600">experimentGroup:</div>
-                  <div className="text-sm font-mono">betaUI</div>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <div className="flex items-center space-x-2 mb-2">
-                <LinkIcon className="h-4 w-4 text-gray-700" />
-                <span className="font-medium text-amber-700">🚨 Linked Domains (same GA ID):</span>
-              </div>
-              <div className="space-y-2 ml-6">
-                <div className="flex items-center space-x-2 text-red-600">
-                  <AlertCircle className="h-3 w-3" />
-                  <span className="text-sm">malicious-typo-example.net</span>
-                </div>
-                <div className="flex items-center space-x-2 text-red-600">
-                  <AlertCircle className="h-3 w-3" />
-                  <span className="text-sm">phishing-mirror-example.org</span>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <div className="flex items-center space-x-2 mb-2">
-                <Shield className="h-4 w-4 text-gray-700" />
-                <span className="font-medium text-red-700">⚠️ Potential CVEs:</span>
-              </div>
-              <div className="space-y-2 ml-6">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm">CVE-2022-1329 (WordPress)</span>
-                  <Badge variant="destructive">High</Badge>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm">CVE-2021-44224 (Apache)</span>
-                  <Badge variant="warning">Medium</Badge>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex justify-between items-center border-t pt-4 mt-4">
-              <div className="flex items-center">
-                <AlertTriangle className="h-5 w-5 text-red-600 mr-2" />
-                <span className="font-medium">🧮 Risk Score:</span>
-                <span className="ml-2 text-lg font-bold text-red-600">7.8 / 10</span>
-              </div>
-            </div>
-
-            <div className="bg-green-50 border border-green-200 rounded p-3">
-              <div className="flex items-center">
-                <Shield className="h-4 w-4 text-green-600 mr-2" />
-                <span className="font-medium text-green-800">✅ Recommendation:</span>
-              </div>
-              <p className="text-sm text-green-700 mt-1 ml-6">
-                Patch outdated components and flag suspicious domains for deeper review.
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 };

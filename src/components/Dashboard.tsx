@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Shield, AlertTriangle, Brain, Download } from "lucide-react";
 import { OsintData } from "@/types/data";
