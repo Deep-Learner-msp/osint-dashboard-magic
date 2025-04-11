@@ -43,13 +43,32 @@ const OverviewPanel: React.FC<OverviewPanelProps> = ({ data }) => {
       </div>
 
       <InfoCard 
-        title="Description"
+        title="Organization Highlights"
         icon={<Info className="h-5 w-5" />}
         animationDelay={700}
       >
-        <div className="text-sm leading-relaxed max-h-40 overflow-y-auto pr-1">
-          {organizationDescription[0]}
-        </div>
+        <ul className="text-sm leading-relaxed space-y-2">
+          <li className="flex items-start">
+            <span className="text-osint-blue mr-2">•</span>
+            <span>Leading alternative asset manager specializing in opportunistic credit across APAC, Middle East, and Europe</span>
+          </li>
+          <li className="flex items-start">
+            <span className="text-osint-blue mr-2">•</span>
+            <span>Potential M&A activity detected from public filings and press references</span>
+          </li>
+          <li className="flex items-start">
+            <span className="text-osint-blue mr-2">•</span>
+            <span>Strategic indicators suggest expansion into cryptocurrency trading services</span>
+          </li>
+          <li className="flex items-start">
+            <span className="text-osint-blue mr-2">•</span>
+            <span>Regulatory inquiries ongoing in Singapore operations (MAS documentation)</span>
+          </li>
+          <li className="flex items-start">
+            <span className="text-osint-blue mr-2">•</span>
+            <span>Analysis of public financial data suggests preparation for significant capital raise in Q2 2025</span>
+          </li>
+        </ul>
       </InfoCard>
     </GlassPanel>
   );
