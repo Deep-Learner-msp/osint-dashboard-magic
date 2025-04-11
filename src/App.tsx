@@ -11,7 +11,7 @@ import DataDiscovery from "./pages/DataDiscovery";
 import CorrelatedIntelligence from "./pages/CorrelatedIntelligence";
 import IntelligenceReporting from "./pages/IntelligenceReporting";
 import IntelligentMapping from "./pages/IntelligentMapping";
-import ExtractedData from "./pages/ExtractedData";
+import ExtractedData, { ExtractedDataProps } from "./pages/ExtractedData";
 import { OsintData } from "./types/data";
 
 // Create a client

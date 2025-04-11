@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { OsintData } from "@/types/data";
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,7 @@ import { getSecurityAssessment } from "@/utils/osint-helpers";
 import { mockData } from "./Index";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
+// Export the interface so it can be imported in App.tsx
 export interface ExtractedDataProps {
   data?: OsintData;
 }
