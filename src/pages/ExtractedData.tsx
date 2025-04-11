@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { OsintData, NewsItem } from "@/types/data";
 import { Button } from "@/components/ui/button";
@@ -115,19 +116,19 @@ const ExtractedData: React.FC<ExtractedDataProps> = ({ data }) => {
         <div className="flex gap-2">
           <Button 
             variant="outline" 
-            onClick={() => navigate("/intelligent-mapping")}
+            onClick={() => navigate("/correlated-intelligence")}
             className="flex items-center gap-1"
           >
             <Brain className="h-4 w-4" />
-            <span className="hidden sm:inline">Intelligent</span> Mapping
+            <span className="hidden sm:inline">Correlated</span> Intelligence
           </Button>
           <Button 
             variant="outline" 
-            onClick={() => navigate("/executive-view")}
+            onClick={() => navigate("/intelligence-reporting")}
             className="flex items-center gap-1"
           >
             <BarChart3 className="h-4 w-4" />
-            <span className="hidden sm:inline">Intelligence</span> Report
+            <span className="hidden sm:inline">Intelligence</span> Reporting
           </Button>
         </div>
       </div>
@@ -136,7 +137,7 @@ const ExtractedData: React.FC<ExtractedDataProps> = ({ data }) => {
         <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
           <Database className="h-5 w-5 text-blue-600" />
         </div>
-        <h1 className="text-2xl font-bold">Processed Data</h1>
+        <h1 className="text-2xl font-bold">Data Discovery</h1>
         <Dialog>
           <DialogTrigger asChild>
             <Button variant="ghost" size="icon" className="ml-2">
@@ -145,7 +146,7 @@ const ExtractedData: React.FC<ExtractedDataProps> = ({ data }) => {
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>About Processed Data</DialogTitle>
+              <DialogTitle>About Data Discovery</DialogTitle>
               <DialogDescription>
                 This view presents raw intelligence data collected from various sources without advanced analysis.
               </DialogDescription>
@@ -453,7 +454,7 @@ const ExtractedData: React.FC<ExtractedDataProps> = ({ data }) => {
       </div>
       
       <footer className="mt-8 text-center text-sm text-muted-foreground">
-        <p>Processed data from multiple intelligence sources. For security assessment purposes only.</p>
+        <p>Data Discovery from multiple intelligence sources. For security assessment purposes only.</p>
       </footer>
 
       <ExplanationDialog 

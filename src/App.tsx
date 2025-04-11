@@ -21,12 +21,12 @@ function App() {
         <Routes>
           <Route path="/" element={<Index data={mockData} />} />
           <Route path="/search" element={<SearchPage />} />
-          <Route path="/data" element={<ExtractedData data={mockData} />} />
+          <Route path="/data-discovery" element={<ExtractedData data={mockData} />} />
           <Route
-            path="/intelligent-mapping"
+            path="/correlated-intelligence"
             element={<IntelligentMapping data={mockData} />}
           />
-          <Route path="/executive-view" element={<ExecutiveView data={mockData} />} />
+          <Route path="/intelligence-reporting" element={<ExecutiveView data={mockData} />} />
           <Route path="/report" element={<OsintReportPage data={mockData} />} />
           <Route path="/settings" element={<Settings />} />
         </Routes>

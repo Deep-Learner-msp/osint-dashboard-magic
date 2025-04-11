@@ -109,19 +109,19 @@ const IntelligentMapping: React.FC<IntelligentMappingProps> = ({ data }) => {
         <div className="flex gap-2">
           <Button 
             variant="outline" 
-            onClick={() => navigate("/extracted-data")}
+            onClick={() => navigate("/data-discovery")}
             className="flex items-center gap-1"
           >
             <Database className="h-4 w-4" />
-            <span className="hidden sm:inline">Processed</span> Data
+            <span className="hidden sm:inline">Data</span> Discovery
           </Button>
           <Button 
             variant="outline" 
-            onClick={() => navigate("/executive-view")}
+            onClick={() => navigate("/intelligence-reporting")}
             className="flex items-center gap-1"
           >
             <BarChart3 className="h-4 w-4" />
-            <span className="hidden sm:inline">Intelligence</span> Report
+            <span className="hidden sm:inline">Intelligence</span> Reporting
           </Button>
         </div>
       </div>
@@ -130,7 +130,7 @@ const IntelligentMapping: React.FC<IntelligentMappingProps> = ({ data }) => {
         <div className="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center mr-3">
           <Brain className="h-5 w-5 text-purple-600" />
         </div>
-        <h1 className="text-2xl font-bold">Intelligent Mapping</h1>
+        <h1 className="text-2xl font-bold">Correlated Intelligence</h1>
       </div>
 
       <Alert className="mb-6 bg-purple-50 border-purple-200">
@@ -846,7 +846,7 @@ const IntelligentMapping: React.FC<IntelligentMappingProps> = ({ data }) => {
                       <Button 
                         variant="outline" 
                         className="flex items-center gap-2"
-                        onClick={() => navigate("/executive-view")}
+                        onClick={() => navigate("/intelligence-reporting")}
                       >
                         <BarChart3 className="h-4 w-4" />
                         Executive Intelligence Report
@@ -889,7 +889,7 @@ const IntelligentMapping: React.FC<IntelligentMappingProps> = ({ data }) => {
           <div>
             <h3 className="text-base font-medium flex items-center gap-2 mb-2">
               <Brain className="h-4 w-4 text-purple-600" />
-              Intelligence Mapping Analysis
+              Correlated Intelligence Analysis
             </h3>
             <p className="text-sm text-muted-foreground">
               Our AI has analyzed the raw data and created an intelligence map highlighting key security concerns and actionable insights.
@@ -899,7 +899,7 @@ const IntelligentMapping: React.FC<IntelligentMappingProps> = ({ data }) => {
           <div className="flex flex-col sm:flex-row gap-2">
             <Button 
               variant="outline" 
-              onClick={() => navigate("/executive-view")}
+              onClick={() => navigate("/intelligence-reporting")}
             >
               <FileText className="h-4 w-4 mr-2" />
               View Intelligence Report
@@ -913,7 +913,7 @@ const IntelligentMapping: React.FC<IntelligentMappingProps> = ({ data }) => {
       <footer className="mt-8 text-center text-sm text-muted-foreground">
         <div className="flex items-center justify-center mb-2">
           <Brain className="h-4 w-4 mr-1 text-purple-600" />
-          <span>Intelligence Mapping Analysis</span>
+          <span>Correlated Intelligence Analysis</span>
         </div>
         <p>AI-powered analysis of intelligence data gathered from multiple sources. For security assessment purposes only.</p>
       </footer>
