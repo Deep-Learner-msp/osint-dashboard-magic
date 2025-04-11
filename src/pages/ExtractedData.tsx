@@ -1,9 +1,8 @@
-
 import React, { useState } from "react";
 import { OsintData } from "@/types/data";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft, Database, Brain, BarChart3, Info, MapPin, Users, Building, Globe, Briefcase, Shield, AlertTriangle } from "lucide-react";
+import { ChevronLeft, Database, Brain, BarChart3, Info, MapPin, Users, Building, Globe, Briefcase, Shield, AlertTriangle, Search, Code, Facebook, Activity, LinkIcon, AlertCircle } from "lucide-react";
 import InfrastructurePanel from "@/components/InfrastructurePanel";
 import TechStackPanel from "@/components/TechStackPanel";
 import DataLeaksPanel from "@/components/DataLeaksPanel";
@@ -18,6 +17,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { getSecurityAssessment } from "@/utils/osint-helpers";
 import { mockData } from "./Index";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export interface ExtractedDataProps {
   data?: OsintData;
@@ -337,6 +337,124 @@ const ExtractedData: React.FC<ExtractedDataProps> = (props) => {
       >
         {explanationContent.content}
       </ExplanationDialog>
+
+      <Card className="bg-white border border-gray-200 shadow-sm mb-6">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-lg flex items-center gap-2">
+            <Search className="h-5 w-5 text-blue-600" />
+            🔎 Website Analytics & Tracking Insight
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="flex items-center space-x-2">
+              <Globe className="h-4 w-4 text-gray-700" />
+              <span className="font-medium">Domain:</span>
+              <span className="text-blue-600">sclowy.com</span>
+            </div>
+
+            <div>
+              <div className="flex items-center space-x-2 mb-2">
+                <Code className="h-4 w-4 text-gray-700" />
+                <span className="font-medium">🧱 Tech Stack:</span>
+              </div>
+              <div className="flex flex-wrap gap-2 ml-6">
+                <Badge variant="outline" className="bg-gray-50">WordPress 6.0</Badge>
+                <Badge variant="outline" className="bg-gray-50">PHP 7.4</Badge>
+                <Badge variant="outline" className="bg-gray-50">Apache 2.4</Badge>
+              </div>
+            </div>
+
+            <div>
+              <div className="flex items-center space-x-2 mb-2">
+                <Activity className="h-4 w-4 text-gray-700" />
+                <span className="font-medium">🎯 Analytics IDs:</span>
+              </div>
+              <div className="space-y-2 ml-6">
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm text-gray-600">GA ID:</span>
+                  <code className="bg-gray-100 px-2 py-0.5 rounded text-sm">UA-12345678</code>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm text-gray-600">Facebook Pixel:</span>
+                  <code className="bg-gray-100 px-2 py-0.5 rounded text-sm">FB-987654321</code>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm text-gray-600">Hotjar:</span>
+                  <code className="bg-gray-100 px-2 py-0.5 rounded text-sm">HJ-000111222</code>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div className="flex items-center space-x-2 mb-2">
+                <Brain className="h-4 w-4 text-gray-700" />
+                <span className="font-medium">🧠 Embedded Metadata:</span>
+              </div>
+              <div className="space-y-2 ml-6 bg-gray-50 p-3 rounded-md">
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="text-sm text-gray-600">userRole:</div>
+                  <div className="text-sm font-mono">internal-dev</div>
+                  <div className="text-sm text-gray-600">experimentGroup:</div>
+                  <div className="text-sm font-mono">betaUI</div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div className="flex items-center space-x-2 mb-2">
+                <LinkIcon className="h-4 w-4 text-gray-700" />
+                <span className="font-medium text-amber-700">🚨 Linked Domains (same GA ID):</span>
+              </div>
+              <div className="space-y-2 ml-6">
+                <div className="flex items-center space-x-2 text-red-600">
+                  <AlertCircle className="h-3 w-3" />
+                  <span className="text-sm">malicious-typo-example.net</span>
+                </div>
+                <div className="flex items-center space-x-2 text-red-600">
+                  <AlertCircle className="h-3 w-3" />
+                  <span className="text-sm">phishing-mirror-example.org</span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div className="flex items-center space-x-2 mb-2">
+                <Shield className="h-4 w-4 text-gray-700" />
+                <span className="font-medium text-red-700">⚠️ Potential CVEs:</span>
+              </div>
+              <div className="space-y-2 ml-6">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm">CVE-2022-1329 (WordPress)</span>
+                  <Badge variant="destructive">High</Badge>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm">CVE-2021-44224 (Apache)</span>
+                  <Badge variant="warning">Medium</Badge>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-between items-center border-t pt-4 mt-4">
+              <div className="flex items-center">
+                <AlertTriangle className="h-5 w-5 text-red-600 mr-2" />
+                <span className="font-medium">🧮 Risk Score:</span>
+                <span className="ml-2 text-lg font-bold text-red-600">7.8 / 10</span>
+              </div>
+            </div>
+
+            <div className="bg-green-50 border border-green-200 rounded p-3">
+              <div className="flex items-center">
+                <Shield className="h-4 w-4 text-green-600 mr-2" />
+                <span className="font-medium text-green-800">✅ Recommendation:</span>
+              </div>
+              <p className="text-sm text-green-700 mt-1 ml-6">
+                Patch outdated components and flag suspicious domains for deeper review.
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
