@@ -274,7 +274,7 @@ const ExtractedData: React.FC<ExtractedDataProps> = ({ data }) => {
             <h3 className="font-medium text-gray-800">Organization Highlights</h3>
           </div>
           <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-            <p className="text-gray-700">{data.organizationDescription[0]}</p>
+            <p className="text-gray-700">SC Lowy is a leading alternative asset manager with $1.6B AUM, specializing in opportunistic credit and private credit across APAC, Middle East, and Europe. Founded in 2009, the firm operates from 9 global offices with 50+ professionals focusing on secured investments with strong downside protection.</p>
             <div className="mt-3 space-y-1">
               <p className="text-sm text-gray-600 flex items-center">
                 <AlertTriangle className="h-3 w-3 text-amber-500 mr-1" />
@@ -300,7 +300,6 @@ const ExtractedData: React.FC<ExtractedDataProps> = ({ data }) => {
           </div>
         </div>
         
-        {/* Website Analytics & Tracking Insight Card */}
         <div className="mb-6">
           <Card>
             <CardHeader className="pb-2">
