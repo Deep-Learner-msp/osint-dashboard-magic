@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Shield, AlertTriangle, Brain, Download } from "lucide-react";
 import { OsintData } from "@/types/data";
@@ -14,6 +15,7 @@ import AiInsightPanel from "./ui/AiInsightPanel";
 import IntelligenceReportSheet from "./ui/IntelligenceReportSheet";
 import ThreatIntelligencePanel from "./ThreatIntelligencePanel";
 import SocialIntelPanel from "./SocialIntelPanel";
+import WebsiteAnalyticsPanel from "./WebsiteAnalyticsPanel";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import ErrorBoundary from "./ui/error-boundary";
 import { useToast } from "@/hooks/use-toast";
@@ -344,6 +346,12 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
       <div className="mb-6">
         <ErrorBoundary>
           <SocialIntelPanel data={data} />
+        </ErrorBoundary>
+      </div>
+
+      <div className="mb-6">
+        <ErrorBoundary>
+          <WebsiteAnalyticsPanel data={data} />
         </ErrorBoundary>
       </div>
       
