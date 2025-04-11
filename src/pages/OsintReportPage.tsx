@@ -27,11 +27,11 @@ const OsintReportPage: React.FC<OsintReportPageProps> = ({ data }) => {
         <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
           <FileText className="h-5 w-5 text-blue-600" />
         </div>
-        <h1 className="text-2xl font-bold">OSINT Report</h1>
+        <h1 className="text-2xl font-bold">Intelligence Report</h1>
       </div>
 
       <div className="bg-white shadow-sm rounded-lg p-6 mb-6">
-        <h2 className="text-lg font-medium mb-4">Full OSINT Report</h2>
+        <h2 className="text-lg font-medium mb-4">Full Intelligence Report</h2>
         <div className="space-y-4">
           <p className="text-gray-500 text-sm">Report page is under development.</p>
         </div>
