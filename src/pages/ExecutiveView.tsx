@@ -30,6 +30,9 @@ import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
+import { Header } from "@/components/ui/Header";
+import { WebsiteAnalyticsPanel } from "@/components/ui/WebsiteAnalyticsPanel";
+import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 
 interface ExecutiveViewProps {
   data: OsintData;
@@ -273,6 +276,14 @@ const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <Header organizationName="SC Lowy" />
+      
+      <div className="mb-6">
+        <ErrorBoundary>
+          <WebsiteAnalyticsPanel data={data} />
+        </ErrorBoundary>
+      </div>
+
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
           <Button 
