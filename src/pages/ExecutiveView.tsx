@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { OsintData } from "@/types/data";
 import { Button } from "@/components/ui/button";
@@ -759,4 +760,147 @@ const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
                         <div className="flex items-center gap-2">
                           <div className="text-xs w-24">Negative</div>
                           <div className="flex-1">
-                            <div
+                            <div className="h-2 rounded-full bg-gray-200">
+                              <div 
+                                className="h-2 rounded-full bg-red-500" 
+                                style={{ width: `${brandMetrics.mediaPresence.negative}%` }}
+                              ></div>
+                            </div>
+                          </div>
+                          <div className="text-xs font-medium">{brandMetrics.mediaPresence.negative}%</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </TabsContent>
+            </Tabs>
+          </Card>
+        </div>
+      ) : (
+        <div className="space-y-6 animate-fade-in">
+          <Card className="p-6 bg-white shadow-md">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-semibold flex items-center gap-2">
+                <Code className="h-5 w-5 text-blue-600" />
+                Technical Details
+              </h2>
+              <Badge variant="outline" className="bg-blue-50">
+                For Security Teams
+              </Badge>
+            </div>
+            
+            <div className="bg-slate-50 border rounded-lg p-4 mb-6">
+              <h3 className="text-base font-medium mb-3 flex items-center gap-2">
+                <Shield className="h-4 w-4 text-slate-600" />
+                Vulnerability Overview
+              </h3>
+              
+              <div className="mb-4">
+                <div className="text-sm text-slate-700 mb-2">
+                  Vulnerability Severity Distribution
+                </div>
+                <QualysSeverityBar data={data.qualysScan} />
+              </div>
+              
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+                <div>
+                  <div className="text-red-600 text-xl font-bold">{data.qualysScan.severity_1}</div>
+                  <div className="text-xs text-slate-600">Critical</div>
+                </div>
+                <div>
+                  <div className="text-orange-500 text-xl font-bold">{data.qualysScan.severity_2}</div>
+                  <div className="text-xs text-slate-600">High</div>
+                </div>
+                <div>
+                  <div className="text-amber-500 text-xl font-bold">{data.qualysScan.severity_3}</div>
+                  <div className="text-xs text-slate-600">Medium</div>
+                </div>
+                <div>
+                  <div className="text-green-500 text-xl font-bold">{data.qualysScan.severity_4}</div>
+                  <div className="text-xs text-slate-600">Low</div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div>
+                <h3 className="text-base font-medium mb-3">Open Ports & Services</h3>
+                <div className="bg-slate-50 border rounded p-3 max-h-60 overflow-y-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b">
+                        <th className="text-left py-2 font-medium">Port</th>
+                        <th className="text-left py-2 font-medium">Service</th>
+                        <th className="text-left py-2 font-medium">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {data.openPorts.map((port, index) => (
+                        <tr key={index} className="border-b border-slate-200">
+                          <td className="py-2">{port.port}</td>
+                          <td className="py-2">{port.service}</td>
+                          <td className="py-2">
+                            <Badge variant="outline" className={
+                              port.state === "open" ? "bg-red-50 text-red-700" : "bg-green-50 text-green-700"
+                            }>
+                              {port.state}
+                            </Badge>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              
+              <div>
+                <h3 className="text-base font-medium mb-3">Technology Stack</h3>
+                <div className="bg-slate-50 border rounded p-3 max-h-60 overflow-y-auto">
+                  <div className="flex flex-wrap gap-2">
+                    {data.technologies.map((tech, index) => (
+                      <Badge key={index} variant="outline" className="bg-white">
+                        {tech}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <h3 className="text-base font-medium mb-3">Critical Vulnerabilities</h3>
+              <div className="space-y-3 max-h-96 overflow-y-auto px-1">
+                {Array.from({ length: 5 }).map((_, index) => (
+                  <div key={index} className="border rounded-lg p-4 bg-red-50 border-red-100">
+                    <div className="flex justify-between items-start">
+                      <h4 className="font-medium text-red-800">CVE-2023-{10000 + index}</h4>
+                      <Badge className="bg-red-500 hover:bg-red-600">Critical</Badge>
+                    </div>
+                    <p className="text-sm mt-1">
+                      {index === 0 && "Remote code execution vulnerability in Apache Log4j library."}
+                      {index === 1 && "SQL injection vulnerability in customer portal login page."}
+                      {index === 2 && "Authentication bypass in administrator control panel."}
+                      {index === 3 && "Cross-site scripting vulnerability in web application."}
+                      {index === 4 && "Insecure deserialization in Java application server."}
+                    </p>
+                    <div className="mt-2 flex justify-between items-center">
+                      <div className="text-xs text-red-700">
+                        CVSS Score: {7.5 + (index * 0.5)} - Exploitable remotely
+                      </div>
+                      <Button size="sm" variant="outline" className="h-7 text-xs">
+                        View Details
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Card>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ExecutiveView;
