@@ -20,13 +20,17 @@ import {
   Linkedin,
   ExternalLink,
   Lock,
-  AlertCircle
+  AlertCircle,
+  Globe,
+  MapPin,
+  Cpu,
+  FileText
 } from "lucide-react";
 import { getSecurityAssessment } from "@/utils/osint-helpers";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import QualysSeverityBar from "@/components/ui/QualysSeverityBar";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { PieChart, Pie, Cell, Legend, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
+import { PieChart, Pie, Cell, Legend, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, AreaChart, Area } from "recharts";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -34,6 +38,7 @@ import { Separator } from "@/components/ui/separator";
 import Header from "@/components/Header";
 import WebsiteAnalyticsPanel from "@/components/WebsiteAnalyticsPanel";
 import ErrorBoundary from "@/components/ui/error-boundary";
+import { Toggle } from "@/components/ui/toggle";
 
 interface ExecutiveViewProps {
   data: OsintData;
@@ -94,6 +99,36 @@ const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
     { name: "Network", value: 45 },
     { name: "Access Control", value: 61 }
   ];
+
+  // Generate risk trend data for past 30 days
+  const generateRiskTrendData = () => {
+    const result = [];
+    const today = new Date();
+    
+    for (let i = 29; i >= 0; i--) {
+      const date = new Date(today);
+      date.setDate(today.getDate() - i);
+      let riskValue = 55 + Math.random() * 10;
+      
+      // Create some spikes for notable events
+      if (i === 24) {
+        riskValue = 78; // CVE discovery spike
+      } else if (i === 12) {
+        riskValue = 82; // Data breach spike
+      } else if (i === 5) {
+        riskValue = 75; // Vulnerability disclosure
+      }
+      
+      result.push({
+        date: date.toISOString().slice(0, 10),
+        risk: riskValue,
+        event: i === 24 ? "Critical CVE" : (i === 12 ? "Data Breach" : (i === 5 ? "Vuln Disclosed" : null))
+      });
+    }
+    return result;
+  };
+
+  const riskTrendData = generateRiskTrendData();
 
   const handleDownload = (reportType: string) => {
     toast.success(`${reportType} report download started`, {
@@ -274,9 +309,47 @@ const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
       rightLeaning: 16,
     }
   };
+  
+  // Mock data for tables in the technical view
+  const cveData = [
+    { id: "CVE-2023-3456", cvss: 9.8, epss: "0.975", capec: "CAPEC-1", mitre: "Initial Access", asset: "Web Server" },
+    { id: "CVE-2023-2176", cvss: 9.6, epss: "0.936", capec: "CAPEC-94", mitre: "Execution", asset: "App Server" },
+    { id: "CVE-2023-5678", cvss: 8.4, epss: "0.852", capec: "CAPEC-242", mitre: "Defense Evasion", asset: "Database" },
+    { id: "CVE-2023-9012", cvss: 7.5, epss: "0.714", capec: "CAPEC-169", mitre: "Credential Access", asset: "API Gateway" }
+  ];
+  
+  const leakedCredentials = [
+    { email: "info@sclowy.com", source: "LinkedIn Data Breach", type: "Hash (bcrypt)", vip: false },
+    { email: "admin@sclowy.com", source: "Collection #1", type: "Plaintext", vip: true },
+    { email: "j.smith@sclowy.com", source: "Adobe 2013", type: "Hash (SHA-1)", vip: true },
+    { email: "tech@sclowy.com", source: "Canva 2019", type: "Hash (bcrypt)", vip: false }
+  ];
+  
+  const spoofedDomains = [
+    { domain: "sclowy-bank.com", similarity: "92%", legitimate: false, created: "2024-02-15" },
+    { domain: "sc-lowy.com", similarity: "89%", legitimate: false, created: "2023-11-03" },
+    { domain: "sclowysecure.com", similarity: "84%", legitimate: false, created: "2024-03-22" }
+  ];
+  
+  const threatActors = [
+    { name: "FIN7", target: "Financial Institutions", motivation: "Financial Gain", sophistication: "High" },
+    { name: "Lazarus Group", target: "Banking Sector", motivation: "State Sponsored", sophistication: "Very High" }
+  ];
+  
+  // Fix for the open ports data access
+  const portData = Array.isArray(data.openPorts) ? data.openPorts : [];
+
+  // Top 5 countries with highest exposure (for geo risk map)
+  const geoRiskData = [
+    { country: "Russia", risk: 72, incidents: 14 },
+    { country: "China", risk: 68, incidents: 12 },
+    { country: "United States", risk: 54, incidents: 9 },
+    { country: "North Korea", risk: 49, incidents: 7 },
+    { country: "Iran", risk: 42, incidents: 6 }
+  ];
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className={`container mx-auto px-4 py-8 ${activeView === "technical" ? "bg-slate-100" : "bg-white"}`}>
       <Header organizationName="SC Lowy" />
       
       <div className="mb-6">
@@ -300,7 +373,7 @@ const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
         <div className="flex gap-2">
           <Button 
             variant="outline" 
-            onClick={() => navigate("/extracted-data")}
+            onClick={() => navigate("/data-discovery")}
             className="flex items-center gap-1"
           >
             <Database className="h-4 w-4" />
@@ -308,7 +381,7 @@ const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
           </Button>
           <Button 
             variant="outline" 
-            onClick={() => navigate("/intelligent-mapping")}
+            onClick={() => navigate("/correlated-intelligence")}
             className="flex items-center gap-1"
           >
             <Brain className="h-4 w-4" />
@@ -336,26 +409,26 @@ const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
           </p>
           
           <div className="flex items-center gap-2">
-            <Tabs defaultValue="executive" className="w-full md:w-auto">
-              <TabsList className="grid w-full md:w-auto grid-cols-2">
-                <TabsTrigger 
-                  value="executive" 
-                  onClick={() => setActiveView("executive")}
-                  className="flex items-center gap-1"
-                >
-                  <Users className="h-4 w-4 mr-1" />
-                  Executive
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="technical" 
-                  onClick={() => setActiveView("technical")}
-                  className="flex items-center gap-1"
-                >
-                  <Code className="h-4 w-4 mr-1" />
-                  Technical
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
+            <div className="inline-flex items-center rounded-md border bg-muted p-1 text-muted-foreground">
+              <Toggle 
+                variant="outline" 
+                pressed={activeView === "executive"} 
+                onPressedChange={() => setActiveView("executive")}
+                className={`flex items-center gap-1 ${activeView === "executive" ? "bg-primary text-white" : ""}`}
+              >
+                <Users className="h-4 w-4 mr-1" />
+                Executive
+              </Toggle>
+              <Toggle 
+                variant="outline" 
+                pressed={activeView === "technical"} 
+                onPressedChange={() => setActiveView("technical")}
+                className={`flex items-center gap-1 ${activeView === "technical" ? "bg-primary text-white" : ""}`}
+              >
+                <Code className="h-4 w-4 mr-1" />
+                Technical
+              </Toggle>
+            </div>
           </div>
         </div>
       </div>
@@ -407,9 +480,18 @@ const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
               Executive Summary
             </h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div className="bg-blue-50 p-4 rounded-lg border border-blue-100 mb-6">
+              <p className="text-gray-800">
+                Our OSINT scan of <strong>sclowy.com</strong> has identified <strong>{data.qualysScan.severity_1}</strong> critical vulnerabilities and <strong>{data.dataLeaksCompliance.length}</strong> leaked credentials, 
+                presenting a significant security risk. We've detected threat actor activity from <strong>FIN7</strong> and <strong>Lazarus Group</strong>, 
+                both known to target financial institutions. Recent spikes in risk scores correlate with disclosed vulnerabilities in core infrastructure.
+                Immediate action is recommended to address critical issues and protect brand integrity.
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
               <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-lg">
-                <h3 className="text-sm font-medium text-blue-800 mb-1">Security Score</h3>
+                <h3 className="text-sm font-medium text-blue-800 mb-1">Exposure Score</h3>
                 <div className="flex items-center gap-2">
                   <span className={`text-3xl font-bold ${color}`}>{score}</span>
                   <span className="text-sm text-muted-foreground">/ 100</span>
@@ -418,138 +500,141 @@ const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
               </div>
               
               <div className="bg-gradient-to-br from-red-50 to-red-100 p-4 rounded-lg">
-                <h3 className="text-sm font-medium text-red-800 mb-1">Critical Issues</h3>
+                <h3 className="text-sm font-medium text-red-800 mb-1">Critical CVEs</h3>
                 <div className="flex items-center gap-2">
                   <span className="text-3xl font-bold text-red-600">{data.qualysScan.severity_1}</span>
-                  <span className="text-sm text-muted-foreground">requiring immediate attention</span>
+                  <span className="text-sm text-muted-foreground">critical</span>
                 </div>
               </div>
               
               <div className="bg-gradient-to-br from-amber-50 to-amber-100 p-4 rounded-lg">
-                <h3 className="text-sm font-medium text-amber-800 mb-1">Data Exposures</h3>
+                <h3 className="text-sm font-medium text-amber-800 mb-1">Leaked Credentials</h3>
                 <div className="flex items-center gap-2">
                   <span className="text-3xl font-bold text-amber-600">{data.dataLeaksCompliance.length}</span>
-                  <span className="text-sm text-muted-foreground">leaked credentials found</span>
+                  <span className="text-sm text-muted-foreground">accounts</span>
+                </div>
+              </div>
+              
+              <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-lg">
+                <h3 className="text-sm font-medium text-purple-800 mb-1">Threat Actors</h3>
+                <div className="flex items-center gap-2">
+                  <span className="text-3xl font-bold text-purple-600">2</span>
+                  <span className="text-sm text-muted-foreground">active</span>
+                </div>
+              </div>
+              
+              <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg">
+                <h3 className="text-sm font-medium text-green-800 mb-1">Executive Mentions</h3>
+                <div className="flex items-center gap-2">
+                  <span className="text-3xl font-bold text-green-600">{executives.length}</span>
+                  <span className="text-sm text-muted-foreground">found</span>
                 </div>
               </div>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <div>
-                <p className="text-gray-600 mb-4">
-                  Based on our comprehensive analysis, we identified multiple security issues requiring attention.
-                  The organization's exposure includes {data.dataLeaksCompliance.length} data leaks and {data.qualysScan.severity_1 + data.qualysScan.severity_2} high or critical security vulnerabilities.
-                </p>
-                
-                <div className="bg-amber-50 border border-amber-200 rounded p-4 text-sm text-amber-800">
-                  <div className="font-medium mb-2 flex items-center gap-1">
-                    <AlertTriangle className="h-4 w-4" />
-                    Key Findings
-                  </div>
-                  <ul className="list-disc pl-5 space-y-1">
-                    <li>Exposed sensitive data in {data.dataLeaksCompliance.length} breach databases</li>
-                    <li>{data.qualysScan.severity_1} critical vulnerabilities detected in infrastructure</li>
-                    <li>{data.openPorts.length} open ports potentially increasing attack surface</li>
-                    <li>Technology stack including {data.technologies.slice(0, 3).join(", ")} identified</li>
-                  </ul>
-                </div>
-              </div>
-              
-              <div className="h-64">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={vulnerabilityData}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={60}
-                      outerRadius={80}
-                      paddingAngle={5}
-                      dataKey="value"
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-6">
+              <div className="md:col-span-7">
+                <h3 className="text-base font-medium mb-3">Risk Trend (30 Days)</h3>
+                <div className="h-64 border rounded-lg p-2">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart
+                      data={riskTrendData}
+                      margin={{
+                        top: 10,
+                        right: 30,
+                        left: 0,
+                        bottom: 0,
+                      }}
                     >
-                      {vulnerabilityData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.fill} />
-                      ))}
-                    </Pie>
-                    <Legend verticalAlign="bottom" height={36} />
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis 
+                        dataKey="date" 
+                        tickFormatter={(tick) => tick.slice(5)} 
+                      />
+                      <YAxis domain={[40, 100]} />
+                      <Tooltip 
+                        formatter={(value, name) => [`${value}`, 'Risk Score']}
+                        labelFormatter={(label) => `Date: ${label}`}
+                      />
+                      <Area type="monotone" dataKey="risk" stroke="#2563eb" fill="url(#colorRisk)" />
+                      <defs>
+                        <linearGradient id="colorRisk" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#2563eb" stopOpacity={0.8}/>
+                          <stop offset="95%" stopColor="#2563eb" stopOpacity={0.1}/>
+                        </linearGradient>
+                      </defs>
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {riskTrendData.filter(item => item.event).map((item, index) => (
+                    <Badge key={index} variant="outline" className="bg-red-50 text-red-800">
+                      {item.date.slice(5)}: {item.event}
+                    </Badge>
+                  ))}
+                </div>
               </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card className="p-6 bg-white shadow-sm">
-                <h3 className="text-base font-medium mb-3 flex items-center gap-2">
-                  <BarChart3 className="h-4 w-4 text-purple-600" />
-                  Risk Assessment
-                </h3>
-                <div className="space-y-4">
-                  <div>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span>Infrastructure Risk</span>
-                      <span className="font-medium">{60 + Math.floor(Math.random() * 20)}%</span>
-                    </div>
-                    <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                      <div className="h-full bg-red-500 rounded-full" style={{ width: `${60 + Math.floor(Math.random() * 20)}%` }}></div>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span>Data Breach Risk</span>
-                      <span className="font-medium">{40 + Math.floor(Math.random() * 30)}%</span>
-                    </div>
-                    <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                      <div className="h-full bg-amber-500 rounded-full" style={{ width: `${40 + Math.floor(Math.random() * 30)}%` }}></div>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span>Application Risk</span>
-                      <span className="font-medium">{50 + Math.floor(Math.random() * 25)}%</span>
-                    </div>
-                    <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                      <div className="h-full bg-purple-500 rounded-full" style={{ width: `${50 + Math.floor(Math.random() * 25)}%` }}></div>
-                    </div>
-                  </div>
-                </div>
-              </Card>
               
-              <Card className="p-6 bg-white shadow-sm">
-                <h3 className="text-base font-medium mb-3 flex items-center gap-2">
-                  <ShieldCheck className="h-4 w-4 text-green-600" />
-                  Strategic Recommendations
-                </h3>
-                <div className="space-y-4">
-                  <div className="border-l-4 border-red-500 pl-3 py-1">
-                    <h4 className="text-sm font-medium">Critical Priority</h4>
-                    <p className="text-sm text-gray-600">
-                      Address {data.qualysScan.severity_1} critical vulnerabilities and reset passwords for all compromised accounts.
-                    </p>
+              <div className="md:col-span-5">
+                <h3 className="text-base font-medium mb-3">Top Recommendations</h3>
+                <Card className="p-4 bg-white shadow-sm">
+                  <div className="space-y-4">
+                    <div className="border-l-4 border-red-500 pl-3 py-1">
+                      <h4 className="text-sm font-medium">1. Patch Critical CVEs</h4>
+                      <p className="text-sm text-gray-600">
+                        Immediately patch {data.qualysScan.severity_1} critical vulnerabilities, prioritizing internet-facing assets.
+                      </p>
+                    </div>
+                    
+                    <div className="border-l-4 border-orange-500 pl-3 py-1">
+                      <h4 className="text-sm font-medium">2. Reset Compromised Accounts</h4>
+                      <p className="text-sm text-gray-600">
+                        Force password reset for all {data.dataLeaksCompliance.length} compromised accounts and implement MFA.
+                      </p>
+                    </div>
+                    
+                    <div className="border-l-4 border-blue-500 pl-3 py-1">
+                      <h4 className="text-sm font-medium">3. Third-Party Access Audit</h4>
+                      <p className="text-sm text-gray-600">
+                        Audit all vendor access to systems and implement least-privilege access controls.
+                      </p>
+                    </div>
+                    
+                    <div className="border-l-4 border-green-500 pl-3 py-1">
+                      <h4 className="text-sm font-medium">4. Executive Protection Program</h4>
+                      <p className="text-sm text-gray-600">
+                        Implement digital protection for {executives.length} key executives found in OSINT data.
+                      </p>
+                    </div>
                   </div>
-                  
-                  <div className="border-l-4 border-orange-500 pl-3 py-1">
-                    <h4 className="text-sm font-medium">High Priority</h4>
-                    <p className="text-sm text-gray-600">
-                      Implement multi-factor authentication and review open ports ({data.openPorts.length}) for unnecessary exposure.
-                    </p>
-                  </div>
-                  
-                  <div className="border-l-4 border-blue-500 pl-3 py-1">
-                    <h4 className="text-sm font-medium">Ongoing Measures</h4>
-                    <p className="text-sm text-gray-600">
-                      Establish regular security assessments and employee security awareness training.
-                    </p>
+                </Card>
+                
+                <div className="mt-4">
+                  <h3 className="text-base font-medium mb-3">Geo Risk Map</h3>
+                  <div className="bg-white border rounded-lg p-4">
+                    <div className="space-y-3">
+                      {geoRiskData.map((item, index) => (
+                        <div key={index} className="flex items-center">
+                          <div className="w-24 text-sm">{item.country}</div>
+                          <div className="flex-1">
+                            <div className="w-full bg-gray-200 rounded-full h-2.5">
+                              <div className="bg-red-600 h-2.5 rounded-full" style={{ width: `${item.risk}%` }}></div>
+                            </div>
+                          </div>
+                          <div className="w-12 text-right text-sm">{item.risk}%</div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </Card>
+              </div>
             </div>
           </Card>
 
           <Card className="p-6 bg-white shadow-md">
             <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
               <Shield className="h-5 w-5 text-red-600" />
-              Intelligence Analysis
+              Threat Intelligence
             </h2>
             
             <Tabs defaultValue="threats" className="w-full">
@@ -779,7 +864,7 @@ const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
         </div>
       ) : (
         <div className="space-y-6 animate-fade-in">
-          <Card className="p-6 bg-white shadow-md">
+          <Card className="p-6 bg-slate-50 shadow-md">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold flex items-center gap-2">
                 <Code className="h-5 w-5 text-blue-600" />
@@ -790,57 +875,172 @@ const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
               </Badge>
             </div>
             
-            <div className="bg-slate-50 border rounded-lg p-4 mb-6">
-              <h3 className="text-base font-medium mb-3 flex items-center gap-2">
-                <Shield className="h-4 w-4 text-slate-600" />
-                Vulnerability Overview
-              </h3>
-              
-              <div className="mb-4">
-                <div className="text-sm text-slate-700 mb-2">
-                  Vulnerability Severity Distribution
-                </div>
-                <QualysSeverityBar data={data.qualysScan} />
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
+              <div className="p-4 bg-slate-100 rounded-lg border">
+                <h3 className="text-xs uppercase text-gray-500 mb-1">Asset Count</h3>
+                <div className="text-2xl font-bold">{data.technologies.length}</div>
+                <div className="text-xs text-gray-500">Discovered technologies</div>
               </div>
               
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
-                <div>
-                  <div className="text-red-600 text-xl font-bold">{data.qualysScan.severity_1}</div>
-                  <div className="text-xs text-slate-600">Critical</div>
-                </div>
-                <div>
-                  <div className="text-orange-500 text-xl font-bold">{data.qualysScan.severity_2}</div>
-                  <div className="text-xs text-slate-600">High</div>
-                </div>
-                <div>
-                  <div className="text-amber-500 text-xl font-bold">{data.qualysScan.severity_3}</div>
-                  <div className="text-xs text-slate-600">Medium</div>
-                </div>
-                <div>
-                  <div className="text-green-500 text-xl font-bold">{data.qualysScan.severity_4}</div>
-                  <div className="text-xs text-slate-600">Low</div>
-                </div>
+              <div className="p-4 bg-slate-100 rounded-lg border">
+                <h3 className="text-xs uppercase text-gray-500 mb-1">CVEs by EPSS</h3>
+                <div className="text-2xl font-bold text-red-600">{data.qualysScan.severity_1 + data.qualysScan.severity_2}</div>
+                <div className="text-xs text-gray-500">High exploitation probability</div>
+              </div>
+              
+              <div className="p-4 bg-slate-100 rounded-lg border">
+                <h3 className="text-xs uppercase text-gray-500 mb-1">Exposed IPs</h3>
+                <div className="text-2xl font-bold">{portData.length}</div>
+                <div className="text-xs text-gray-500">With open ports</div>
+              </div>
+              
+              <div className="p-4 bg-slate-100 rounded-lg border">
+                <h3 className="text-xs uppercase text-gray-500 mb-1">Leaked Identities</h3>
+                <div className="text-2xl font-bold text-amber-600">{data.dataLeaksCompliance.length}</div>
+                <div className="text-xs text-gray-500">In breach databases</div>
+              </div>
+              
+              <div className="p-4 bg-slate-100 rounded-lg border">
+                <h3 className="text-xs uppercase text-gray-500 mb-1">Spoofed Domains</h3>
+                <div className="text-2xl font-bold text-purple-600">{spoofedDomains.length}</div>
+                <div className="text-xs text-gray-500">Potential phishing risk</div>
               </div>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div className="space-y-6">
               <div>
-                <h3 className="text-base font-medium mb-3">Open Ports & Services</h3>
-                <div className="bg-slate-50 border rounded p-3 max-h-60 overflow-y-auto">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="border-b">
-                        <th className="text-left py-2 font-medium">Port</th>
-                        <th className="text-left py-2 font-medium">Service</th>
-                        <th className="text-left py-2 font-medium">Status</th>
+                <h3 className="text-base font-medium mb-3 flex items-center gap-2">
+                  <AlertTriangle className="h-4 w-4 text-red-600" />
+                  CVE Details
+                </h3>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm text-left">
+                    <thead className="text-xs uppercase bg-slate-200 text-slate-700">
+                      <tr>
+                        <th className="px-4 py-3">CVE ID</th>
+                        <th className="px-4 py-3">CVSS</th>
+                        <th className="px-4 py-3">EPSS</th>
+                        <th className="px-4 py-3">CAPEC</th>
+                        <th className="px-4 py-3">MITRE Tactic</th>
+                        <th className="px-4 py-3">Affected Asset</th>
+                        <th className="px-4 py-3">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {data.openPorts.map((port, index) => (
-                        <tr key={index} className="border-b border-slate-200">
-                          <td className="py-2">{port.port}</td>
-                          <td className="py-2">{port.service}</td>
-                          <td className="py-2">
+                      {cveData.map((cve, index) => (
+                        <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-slate-100'}>
+                          <td className="px-4 py-3 text-blue-600">{cve.id}</td>
+                          <td className="px-4 py-3">
+                            <Badge className={cve.cvss >= 9.0 ? "bg-red-500" : cve.cvss >= 7.0 ? "bg-orange-500" : "bg-yellow-500"}>
+                              {cve.cvss}
+                            </Badge>
+                          </td>
+                          <td className="px-4 py-3">{cve.epss}</td>
+                          <td className="px-4 py-3">{cve.capec}</td>
+                          <td className="px-4 py-3">{cve.mitre}</td>
+                          <td className="px-4 py-3">{cve.asset}</td>
+                          <td className="px-4 py-3">
+                            <Button variant="outline" size="sm" className="h-7 text-xs">Details</Button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h3 className="text-base font-medium mb-3 flex items-center gap-2">
+                    <AlertCircle className="h-4 w-4 text-amber-600" />
+                    Credential Exposure
+                  </h3>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm text-left">
+                      <thead className="text-xs uppercase bg-slate-200 text-slate-700">
+                        <tr>
+                          <th className="px-4 py-3">Email</th>
+                          <th className="px-4 py-3">Breach Source</th>
+                          <th className="px-4 py-3">Password Type</th>
+                          <th className="px-4 py-3">VIP</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {leakedCredentials.map((item, index) => (
+                          <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-slate-100'}>
+                            <td className="px-4 py-3">{item.email}</td>
+                            <td className="px-4 py-3">{item.source}</td>
+                            <td className="px-4 py-3">{item.type}</td>
+                            <td className="px-4 py-3">
+                              {item.vip ? (
+                                <Badge className="bg-red-500">VIP</Badge>
+                              ) : (
+                                <Badge variant="outline" className="bg-slate-50">Regular</Badge>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                
+                <div>
+                  <h3 className="text-base font-medium mb-3 flex items-center gap-2">
+                    <Globe className="h-4 w-4 text-purple-600" />
+                    Spoofed Domains
+                  </h3>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm text-left">
+                      <thead className="text-xs uppercase bg-slate-200 text-slate-700">
+                        <tr>
+                          <th className="px-4 py-3">Domain</th>
+                          <th className="px-4 py-3">Similarity</th>
+                          <th className="px-4 py-3">Status</th>
+                          <th className="px-4 py-3">Created</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {spoofedDomains.map((domain, index) => (
+                          <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-slate-100'}>
+                            <td className="px-4 py-3 text-blue-600">{domain.domain}</td>
+                            <td className="px-4 py-3">{domain.similarity}</td>
+                            <td className="px-4 py-3">
+                              {domain.legitimate ? (
+                                <Badge className="bg-green-500">Legitimate</Badge>
+                              ) : (
+                                <Badge className="bg-red-500">Suspicious</Badge>
+                              )}
+                            </td>
+                            <td className="px-4 py-3">{domain.created}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <h3 className="text-base font-medium mb-3 flex items-center gap-2">
+                  <Cpu className="h-4 w-4 text-blue-600" />
+                  Infrastructure
+                </h3>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm text-left">
+                    <thead className="text-xs uppercase bg-slate-200 text-slate-700">
+                      <tr>
+                        <th className="px-4 py-3">Port</th>
+                        <th className="px-4 py-3">Service</th>
+                        <th className="px-4 py-3">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {portData.map((port, index) => (
+                        <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-slate-100'}>
+                          <td className="px-4 py-3">{port.port}</td>
+                          <td className="px-4 py-3">{port.service}</td>
+                          <td className="px-4 py-3">
                             <Badge variant="outline" className={
                               port.state === "open" ? "bg-red-50 text-red-700" : "bg-green-50 text-green-700"
                             }>
@@ -854,46 +1054,93 @@ const ExecutiveView: React.FC<ExecutiveViewProps> = ({ data }) => {
                 </div>
               </div>
               
-              <div>
-                <h3 className="text-base font-medium mb-3">Technology Stack</h3>
-                <div className="bg-slate-50 border rounded p-3 max-h-60 overflow-y-auto">
-                  <div className="flex flex-wrap gap-2">
-                    {data.technologies.map((tech, index) => (
-                      <Badge key={index} variant="outline" className="bg-white">
-                        {tech}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div>
-              <h3 className="text-base font-medium mb-3">Critical Vulnerabilities</h3>
-              <div className="space-y-3 max-h-96 overflow-y-auto px-1">
-                {Array.from({ length: 5 }).map((_, index) => (
-                  <div key={index} className="border rounded-lg p-4 bg-red-50 border-red-100">
-                    <div className="flex justify-between items-start">
-                      <h4 className="font-medium text-red-800">CVE-2023-{10000 + index}</h4>
-                      <Badge className="bg-red-500 hover:bg-red-600">Critical</Badge>
-                    </div>
-                    <p className="text-sm mt-1">
-                      {index === 0 && "Remote code execution vulnerability in Apache Log4j library."}
-                      {index === 1 && "SQL injection vulnerability in customer portal login page."}
-                      {index === 2 && "Authentication bypass in administrator control panel."}
-                      {index === 3 && "Cross-site scripting vulnerability in web application."}
-                      {index === 4 && "Insecure deserialization in Java application server."}
-                    </p>
-                    <div className="mt-2 flex justify-between items-center">
-                      <div className="text-xs text-red-700">
-                        CVSS Score: {7.5 + (index * 0.5)} - Exploitable remotely
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Card className="p-4">
+                  <h3 className="text-base font-medium mb-3 flex items-center gap-2">
+                    <Shield className="h-4 w-4 text-red-600" />
+                    Threat Actors
+                  </h3>
+                  
+                  {threatActors.map((actor, index) => (
+                    <div key={index} className={`p-3 rounded-lg mb-3 ${index % 2 === 0 ? 'bg-red-50 border border-red-100' : 'bg-amber-50 border border-amber-100'}`}>
+                      <div className="flex justify-between">
+                        <h4 className="text-base font-medium">{actor.name}</h4>
+                        <Badge className={actor.sophistication === "Very High" ? "bg-red-500" : "bg-orange-500"}>
+                          {actor.sophistication}
+                        </Badge>
                       </div>
-                      <Button size="sm" variant="outline" className="h-7 text-xs">
-                        View Details
-                      </Button>
+                      <div className="mt-2 space-y-1 text-sm">
+                        <div className="flex gap-2">
+                          <span className="font-medium w-24">Target:</span>
+                          <span>{actor.target}</span>
+                        </div>
+                        <div className="flex gap-2">
+                          <span className="font-medium w-24">Motivation:</span>
+                          <span>{actor.motivation}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </Card>
+                
+                <Card className="p-4">
+                  <h3 className="text-base font-medium mb-3 flex items-center gap-2">
+                    <FileText className="h-4 w-4 text-blue-600" />
+                    MITRE ATT&CK
+                  </h3>
+                  
+                  <div className="grid grid-cols-3 gap-2">
+                    <div className="p-2 rounded bg-red-100 text-center text-xs font-medium">
+                      Initial Access
+                    </div>
+                    <div className="p-2 rounded bg-red-100 text-center text-xs font-medium">
+                      Execution
+                    </div>
+                    <div className="p-2 rounded bg-amber-100 text-center text-xs font-medium">
+                      Persistence
+                    </div>
+                    <div className="p-2 rounded bg-green-100 text-center text-xs font-medium">
+                      Privilege Escalation
+                    </div>
+                    <div className="p-2 rounded bg-green-100 text-center text-xs font-medium">
+                      Defense Evasion
+                    </div>
+                    <div className="p-2 rounded bg-amber-100 text-center text-xs font-medium">
+                      Credential Access
+                    </div>
+                    <div className="p-2 rounded bg-slate-100 text-center text-xs font-medium">
+                      Discovery
+                    </div>
+                    <div className="p-2 rounded bg-slate-100 text-center text-xs font-medium">
+                      Lateral Movement
+                    </div>
+                    <div className="p-2 rounded bg-slate-100 text-center text-xs font-medium">
+                      Collection
                     </div>
                   </div>
-                ))}
+                  
+                  <div className="mt-3 text-xs text-gray-600">
+                    <p>Color indicates threat level detected:</p>
+                    <div className="flex gap-2 mt-1">
+                      <span className="w-4 h-4 bg-red-100 rounded"></span> High
+                      <span className="w-4 h-4 bg-amber-100 rounded ml-2"></span> Medium
+                      <span className="w-4 h-4 bg-green-100 rounded ml-2"></span> Low
+                      <span className="w-4 h-4 bg-slate-100 rounded ml-2"></span> None
+                    </div>
+                  </div>
+                </Card>
+              </div>
+              
+              <div className="mt-6">
+                <h3 className="text-base font-medium mb-3 flex items-center gap-2">
+                  <MapPin className="h-4 w-4 text-purple-600" />
+                  Knowledge Graph
+                </h3>
+                
+                <div className="bg-slate-100 border rounded-lg p-4 h-60 flex items-center justify-center">
+                  <p className="text-slate-500">Knowledge Graph Visualization</p>
+                  {/* In a real implementation, this would be a graph visualization showing relationship between entities */}
+                </div>
               </div>
             </div>
           </Card>
